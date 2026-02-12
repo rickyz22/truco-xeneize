@@ -1,0 +1,21 @@
+{
+  "short_name": "TrucoBoca",
+  "name": "Truco Xeneize - Marcador",
+  "icons": [
+    {
+      "src": "icono.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icono.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#003b70",
+  "theme_color": "#003b70",
+  "display": "standalone",
+  "orientation": "portrait"
+}
