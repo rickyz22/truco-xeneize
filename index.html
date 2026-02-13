@@ -2,59 +2,86 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Truco Xeneize - Anotador</title>
-    
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Truco Xeneize</title>
     
     <link rel="manifest" href="manifest.json">
-    
     <meta name="theme-color" content="#003b70">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icono.png">
+
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="header">
-        <h2 style="margin:0;">TRUCO XENEIZE</h2>
-    </div>
-
-    <div class="marcador-container">
-        <div class="equipo nos">
-            <div class="nombre">NOS</div>
-            <div id="puntosNos" class="puntos">0</div>
-            <div class="botones">
-                <button class="btn-restar" onclick="cambiarPuntos('nos', -1)">-</button>
-                <button class="btn-sumar" onclick="cambiarPuntos('nos', 1)">+</button>
-            </div>
-        </div>
-
-        <div class="equipo ellos">
-            <div class="nombre">ELLOS</div>
-            <div id="puntosEllos" class="puntos">0</div>
-            <div class="botones">
-                <button class="btn-restar" onclick="cambiarPuntos('ellos', -1)">-</button>
-                <button class="btn-sumar" onclick="cambiarPuntos('ellos', 1)">+</button>
-            </div>
+    <div id="pantalla-inicio">
+        <div class="logo-inicio">
+            <h1>TRUCO<br>XENEIZE</h1>
+            <button id="btn-empezar" onclick="comenzarJuego()">EMPEZAR PARTIDA</button>
         </div>
     </div>
 
-    <div id="historial" class="historial">
-        <div class="historial-item">¡Bienvenidos! Partido iniciado.</div>
+    <div id="contenido-juego" style="display: none;">
+        <div class="container">
+            
+            <header class="marcador-futbol">
+                <div class="bloque-led">
+                    <span class="etiqueta">NOS</span>
+                    <div class="led-display">
+                        <span id="num-nos">0</span>
+                    </div>
+                </div>
+
+                <div id="cronometro">00:00</div>
+
+                <div class="bloque-led">
+                    <span class="etiqueta">ELLOS</span>
+                    <div class="led-display">
+                        <span id="num-ellos">0</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="zona-juego">
+                <section class="columna">
+                    <h2>NOSOTROS</h2>
+                    <div id="palitos-nos" class="contenedor-palitos"></div>
+                    <div class="controles">
+                        <button class="btn-sumar" onclick="sumar('nos')">+</button>
+                        <button class="btn-restar" onclick="restar('nos')">-</button>
+                    </div>
+                </section>
+
+                <section class="columna">
+                    <h2>ELLOS</h2>
+                    <div id="palitos-ellos" class="contenedor-palitos"></div>
+                    <div class="controles">
+                        <button class="btn-sumar" onclick="sumar('ellos')">+</button>
+                        <button class="btn-restar" onclick="restar('ellos')">-</button>
+                    </div>
+                </section>
+            </main>
+
+            <button id="reset-btn" onclick="reiniciar()">NUEVA PARTIDA</button>
+        </div>
     </div>
 
-    <button class="btn-reset" onclick="reiniciar()">Reiniciar Partido</button>
-
-    <script src="script.js"></script>
+    <div id="modal-custom" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3 id="modal-titulo"></h3>
+            <p id="modal-mensaje"></p>
+            <div id="modal-botones" class="modal-botones-container"></div>
+        </div>
+    </div>
 
     <script>
+        // Registro del Service Worker para que funcione como App
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(() => console.log("Service Worker Activo"))
-                .catch(err => console.log("Error al registrar SW", err));
+            navigator.serviceWorker.register('sw.js').catch(err => console.log("SW no registrado", err));
         }
     </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
+
