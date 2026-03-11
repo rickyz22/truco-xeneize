@@ -3,70 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Truco Xeneize</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#003b70">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icono.png">
-
+    <title>Truco Profesional</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div id="pantalla-inicio">
         <div class="logo-inicio">
-            <h1>TRUCO<br>XENEIZE</h1>
             <button id="btn-empezar" onclick="comenzarJuego()">EMPEZAR PARTIDA</button>
+            <br><br>
+            <button class="btn-config-inicio" onclick="abrirConfiguracion()">CONFIGURACIÓN</button>
+        </div>
+    </div>
+    
+    <div id="pantalla-config" style="display: none;">
+        <div class="config-content">
+            <h3>AJUSTES</h3>
+            <div class="seccion-config">
+                <h4>ESTILO DE JUEGO</h4>
+                <div class="grid-equipos">
+                    <button onclick="cambiarEstilo('boca')">BOCA</button>
+                    <button onclick="cambiarEstilo('river')">RIVER</button>
+                    <button onclick="cambiarEstilo('racing')">RACING</button>
+                    <button onclick="cambiarEstilo('independiente')">ROJO</button>
+                    <button onclick="cambiarEstilo('sanlorenzo')">CASLA</button>
+                    <button onclick="cambiarEstilo('clasico')" style="grid-column: span 2;">TRUCO CLÁSICO</button>
+                </div>
+            </div>
+            <div class="seccion-config">
+                <h4>ELEMENTOS</h4>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="check-crono" checked onchange="toggleElemento('crono')"> Cronómetro
+                </label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="check-num" checked onchange="toggleElemento('num')"> Marcador
+                </label>
+            </div>
+            <button class="btn-cerrar-config" onclick="cerrarConfig()">GUARDAR</button>
         </div>
     </div>
 
     <div id="contenido-juego" style="display: none;">
-        <div class="container">
-            
-            <header class="marcador-futbol">
-                <div class="bloque-led">
-                    <span class="etiqueta">NOS</span>
-                    <div class="led-display">
-                        <span id="num-nos">0</span>
-                    </div>
-                </div>
-
+        <button id="btn-config" onclick="abrirConfiguracion()"><span class="material-icons">settings</span></button>
+        <header class="marcador-futbol">
+            <div class="bloque-led" id="cont-nos">
+                <span class="etiqueta">NOS</span>
+                <div class="led-display"><span id="num-nos">0</span></div>
+            </div>
+            <div class="seccion-cronometro" id="cont-crono">
                 <div id="cronometro">00:00</div>
-
-                <div class="bloque-led">
-                    <span class="etiqueta">ELLOS</span>
-                    <div class="led-display">
-                        <span id="num-ellos">0</span>
-                    </div>
+                <div class="controles-crono">
+                    <button id="btn-play-pause" onclick="toggleCronometro()"><span class="material-icons" id="icono-play">play_arrow</span></button>
+                    <button onclick="resetearCronometro()"><span class="material-icons">replay</span></button>
                 </div>
-            </header>
-
-            <main class="zona-juego">
-                <section class="columna">
-                    <h2>NOSOTROS</h2>
-                    <div id="palitos-nos" class="contenedor-palitos"></div>
-                    <div class="controles">
-                        <button class="btn-sumar" onclick="sumar('nos')">+</button>
-                        <button class="btn-restar" onclick="restar('nos')">-</button>
-                    </div>
-                </section>
-
-                <section class="columna">
-                    <h2>ELLOS</h2>
-                    <div id="palitos-ellos" class="contenedor-palitos"></div>
-                    <div class="controles">
-                        <button class="btn-sumar" onclick="sumar('ellos')">+</button>
-                        <button class="btn-restar" onclick="restar('ellos')">-</button>
-                    </div>
-                </section>
-            </main>
-
-            <button id="reset-btn" onclick="reiniciar()">NUEVA PARTIDA</button>
-        </div>
+            </div>
+            <div class="bloque-led" id="cont-ellos">
+                <span class="etiqueta">ELLOS</span>
+                <div class="led-display"><span id="num-ellos">0</span></div>
+            </div>
+        </header>
+        <main class="zona-juego">
+            <section class="columna">
+                <h2>NOSOTROS</h2>
+                <div id="palitos-nos" class="contenedor-palitos"></div>
+                <div class="controles">
+                    <button class="btn-sumar" onclick="sumar('nos')">+</button>
+                    <button class="btn-restar" onclick="restar('nos')">-</button>
+                </div>
+            </section>
+            <section class="columna">
+                <h2>ELLOS</h2>
+                <div id="palitos-ellos" class="contenedor-palitos"></div>
+                <div class="controles">
+                    <button class="btn-sumar" onclick="sumar('ellos')">+</button>
+                    <button class="btn-restar" onclick="restar('ellos')">-</button>
+                </div>
+            </section>
+        </main>
+        <button id="reset-btn" onclick="reiniciar()">NUEVA PARTIDA</button>
     </div>
-
+    
     <div id="modal-custom" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h3 id="modal-titulo"></h3>
@@ -74,14 +90,6 @@
             <div id="modal-botones" class="modal-botones-container"></div>
         </div>
     </div>
-
-    <script>
-        // Registro del Service Worker para que funcione como App
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log("SW no registrado", err));
-        }
-    </script>
     <script src="script.js"></script>
 </body>
 </html>
-
