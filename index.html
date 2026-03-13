@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Truco Profesional</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#003b70">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -41,12 +39,18 @@
                     <input type="checkbox" id="check-num" checked onchange="toggleElemento('num')"> Marcador
                 </label>
             </div>
+            <div class="seccion-config">
+                <h4>HISTORIAL</h4>
+                <div id="lista-historial"></div>
+                <button class="btn-reiniciar-historial" onclick="reiniciarHistorial()">REINICIAR HISTORIAL</button>
+            </div>
             <button class="btn-cerrar-config" onclick="cerrarConfig()">GUARDAR</button>
         </div>
     </div>
 
     <div id="contenido-juego" style="display: none;">
         <button id="btn-config" onclick="abrirConfiguracion()"><span class="material-icons">settings</span></button>
+        <button id="btn-home" onclick="volverInicio()"><span class="material-icons">home</span></button>
         <header class="marcador-futbol">
             <div class="bloque-led" id="cont-nos">
                 <span class="etiqueta">NOS</span>
@@ -92,12 +96,6 @@
             <div id="modal-botones" class="modal-botones-container"></div>
         </div>
     </div>
-
     <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
 </body>
 </html>

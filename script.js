@@ -4,6 +4,22 @@ let wakeLock = null; const limitePuntos = 30;
 
 function vibrar() { if (navigator.vibrate) navigator.vibrate(30); }
 
+function playBeep() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (e) {
+        console.log('Audio not supported');
+    }
+}
+
 async function activarWakeLock() {
     try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } 
     catch (err) { console.log("Wake Lock no disponible"); }
@@ -63,6 +79,7 @@ function resetearCronometro() {
 
 function sumar(equipo) {
     vibrar();
+    playBeep();
     if (equipo === 'nos' && puntosNos < limitePuntos) puntosNos++;
     if (equipo === 'ellos' && puntosEllos < limitePuntos) puntosEllos++;
     actualizarInterfaz();
@@ -71,6 +88,7 @@ function sumar(equipo) {
 
 function restar(equipo) {
     vibrar();
+    playBeep();
     if (equipo === 'nos' && puntosNos > 0) puntosNos--;
     if (equipo === 'ellos' && puntosEllos > 0) puntosEllos--;
     actualizarInterfaz();
@@ -84,8 +102,7 @@ function actualizarInterfaz() {
     document.getElementById('palitos-ellos').innerHTML = dibujarPalitos(puntosEllos);
     if (puntosNos >= limitePuntos || puntosEllos >= limitePuntos) {
         clearInterval(cronometroIntervalo);
-        let ganador = puntosNos >= limitePuntos ? "NOSOTROS" : "ELLOS";
-        mostrarModal("¡GANARON!", "El equipo de " + ganador + " se lleva la gloria.", false);
+        let ganador = puntosNos >= limitePuntos ? "NOSOTROS" : "ELLOS";        guardarEnHistorial(ganador);        mostrarModal("¡GANARON!", "El equipo de " + ganador + " se lleva la gloria.", false);
     }
 }
 
@@ -125,6 +142,51 @@ function reiniciarTotalmente() {
     document.getElementById('modal-custom').style.display = 'none';
 }
 
+function guardarEnHistorial(ganador) {
+    try {
+        let historial = JSON.parse(localStorage.getItem('historial') || '[]');
+        historial.push({
+            fecha: new Date().toISOString(),
+            ganador: ganador,
+            puntosNos: puntosNos,
+            puntosEllos: puntosEllos,
+            tiempo: segundos
+        });
+        if (historial.length > 10) historial.shift();
+        localStorage.setItem('historial', JSON.stringify(historial));
+    } catch (e) {
+        console.log('Error guardando historial', e);
+    }
+}
+
+function mostrarHistorial() {
+    const lista = document.getElementById('lista-historial');
+    try {
+        lista.innerHTML = '';
+        const historial = JSON.parse(localStorage.getItem('historial') || '[]');
+        if (historial.length === 0) {
+            lista.innerHTML = '<p>No hay partidas guardadas.</p>';
+            return;
+        }
+        historial.forEach((partida) => {
+            const div = document.createElement('div');
+            div.className = 'partida-historial';
+            const fecha = new Date(partida.fecha).toLocaleString();
+            div.innerHTML = `<p>${fecha} - Ganó ${partida.ganador} (${partida.puntosNos}-${partida.puntosEllos}) - ${Math.floor(partida.tiempo/60)}:${(partida.tiempo%60).toString().padStart(2,'0')}</p>`;
+            lista.appendChild(div);
+        });
+    } catch (e) {
+        lista.innerHTML = '<p>Error cargando historial.</p>';
+        console.log('Error en mostrarHistorial', e);
+    }
+}
+
+function reiniciarHistorial() {
+    vibrar();
+    localStorage.removeItem('historial');
+    mostrarHistorial();
+}
+
 function dibujarPalitos(puntos) {
     let html = '<div class="grupo-15">'; 
     for (let i = 0; i < puntos; i++) {
@@ -140,12 +202,19 @@ function abrirConfiguracion() {
     document.getElementById('pantalla-inicio').style.display = 'none';
     document.getElementById('contenido-juego').style.display = 'none';
     document.getElementById('pantalla-config').style.display = 'flex';
+    mostrarHistorial();
 }
 
 function cerrarConfig() {
     document.getElementById('pantalla-config').style.display = 'none';
     if (localStorage.getItem('partidaIniciada')) document.getElementById('contenido-juego').style.display = 'block';
     else document.getElementById('pantalla-inicio').style.display = 'flex';
+}
+
+function volverInicio() {
+    vibrar();
+    document.getElementById('contenido-juego').style.display = 'none';
+    document.getElementById('pantalla-inicio').style.display = 'flex';
 }
 
 function cambiarEstilo(equipo) {

@@ -1,10 +1,6 @@
 {
-  "name": "Truco Profesional",
-  "short_name": "Truco",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#003b70",
-  "theme_color": "#003b70",
+  "short_name": "Truco Pro",
+  "name": "Truco Profesional - Marcador",
   "icons": [
     {
       "src": "icono.png",
@@ -16,5 +12,10 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "start_url": "index.html",
+  "background_color": "#003b70",
+  "theme_color": "#003b70",
+  "display": "standalone",
+  "orientation": "portrait"
 }

@@ -9,6 +9,8 @@
 
 body { background-image: var(--fondo); background-size: cover; background-position: center; background-attachment: fixed; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: var(--p); overflow-x: hidden; }
 
+
+
 /* --- PANTALLA DE INICIO (OCUPA TODO EL ESPACIO SIN BORDES) --- */
 #pantalla-inicio { 
     position: fixed; inset: 0; 
@@ -112,10 +114,20 @@ h2 { color: var(--s); font-size: 0.75rem; margin-bottom: 10px; }
     font-size: 1.2rem;
 }
 
-#btn-config { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: var(--s); border: 2px solid var(--s); border-radius: 50%; padding: 8px; z-index: 999; cursor: pointer; }
+#btn-config { position: fixed; top: 5px; right: 15px; background: rgba(0,0,0,0.5); color: var(--s); border: 2px solid var(--s); border-radius: 5px; padding: 8px; z-index: 999; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+#btn-config:hover { background: rgba(0,0,0,0.7); transform: scale(1.1); }
+#btn-home { position: fixed; top: 5px; right: 70px; background: rgba(0,0,0,0.5); color: var(--s); border: 2px solid var(--s); border-radius: 5px; padding: 8px; z-index: 999; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+#btn-home:hover { background: rgba(0,0,0,0.7); transform: scale(1.1); }
 #pantalla-config { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; padding: 20px; }
 .config-content { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 30px; border-radius: 30px; width: 100%; max-width: 400px; text-align: center; color: white; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
 .grid-equipos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .grid-equipos button { padding: 10px; background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--s); border-radius: 10px; cursor: pointer; }
 .grid-equipos button:hover { background: var(--s); color: var(--p); }
-.btn-cerrar-config { margin-top: 10px; padding: 15px 40px; background: var(--s); color: var(--p); border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%; }
+.btn-cerrar-config { margin-top: 10px; padding: 15px 40px; background: var(--s); color: var(--p); border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%; transition: all 0.3s ease; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+.btn-cerrar-config:hover { transform: scale(1.05); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
+
+.partida-historial { margin: 10px 0; border: 1px solid var(--s); padding: 10px; border-radius: 5px; background: rgba(255,255,255,0.1); }
+.partida-historial p { margin: 0; color: white; font-size: 0.9rem; }
+
+.btn-reiniciar-historial { margin-top: 10px; padding: 10px 20px; background: var(--s); color: var(--p); border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: all 0.2s ease; }
+.btn-reiniciar-historial:hover { transform: scale(1.05); }
