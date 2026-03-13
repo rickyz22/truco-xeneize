@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Truco Profesional</title>
+
+    <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0a1f44">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -24,7 +26,7 @@
         </div>
     </div>
     
-    <!-- PANTALLA DE CONFIGURACIÓN -->
+    <!-- PANTALLA DE CONFIGURACIÓN PRO -->
     <div id="pantalla-config" style="display: none;">
         <div class="config-content">
             <div class="config-header">
@@ -33,6 +35,7 @@
                     <span class="material-icons">close</span>
                 </button>
             </div>
+
             <div class="config-scrollable">
                 <div class="seccion-config">
                     <h4>ESTILO DE JUEGO</h4>
@@ -45,29 +48,52 @@
                         <button class="btn-equipo clasico" onclick="cambiarEstilo('clasico')">TRADICIONAL</button>
                     </div>
                 </div>
+
                 <div class="seccion-config">
                     <h4>PREFERENCIAS</h4>
                     <div class="lista-toggles">
                         <div class="toggle-item">
-                            <div class="toggle-info"><span class="material-icons">timer</span><span>Cronómetro</span></div>
-                            <label class="switch"><input type="checkbox" id="check-crono" checked onchange="toggleElemento('crono')"><span class="slider round"></span></label>
+                            <div class="toggle-info">
+                                <span class="material-icons">timer</span>
+                                <span>Cronómetro</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="check-crono" checked onchange="toggleElemento('crono')">
+                                <span class="slider round"></span>
+                            </label>
                         </div>
                         <div class="toggle-item">
-                            <div class="toggle-info"><span class="material-icons">pin</span><span>Marcador Digital</span></div>
-                            <label class="switch"><input type="checkbox" id="check-num" checked onchange="toggleElemento('num')"><span class="slider round"></span></label>
+                            <div class="toggle-info">
+                                <span class="material-icons">pin</span>
+                                <span>Marcador Digital</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="check-num" checked onchange="toggleElemento('num')">
+                                <span class="slider round"></span>
+                            </label>
                         </div>
                         <div class="toggle-item">
-                            <div class="toggle-info"><span class="material-icons" id="icon-sonido">volume_up</span><span>Sonido</span></div>
-                            <label class="switch"><input type="checkbox" id="check-sonido" checked onchange="toggleElemento('sonido')"><span class="slider round"></span></label>
+                            <div class="toggle-info">
+                                <span class="material-icons" id="icon-sonido">volume_up</span>
+                                <span>Sonido</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="check-sonido" checked onchange="toggleElemento('sonido')">
+                                <span class="slider round"></span>
+                            </label>
                         </div>
                     </div>
                 </div>
+
                 <div class="seccion-config">
                     <h4>HISTORIAL</h4>
                     <div id="lista-historial"></div>
-                    <button class="btn-borrar-todo" onclick="reiniciarHistorial()"><span class="material-icons">delete_sweep</span> BORRAR TODO</button>
+                    <button class="btn-borrar-todo" onclick="reiniciarHistorial()">
+                        <span class="material-icons">delete_sweep</span> BORRAR TODO
+                    </button>
                 </div>
             </div>
+
             <div class="config-footer">
                 <button class="btn-guardar-pro" onclick="cerrarConfig()">GUARDAR CAMBIOS</button>
             </div>
@@ -84,6 +110,7 @@
                 <span class="etiqueta">NOS</span>
                 <div class="led-display"><span id="num-nos">0</span></div>
             </div>
+
             <div class="seccion-cronometro" id="cont-crono">
                 <div id="cronometro">00:00</div>
                 <div class="controles-crono">
@@ -95,6 +122,7 @@
                     </button>
                 </div>
             </div>
+
             <div class="bloque-led" id="cont-ellos">
                 <span class="etiqueta">ELLOS</span>
                 <div class="led-display"><span id="num-ellos">0</span></div>
@@ -110,6 +138,7 @@
                     <button class="btn-restar" onclick="restar('nos')">-</button>
                 </div>
             </section>
+
             <section class="columna">
                 <h2>ELLOS</h2>
                 <div id="palitos-ellos" class="contenedor-palitos"></div>
@@ -119,16 +148,20 @@
                 </div>
             </section>
         </main>
+
         <button id="reset-btn" onclick="reiniciar()">NUEVA PARTIDA</button>
     </div>
     
+    <!-- MODAL DE VICTORIA MEJORADO -->
     <div id="modal-custom" class="modal-overlay" style="display: none;">
         <div class="modal-content">
+            <span class="material-icons icono-alerta">emoji_events</span>
             <h3 id="modal-titulo"></h3>
             <p id="modal-mensaje"></p>
             <div id="modal-botones" class="modal-botones-container"></div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
