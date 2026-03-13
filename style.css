@@ -8,84 +8,58 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial Black', sans-serif; }
 
 body { 
-    background-image: var(--fondo); 
-    background-size: cover; 
-    background-position: center; 
-    background-attachment: fixed; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    min-height: 100vh; 
-    background-color: var(--p); 
-    overflow-x: hidden; 
+    background-image: var(--fondo); background-size: cover; background-position: center; 
+    background-attachment: fixed; display: flex; justify-content: center; align-items: center; 
+    min-height: 100vh; background-color: var(--p); overflow-x: hidden; 
 }
 
 /* --- PANTALLA DE INICIO --- */
 #pantalla-inicio { 
-    position: fixed; inset: 0; 
-    background-image: url('inicio.jpg');
-    background-size: 100% 100%; 
-    background-repeat: no-repeat;
-    background-position: center;
+    position: fixed; inset: 0; background-image: url('inicio.jpg');
+    background-size: 100% 100%; background-repeat: no-repeat; background-position: center;
     display: flex; justify-content: center; align-items: center; z-index: 9999;
 }
-
 .logo-inicio { text-align: center; margin-top: 20vh; width: 85%; max-width: 400px; }
-
 .botones-stack { display: flex; flex-direction: column; gap: 15px; }
-
 #btn-empezar { 
     background: var(--s); color: var(--p); padding: 22px; font-size: 1.4rem; 
     border-radius: 20px; border: none; font-weight: 900; cursor: pointer; 
     display: flex; align-items: center; justify-content: center; gap: 12px;
     box-shadow: 0 8px 0 #b38f00; transition: all 0.1s;
 }
-
+#btn-empezar:active { transform: translateY(4px); box-shadow: 0 4px 0 #b38f00; }
 .btn-config-inicio { 
     background: rgba(0, 0, 0, 0.4); color: white; padding: 15px; 
     border-radius: 18px; border: 2px solid var(--s); cursor: pointer; 
     display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold;
 }
 
-/* --- ANOTADOR (RESTAURADO) --- */
+/* --- BOTONES SUPERIORES (CONFIG Y HOME) --- */
+#btn-config { position: fixed; top: 5px; right: 15px; background: rgba(0,0,0,0.5); color: var(--s); border: 2px solid var(--s); border-radius: 5px; padding: 8px; z-index: 999; cursor: pointer; }
+#btn-home { position: fixed; top: 5px; right: 70px; background: rgba(0,0,0,0.5); color: var(--s); border: 2px solid var(--s); border-radius: 5px; padding: 8px; z-index: 999; cursor: pointer; }
+
+/* --- MARCADOR --- */
 #contenido-juego { width: 100%; max-width: 450px; padding: 10px; margin-bottom: 40px; }
-
-#btn-config { 
-    position: fixed; top: 5px; right: 15px; 
-    background: rgba(0,0,0,0.5); color: var(--s); /* COLOR ORO */
-    border: 2px solid var(--s); border-radius: 5px; padding: 8px; z-index: 999; cursor: pointer; 
-}
-
-#btn-home { 
-    position: fixed; top: 5px; right: 70px; 
-    background: rgba(0,0,0,0.5); color: var(--s); /* COLOR ORO */
-    border: 2px solid var(--s); border-radius: 5px; padding: 8px; z-index: 999; cursor: pointer; 
-}
-
-.marcador-futbol { 
-    background: var(--p); border: 4px solid var(--s); width: 100%; aspect-ratio: 16 / 9; 
-    margin-bottom: 15px; border-radius: 12px; display: flex; justify-content: center; 
-    align-items: center; gap: 10px; padding: 10px; 
-}
-
+.marcador-futbol { background: var(--p); border: 4px solid var(--s); width: 100%; aspect-ratio: 16 / 9; margin-bottom: 15px; border-radius: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 10px; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
 .led-display { background: #000; border: 3px solid var(--s); width: 80px; height: 90px; display: flex; justify-content: center; align-items: center; border-radius: 8px; }
 #num-nos, #num-ellos { font-size: 3.5rem; color: var(--s); font-family: 'Impact', sans-serif; text-shadow: 0 0 15px var(--s); }
 
+/* --- CRONOMETRO --- */
 #cronometro { background: #111; color: var(--s); padding: 8px 12px; font-size: 1.6rem; border: 2px solid var(--s); border-radius: 6px; text-align: center; }
+.controles-crono button { background: var(--s); color: var(--p); border: none; width: 38px; height: 38px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 0 #b38f00; }
 
-.controles-crono button { 
-    background: var(--s); color: var(--p); /* COLOR ORO CON TEXTO AZUL */
-    border: none; width: 38px; height: 38px; border-radius: 50%; 
-    display: flex; justify-content: center; align-items: center; cursor: pointer; 
-    box-shadow: 0 4px 0 #b38f00;
-}
-
+/* --- ZONA DE JUEGO Y PALITOS (RESTAURADO EXACTO) --- */
 .zona-juego { display: flex; justify-content: space-between; gap: 8px; }
 .columna { flex: 1; background: var(--p); padding: 10px 5px; border-radius: 15px; border: 2px solid var(--s); text-align: center; }
 h2 { color: var(--s); font-size: 0.75rem; margin-bottom: 10px; }
 
-.contenedor-palitos { display: flex; justify-content: center; gap: 10px; min-height: 220px; }
-.fosforo { position: absolute; width: 100%; height: 100%; object-fit: contain; }
+.contenedor-palitos { display: flex; justify-content: center; gap: 2px; min-height: 220px; }
+.grupo-15 { display: flex; flex-direction: column; gap: 10px; }
+.cuadradito { position: relative; width: 50px; height: 50px; }
+.fosforo { 
+    position: absolute; width: 100%; height: 100%; object-fit: contain; 
+    filter: brightness(1.1) contrast(1.2); image-rendering: -webkit-optimize-contrast; 
+}
 .p1 { transform: rotate(0deg); left: -23px; top: 0; }
 .p2 { transform: rotate(90deg); top: -23px; left: 0; }
 .p3 { transform: rotate(180deg); right: -23px; top: 0; }
@@ -94,7 +68,6 @@ h2 { color: var(--s); font-size: 0.75rem; margin-bottom: 10px; }
 
 .btn-sumar { background: var(--s); color: var(--p); padding: 12px; font-size: 1.4rem; border-radius: 8px; border: none; font-weight: bold; width: 100%; }
 .btn-restar { background: rgba(0,0,0,0.3); color: white; padding: 8px; border: 1px solid var(--s); border-radius: 8px; width: 100%; margin-top: 5px; }
-
 #reset-btn { width: 100%; margin-top: 20px; padding: 20px; background: #fff; color: #000; border-radius: 8px; border: none; font-weight: bold; font-size: 1.2rem; }
 
 /* --- CONFIGURACIÓN PRO --- */
@@ -103,7 +76,8 @@ h2 { color: var(--s); font-size: 0.75rem; margin-bottom: 10px; }
 .config-header { background: #fcb000; color: #001f5c; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
 .btn-cerrar-x { background: none; border: none; color: #001f5c; cursor: pointer; }
 .config-scrollable { padding: 20px; max-height: 65vh; overflow-y: auto; text-align: left; }
-
+.seccion-config { margin-bottom: 25px; }
+.seccion-config h4 { color: #fcb000; font-size: 0.9rem; margin-bottom: 12px; border-bottom: 1px solid rgba(252, 176, 0, 0.3); padding-bottom: 5px; }
 .grid-equipos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .btn-equipo { border: none; padding: 12px; border-radius: 8px; font-weight: bold; color: white; cursor: pointer; font-size: 0.75rem; }
 .boca { background: linear-gradient(to bottom, #003399 40%, #fcb000 40% 60%, #003399 60%); }
@@ -112,14 +86,12 @@ h2 { color: var(--s); font-size: 0.75rem; margin-bottom: 10px; }
 .independiente { background: #cc0000; }
 .sanlorenzo { background: repeating-linear-gradient(90deg, #003399, #003399 10px, #cc0000 10px, #cc0000 20px); }
 .clasico { background: #2e7d32; }
-
 .toggle-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); margin-bottom: 8px; padding: 12px; border-radius: 12px; }
 .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
 .slider { position: absolute; cursor: pointer; inset: 0; background-color: #444; transition: .4s; border-radius: 34px; }
 .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
 input:checked + .slider { background-color: #fcb000; }
 input:checked + .slider:before { transform: translateX(22px); }
-
 .btn-guardar-pro { width: 100%; padding: 15px; border: none; border-radius: 10px; background: #fcb000; color: #001f5c; font-weight: bold; font-size: 1rem; cursor: pointer; }
 
 /* MODALES */
