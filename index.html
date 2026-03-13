@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -43,13 +42,21 @@
                 <label class="toggle-switch">
                     <input type="checkbox" id="check-num" checked onchange="toggleElemento('num')"> Marcador
                 </label>
+                <!-- AGREGADO: Switch de sonido -->
+                <label class="toggle-switch">
+                    <input type="checkbox" id="check-sonido" checked onchange="toggleElemento('sonido')"> Sonido
+                </label>
             </div>
             <div class="seccion-config">
                 <h4>HISTORIAL</h4>
                 <div id="lista-historial"></div>
                 <button class="btn-reiniciar-historial" onclick="reiniciarHistorial()">REINICIAR HISTORIAL</button>
             </div>
-            <button class="btn-cerrar-config" onclick="cerrarConfig()">GUARDAR</button>
+            <!-- AGREGADO: Botón Volver junto a Guardar -->
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <button class="btn-cerrar-config" onclick="cerrarConfig()" style="background: #666;">VOLVER</button>
+                <button class="btn-cerrar-config" onclick="cerrarConfig()">GUARDAR</button>
+            </div>
         </div>
     </div>
 
