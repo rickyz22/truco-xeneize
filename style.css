@@ -50,10 +50,23 @@ body {
     margin-bottom: 15px; border-radius: 12px; display: flex; justify-content: center; 
     align-items: center; gap: 10px; padding: 10px; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); 
 }
+.bloque-led { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+
+/* CORRECCIÓN: Letras NOS y ELLOS más estéticas */
+.etiqueta { 
+    color: var(--s) !important; 
+    font-size: 1.1rem; 
+    font-weight: 900; 
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.3);
+    padding: 2px 10px;
+    border-radius: 5px;
+}
+
 .led-display { background: #000; border: 3px solid var(--s); width: 80px; height: 90px; display: flex; justify-content: center; align-items: center; border-radius: 8px; }
 #num-nos, #num-ellos { font-size: 3.5rem; color: var(--s); font-family: 'Impact', sans-serif; text-shadow: 0 0 15px var(--s); }
 
-/* --- CRONOMETRO CORREGIDO --- */
 .seccion-cronometro { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 #cronometro { background: #111; color: var(--s); padding: 8px 12px; font-size: 1.6rem; border: 2px solid var(--s); border-radius: 6px; text-align: center; }
 .controles-crono { display: flex !important; flex-direction: row !important; gap: 12px; justify-content: center; }
@@ -80,7 +93,6 @@ h2 { color: var(--s); font-size: 0.75rem; margin-bottom: 10px; }
 .btn-sumar { background: var(--s); color: var(--p); padding: 12px; font-size: 1.4rem; border-radius: 8px; border: none; font-weight: bold; width: 100%; cursor: pointer; }
 .btn-restar { background: rgba(0,0,0,0.3); color: white; padding: 8px; border: 1px solid var(--s); border-radius: 8px; width: 100%; margin-top: 5px; cursor: pointer; }
 
-/* BOTON NUEVA PARTIDA CORREGIDO */
 #reset-btn { 
     width: 100%; margin-top: 20px; padding: 20px; 
     background: var(--s) !important; color: var(--p) !important; 
@@ -111,7 +123,6 @@ h2 { color: var(--s); font-size: 0.75rem; margin-bottom: 10px; }
 input:checked + .slider { background-color: #fcb000; }
 input:checked + .slider:before { transform: translateX(22px); }
 
-/* BOTON BORRAR HISTORIAL CORREGIDO */
 .btn-borrar-todo { 
     width: 100%; background: var(--s) !important; color: var(--p) !important; 
     border: none; padding: 12px; border-radius: 8px; cursor: pointer; 
@@ -122,7 +133,35 @@ input:checked + .slider:before { transform: translateX(22px); }
 .config-footer { padding: 15px; background: rgba(0,0,0,0.3); }
 .btn-guardar-pro { width: 100%; padding: 15px; border: none; border-radius: 10px; background: #fcb000; color: #001f5c; font-weight: bold; font-size: 1rem; cursor: pointer; }
 
-/* MODALES */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 20000; }
-.modal-content { background: var(--p); border: 3px solid var(--s); border-radius: 25px; padding: 35px 25px; width: 90%; max-width: 350px; text-align: center; }
+/* --- MODAL DE VICTORIA MEJORADO --- */
+.modal-overlay { 
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9); 
+    display: flex; justify-content: center; align-items: center; z-index: 20000;
+    backdrop-filter: blur(8px);
+}
+.modal-content { 
+    background: linear-gradient(135deg, var(--p), #001a35); 
+    border: 4px solid var(--s); 
+    border-radius: 30px; padding: 40px 25px; width: 85%; max-width: 350px; 
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 15px rgba(255,204,0,0.2);
+    animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.icono-alerta { font-size: 4rem !important; color: var(--s); margin-bottom: 15px; display: block; }
+.modal-content h3 { color: var(--s); font-size: 2.2rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+.modal-content p { color: white; margin-bottom: 30px; font-size: 1.2rem; font-weight: bold; }
+
+.modal-botones-container { display: flex; gap: 10px; justify-content: center; }
+.btn-modal-confirmar { 
+    background: var(--s); color: var(--p); padding: 15px 25px; border-radius: 15px; 
+    border: none; font-weight: 900; cursor: pointer; font-size: 1.1rem;
+    box-shadow: 0 5px 0 #b38f00;
+}
+.btn-modal-confirmar:active { transform: translateY(3px); box-shadow: 0 2px 0 #b38f00; }
+.btn-modal-cancelar { background: transparent; color: white; padding: 12px 20px; border: 2px solid var(--s); border-radius: 15px; cursor: pointer; font-weight: bold; }
