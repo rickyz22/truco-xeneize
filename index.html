@@ -13,7 +13,6 @@
     <!-- PANTALLA DE INICIO -->
     <div id="pantalla-inicio">
         <div class="logo-inicio">
-            <!-- Botones Pro -->
             <div class="botones-stack">
                 <button id="btn-empezar" onclick="comenzarJuego()">
                     <span class="material-icons">play_arrow</span> JUGAR AHORA
@@ -25,7 +24,7 @@
         </div>
     </div>
     
-    <!-- PANTALLA DE CONFIGURACIÓN (Mantenemos el diseño que te gustó) -->
+    <!-- PANTALLA DE CONFIGURACIÓN -->
     <div id="pantalla-config" style="display: none;">
         <div class="config-content">
             <div class="config-header">
@@ -79,6 +78,7 @@
     <div id="contenido-juego" style="display: none;">
         <button id="btn-config" onclick="abrirConfiguracion()"><span class="material-icons">settings</span></button>
         <button id="btn-home" onclick="volverInicio()"><span class="material-icons">home</span></button>
+
         <header class="marcador-futbol">
             <div class="bloque-led" id="cont-nos">
                 <span class="etiqueta">NOS</span>
@@ -87,8 +87,12 @@
             <div class="seccion-cronometro" id="cont-crono">
                 <div id="cronometro">00:00</div>
                 <div class="controles-crono">
-                    <button id="btn-play-pause" onclick="toggleCronometro()"><span class="material-icons" id="icono-play">play_arrow</span></button>
-                    <button onclick="resetearCronometro()"><span class="material-icons">replay</span></button>
+                    <button id="btn-play-pause" onclick="toggleCronometro()">
+                        <span class="material-icons" id="icono-play">play_arrow</span>
+                    </button>
+                    <button onclick="resetearCronometro()">
+                        <span class="material-icons">replay</span>
+                    </button>
                 </div>
             </div>
             <div class="bloque-led" id="cont-ellos">
@@ -96,6 +100,7 @@
                 <div class="led-display"><span id="num-ellos">0</span></div>
             </div>
         </header>
+
         <main class="zona-juego">
             <section class="columna">
                 <h2>NOSOTROS</h2>
