@@ -1,61 +1,44 @@
-// Variables globales
-let puntosNos = 0; 
-let puntosEllos = 0; 
-let segundos = 0;
-let cronometroIntervalo = null; 
-let corriendo = false;
-let wakeLock = null; 
-const limitePuntos = 30;
+let puntosNos = 0; let puntosEllos = 0; let segundos = 0;
+let cronometroIntervalo = null; let corriendo = false;
+let wakeLock = null; const limitePuntos = 30;
 
-// --- CORRECCIÓN DEL SONIDO ---
 let audioContext = null;
 
+function vibrar() { if (navigator.vibrate) navigator.vibrate(30); }
+
 function playBeep() {
+    // Verificar si el sonido está habilitado en los ajustes
+    const sonidoHabilitado = localStorage.getItem('show-sonido') !== 'false';
+    if (!sonidoHabilitado) return;
+
     try {
-        // Inicializamos el contexto solo una vez
         if (!audioContext) {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
         }
-
-        // En móviles, el audio se suspende para ahorrar batería. Esto lo despierta.
         if (audioContext.state === 'suspended') {
             audioContext.resume();
         }
-
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
-
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
-
-        // Configuración del sonido (Pip)
         oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
         gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.1);
-
-        // Limpieza de memoria al terminar el sonido
+        
         oscillator.onended = () => {
             oscillator.disconnect();
             gainNode.disconnect();
         };
     } catch (e) {
-        console.log('Audio no soportado o bloqueado', e);
+        console.log('Audio not supported');
     }
 }
-// ------------------------------
 
-function vibrar() { 
-    if (navigator.vibrate) navigator.vibrate(30); 
-}
-
-async function activarWakeLock() {
-    try { 
-        if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); 
-    } catch (err) { 
-        console.log("Wake Lock no disponible"); 
-    }
+async fun activarWakeLock() {
+    try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } 
+    catch (err) { console.log("Wake Lock no disponible"); }
 }
 
 function guardarProgreso() {
@@ -84,36 +67,30 @@ function toggleCronometro() {
             guardarProgreso();
         }, 1000);
         icono.innerText = "pause";
-        btn.style.background = "#ff4444"; 
-        btn.style.color = "white";
+        btn.style.background = "#ff4444"; btn.style.color = "white";
         corriendo = true;
     } else {
         clearInterval(cronometroIntervalo);
         icono.innerText = "play_arrow";
-        btn.style.background = "#ffcc00"; 
-        btn.style.color = "#003b70";
+        btn.style.background = "#ffcc00"; btn.style.color = "#003b70";
         corriendo = false;
     }
 }
 
 function mostrarTiempo() {
-    let min = Math.floor(segundos / 60); 
-    let seg = segundos % 60;
+    let min = Math.floor(segundos / 60); let seg = segundos % 60;
     document.getElementById('cronometro').innerText = (min < 10 ? "0" + min : min) + ":" + (seg < 10 ? "0" + seg : seg);
 }
 
 function resetearCronometro() {
     vibrar();
     clearInterval(cronometroIntervalo);
-    cronometroIntervalo = null; 
-    segundos = 0; 
-    corriendo = false;
+    cronometroIntervalo = null; segundos = 0; corriendo = false;
     mostrarTiempo();
     guardarProgreso();
     document.getElementById('icono-play').innerText = "play_arrow";
     const btn = document.getElementById('btn-play-pause');
-    btn.style.background = "#ffcc00"; 
-    btn.style.color = "#003b70";
+    btn.style.background = "#ffcc00"; btn.style.color = "#003b70";
 }
 
 function sumar(equipo) {
@@ -139,12 +116,9 @@ function actualizarInterfaz() {
     document.getElementById('num-ellos').innerText = puntosEllos;
     document.getElementById('palitos-nos').innerHTML = dibujarPalitos(puntosNos);
     document.getElementById('palitos-ellos').innerHTML = dibujarPalitos(puntosEllos);
-    
     if (puntosNos >= limitePuntos || puntosEllos >= limitePuntos) {
         clearInterval(cronometroIntervalo);
-        let ganador = puntosNos >= limitePuntos ? "NOSOTROS" : "ELLOS";        
-        guardarEnHistorial(ganador);        
-        mostrarModal("¡GANARON!", "El equipo de " + ganador + " se lleva la gloria.", false);
+        let ganador = puntosNos >= limitePuntos ? "NOSOTROS" : "ELLOS";        guardarEnHistorial(ganador);        mostrarModal("¡GANARON!", "El equipo de " + ganador + " se lleva la gloria.", false);
     }
 }
 
@@ -154,23 +128,17 @@ function mostrarModal(titulo, mensaje, esConfirmacion, accion) {
     document.getElementById('modal-mensaje').innerText = mensaje;
     const btnBox = document.getElementById('modal-botones');
     btnBox.innerHTML = '';
-    
     if (esConfirmacion) {
         let btnNo = document.createElement('button');
-        btnNo.innerText = 'VOLVER'; 
-        btnNo.className = 'btn-modal-cancelar';
+        btnNo.innerText = 'VOLVER'; btnNo.className = 'btn-modal-cancelar';
         btnNo.onclick = () => { vibrar(); modal.style.display = 'none'; };
-        
         let btnSi = document.createElement('button');
-        btnSi.innerText = 'REINICIAR'; 
-        btnSi.className = 'btn-modal-confirmar';
+        btnSi.innerText = 'REINICIAR'; btnSi.className = 'btn-modal-confirmar';
         btnSi.onclick = () => { vibrar(); if(accion) accion(); modal.style.display = 'none'; };
-        
         btnBox.append(btnNo, btnSi);
     } else {
         let btnOk = document.createElement('button');
-        btnOk.innerText = '¡VAMOS!'; 
-        btnOk.className = 'btn-modal-confirmar';
+        btnOk.innerText = '¡VAMOS!'; btnOk.className = 'btn-modal-confirmar';
         btnOk.onclick = () => { vibrar(); reiniciarTotalmente(); modal.style.display = 'none'; };
         btnBox.append(btnOk);
     }
@@ -183,8 +151,7 @@ function reiniciar() {
 }
 
 function reiniciarTotalmente() {
-    puntosNos = 0; 
-    puntosEllos = 0;
+    puntosNos = 0; puntosEllos = 0;
     localStorage.removeItem('partidaIniciada');
     resetearCronometro();
     actualizarInterfaz();
@@ -255,6 +222,7 @@ function abrirConfiguracion() {
 }
 
 function cerrarConfig() {
+    vibrar();
     document.getElementById('pantalla-config').style.display = 'none';
     if (localStorage.getItem('partidaIniciada')) document.getElementById('contenido-juego').style.display = 'block';
     else document.getElementById('pantalla-inicio').style.display = 'flex';
@@ -274,12 +242,15 @@ function cambiarEstilo(equipo) {
 
 function toggleElemento(tipo) {
     const activo = document.getElementById(`check-${tipo}`).checked;
-    if (tipo === 'crono') document.getElementById('cont-crono').style.display = activo ? 'flex' : 'none';
-    else {
+    if (tipo === 'crono') {
+        document.getElementById('cont-crono').style.display = activo ? 'flex' : 'none';
+    } else if (tipo === 'num') {
         document.getElementById('cont-nos').style.display = activo ? 'flex' : 'none';
         document.getElementById('cont-ellos').style.display = activo ? 'flex' : 'none';
     }
+    // Para 'sonido' no hace falta ocultar elementos visuales, solo guardamos el estado
     localStorage.setItem(`show-${tipo}`, activo);
+    vibrar();
 }
 
 window.onload = () => {
@@ -296,12 +267,16 @@ window.onload = () => {
         comenzarJuego();
     }
     
-    // Cargar configuración de elementos
-    ['crono', 'num'].forEach(tipo => {
+    // Cargar configuración de elementos (incluyendo sonido)
+    ['crono', 'num', 'sonido'].forEach(tipo => {
         const estado = localStorage.getItem(`show-${tipo}`);
         if (estado !== null) {
             const el = document.getElementById(`check-${tipo}`);
-            if(el) { el.checked = JSON.parse(estado); toggleElemento(tipo); }
+            if(el) { 
+                el.checked = JSON.parse(estado); 
+                // Solo ejecutamos toggle si NO es sonido para no interferir con el AudioContext
+                if (tipo !== 'sonido') toggleElemento(tipo); 
+            }
         }
     });
 };
