@@ -13,16 +13,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- PANTALLA DE INICIO -->
+    <!-- PANTALLA DE INICIO REDISEÑADA -->
     <div id="pantalla-inicio">
-        <div class="logo-inicio">
-            <button id="btn-empezar" onclick="comenzarJuego()">EMPEZAR PARTIDA</button>
-            <br><br>
-            <button class="btn-config-inicio" onclick="abrirConfiguracion()">CONFIGURACIÓN</button>
+        <div class="inicio-container">
+            <div class="logo-animado">
+                <div class="logo-badge">
+                    <span class="material-icons">emoji_events</span>
+                </div>
+                <h1 class="titulo-app">TRUCO</h1>
+                <span class="subtitulo-app">XENEIZE</span>
+            </div>
+            
+            <div class="botones-stack">
+                <button id="btn-empezar" onclick="comenzarJuego()">
+                    <span class="material-icons">play_arrow</span> JUGAR AHORA
+                </button>
+                
+                <button class="btn-config-inicio" onclick="abrirConfiguracion()">
+                    <span class="material-icons">settings</span> AJUSTES
+                </button>
+            </div>
+            
+            <div class="inicio-footer">
+                v1.2.0 - 2024
+            </div>
         </div>
     </div>
     
-    <!-- PANTALLA DE CONFIGURACIÓN (REDISEÑADA) -->
+    <!-- PANTALLA DE CONFIGURACIÓN -->
     <div id="pantalla-config" style="display: none;">
         <div class="config-content">
             <div class="config-header">
