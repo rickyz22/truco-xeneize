@@ -1,27 +1,25 @@
 {
-  "background_color": "#0a1f44",
-  "dir": "ltr",
-  "display": "standalone",
+  {
   "name": "Anotador Truco",
-  "orientation": "any",
-  "scope": "/",
   "short_name": "Truco",
-  "start_url": "/",
+  "start_url": "/truco-xeneize/",
+  "scope": "/truco-xeneize/",
+  "display": "standalone",
+  "background_color": "#0a1f44",
   "theme_color": "#0a1f44",
-  "id": "Anotador",
   "description": "Contador de puntos para Truco argentino.",
   "icons": [
     {
-      "purpose": "maskable",
+      "src": "/truco-xeneize/icon-192.png",
       "sizes": "192x192",
-      "src": "maskable_icon_x192.png",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "purpose": "maskable",
+      "src": "/truco-xeneize/icon-512.png",
       "sizes": "512x512",
-      "src": "maskable_icon_x512.png",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
