@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Truco Profesional</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a1f44">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -51,23 +56,31 @@
     <div id="contenido-juego" style="display: none;">
         <button id="btn-config" onclick="abrirConfiguracion()"><span class="material-icons">settings</span></button>
         <button id="btn-home" onclick="volverInicio()"><span class="material-icons">home</span></button>
+
         <header class="marcador-futbol">
             <div class="bloque-led" id="cont-nos">
                 <span class="etiqueta">NOS</span>
                 <div class="led-display"><span id="num-nos">0</span></div>
             </div>
+
             <div class="seccion-cronometro" id="cont-crono">
                 <div id="cronometro">00:00</div>
                 <div class="controles-crono">
-                    <button id="btn-play-pause" onclick="toggleCronometro()"><span class="material-icons" id="icono-play">play_arrow</span></button>
-                    <button onclick="resetearCronometro()"><span class="material-icons">replay</span></button>
+                    <button id="btn-play-pause" onclick="toggleCronometro()">
+                        <span class="material-icons" id="icono-play">play_arrow</span>
+                    </button>
+                    <button onclick="resetearCronometro()">
+                        <span class="material-icons">replay</span>
+                    </button>
                 </div>
             </div>
+
             <div class="bloque-led" id="cont-ellos">
                 <span class="etiqueta">ELLOS</span>
                 <div class="led-display"><span id="num-ellos">0</span></div>
             </div>
         </header>
+
         <main class="zona-juego">
             <section class="columna">
                 <h2>NOSOTROS</h2>
@@ -77,6 +90,7 @@
                     <button class="btn-restar" onclick="restar('nos')">-</button>
                 </div>
             </section>
+
             <section class="columna">
                 <h2>ELLOS</h2>
                 <div id="palitos-ellos" class="contenedor-palitos"></div>
@@ -86,6 +100,7 @@
                 </div>
             </section>
         </main>
+
         <button id="reset-btn" onclick="reiniciar()">NUEVA PARTIDA</button>
     </div>
     
@@ -96,6 +111,7 @@
             <div id="modal-botones" class="modal-botones-container"></div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
