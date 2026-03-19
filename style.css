@@ -17,10 +17,14 @@ body {
 #pantalla-inicio { 
     position: fixed; 
     inset: 0; 
-    background-image: url('inicio.jpg'); /* Asegúrate de que el archivo se llame así */
-    background-size: cover; /* <--- CAMBIA ESTO (Evita que se deforme) */
-    background-position: center; 
+    background-image: url('inicio.jpg'); /* O .jpeg según como lo guardaste */
+    
+    /* CAMBIO CLAVE: */
+    background-size: contain; /* Muestra la imagen COMPLETA sin recortar nada */
     background-repeat: no-repeat;
+    background-position: top center; /* La pega arriba para que el título se vea bien */
+    background-color: #21150b; /* Color marrón oscuro (como la madera) para rellenar abajo si sobra espacio */
+    
     display: flex; 
     justify-content: center; 
     align-items: center; 
