@@ -46,7 +46,6 @@ async function activarWakeLock() {
     } catch {}
 }
 
-// 🔥 REACTIVAR WAKELOCK
 document.addEventListener('visibilitychange', async () => {
     if (wakeLock !== null && document.visibilityState === 'visible') {
         await activarWakeLock();
@@ -125,7 +124,6 @@ function resetearCronometro() {
     btn.style.color = "#003b70";
 }
 
-// 🔥 BLOQUEO SI YA GANÓ
 function juegoTerminado() {
     return puntosNos >= limitePuntos || puntosEllos >= limitePuntos;
 }
@@ -168,7 +166,7 @@ function actualizarInterfaz() {
 
         let ganador = puntosNos >= limitePuntos ? "NOSOTROS" : "ELLOS";
 
-        vibrar(200); // vibración de victoria 🔥
+        vibrar(200);
 
         guardarEnHistorial(ganador);
 
@@ -271,11 +269,15 @@ function reiniciarHistorial() {
     mostrarHistorial();
 }
 
+// 🔥 ACA ESTA LA MEJORA
 function dibujarPalitos(puntos) {
     let html = '<div class="grupo-15">';
 
     for (let i = 0; i < puntos; i++) {
-        if (i === 15) html += '</div><div class="grupo-15">';
+
+        if (i === 15) {
+            html += '</div><div class="linea-divisoria"></div><div class="grupo-15">';
+        }
 
         if (i % 5 === 0) html += '<div class="cuadradito">';
 
@@ -291,7 +293,6 @@ function abrirConfiguracion() {
     document.getElementById('pantalla-inicio').style.display = 'none';
     document.getElementById('contenido-juego').style.display = 'none';
     document.getElementById('pantalla-config').style.display = 'flex';
-
     mostrarHistorial();
 }
 
@@ -351,7 +352,7 @@ window.onload = () => {
         segundos = parseInt(localStorage.getItem('segundos') || 0);
 
         mostrarTiempo();
-        mostrarPantallaJuego(); // 🔥 FIX
+        mostrarPantallaJuego();
     }
 
     ['crono','num','sonido'].forEach(tipo => {
