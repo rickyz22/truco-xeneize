@@ -22,14 +22,19 @@ body {
     overflow-x: hidden; 
 }
 
-/* --- PANTALLA DE INICIO (OPTIMIZADA PARA TU IMAGEN DE 1080x2400) --- */
+/* --- PANTALLA DE INICIO (AJUSTE DE ANCHO MANUAL) --- */
 #pantalla-inicio { 
     position: fixed; 
     inset: 0; 
-    background-image: url('inicio.jpg'); 
-    background-size: cover; 
-    background-position: center;
-    background-color: #2b1b11; 
+    background-image: url('inicio.jpg'); /* O .jpeg */
+    
+    /* AJUSTE MANUAL: Bajamos al 92% para que entren la A y la O */
+    background-size: 92% auto; 
+    
+    background-repeat: no-repeat;
+    background-position: center 20px; /* Centrado y un poquito separado del tope */
+    background-color: #2b1b11; /* Color madera de tu imagen */
+    
     display: flex; 
     flex-direction: column; 
     justify-content: flex-end; 
@@ -56,7 +61,7 @@ body {
 
 .inicio-footer-cont { 
     width: 100%; 
-    padding-bottom: 50px; 
+    padding-bottom: 60px; 
     display: flex; 
     justify-content: center; 
 }
@@ -79,7 +84,7 @@ body {
 
 #btn-empezar:active { 
     transform: translateY(4px); 
-    box-shadow: 0 4px 0 #2a180f; 
+    box-shadow: 0 4px 0 #2a180f;
 }
 
 /* --- ANOTADOR / MARCADOR --- */
@@ -170,7 +175,6 @@ body {
 }
 h2 { color: var(--s); font-size: 0.75rem; margin-bottom: 10px; }
 
-/* VALORES EXACTOS PARA QUE NO SE CRUCEN LOS PALITOS */
 .contenedor-palitos { display: flex; justify-content: center; gap: 2px; min-height: 220px; }
 .grupo-15 { display: flex; flex-direction: column; gap: 10px; }
 .cuadradito { position: relative; width: 50px; height: 50px; }
@@ -295,17 +299,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 }
 
 .config-footer { padding: 15px; background: rgba(0,0,0,0.3); }
-.btn-guardar-pro { 
-    width: 100%; 
-    padding: 15px; 
-    border: none; 
-    border-radius: 10px; 
-    background: #fcb000; 
-    color: #001f5c; 
-    font-weight: bold; 
-    font-size: 1rem; 
-    cursor: pointer; 
-}
+.btn-guardar-pro { width: 100%; padding: 15px; border: none; border-radius: 10px; background: #fcb000; color: #001f5c; font-weight: bold; font-size: 1rem; cursor: pointer; }
 
 /* --- MODAL DE VICTORIA --- */
 .modal-overlay { 
@@ -364,4 +358,3 @@ input:checked + .slider:before { transform: translateX(22px); }
 /* HISTORIAL */
 .partida-historial { margin: 10px 0; border: 1px solid var(--s); padding: 10px; border-radius: 5px; background: rgba(255,255,255,0.1); }
 .partida-historial p { margin: 0; color: white; font-size: 0.8rem; }
-
