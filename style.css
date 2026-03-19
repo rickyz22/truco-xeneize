@@ -1,3 +1,4 @@
+/* --- VARIABLES Y TEMAS --- */
 :root { --p: #003b70; --s: #ffcc00; --fondo: url('fondo-boca.jpg'); }
 .tema-river { --p: #ff0000; --s: #ffffff; --fondo: url('fondo-river.jpg'); }
 .tema-racing { --p: #00acee; --s: #ffffff; --fondo: url('fondo-racing.jpg'); }
@@ -5,56 +6,63 @@
 .tema-sanlorenzo { --p: #002d62; --s: #c8102e; --fondo: url('fondo-sanlorenzo.jpg'); }
 .tema-clasico { --p: #2d1b0d; --s: #d2b48c; --fondo: #2d1b0d; }
 
+/* --- RESET GENERAL --- */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial Black', sans-serif; }
 
 body { 
-    background-image: var(--fondo); background-size: cover; background-position: center; 
-    background-attachment: fixed; display: flex; justify-content: center; align-items: center; 
-    min-height: 100vh; background-color: var(--p); overflow-x: hidden; 
+    background-image: var(--fondo); 
+    background-size: cover; 
+    background-position: center; 
+    background-attachment: fixed; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    background-color: var(--p); 
+    overflow-x: hidden; 
 }
 
-/* --- PANTALLA DE INICIO (CARPINCHO PRO) --- */
+/* --- PANTALLA DE INICIO (OPTIMIZADA PARA TU IMAGEN DE 1080x2400) --- */
 #pantalla-inicio { 
     position: fixed; 
     inset: 0; 
-    background-image: url('inicio.jpg'); /* O .jpeg */
-    background-size: 100% auto; 
-    background-repeat: no-repeat;
-    background-position: top center;
-    background-color: #2b1b11; /* Color madera de la mesa */
-    display: flex;
-    flex-direction: column;
+    background-image: url('inicio.jpg'); 
+    background-size: cover; 
+    background-position: center;
+    background-color: #2b1b11; 
+    display: flex; 
+    flex-direction: column; 
     justify-content: flex-end; 
-    align-items: center;
+    align-items: center; 
     z-index: 9999;
 }
 
 .btn-config-top {
-    position: absolute;
-    top: 15px;
-    right: 15px;
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
     background: rgba(0, 0, 0, 0.5);
-    color: #ffcc00;
-    border: 2px solid #ffcc00;
+    color: var(--s); 
+    border: 2px solid var(--s); 
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 45px; 
+    height: 45px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
     cursor: pointer;
     backdrop-filter: blur(5px);
 }
 
-.inicio-footer-cont {
-    width: 100%;
-    padding-bottom: 50px;
-    display: flex;
-    justify-content: center;
+.inicio-footer-cont { 
+    width: 100%; 
+    padding-bottom: 50px; 
+    display: flex; 
+    justify-content: center; 
 }
 
 #btn-empezar { 
-    background: #462a1a; /* Marrón madera oscuro */
+    background: #462a1a; 
     color: #ffcc00; 
     padding: 18px 45px; 
     font-size: 1.4rem; 
@@ -62,81 +70,198 @@ body {
     border: 2px solid #ffcc00; 
     font-weight: 900; 
     cursor: pointer; 
-    display: flex;
-    align-items: center;
+    display: flex; 
+    align-items: center; 
     gap: 12px;
-    box-shadow: 0 8px 0 #2a180f, 0 15px 25px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 0 #2a180f, 0 15px 25px rgba(0,0,0,0.5); 
     transition: all 0.1s;
 }
 
-#btn-empezar:active {
-    transform: translateY(4px);
-    box-shadow: 0 4px 0 #2a180f;
+#btn-empezar:active { 
+    transform: translateY(4px); 
+    box-shadow: 0 4px 0 #2a180f; 
 }
 
-/* --- ANOTADOR Y MARCADOR --- */
-#btn-config, #btn-home { 
-    position: fixed; top: 5px; background: rgba(0,0,0,0.5); 
-    color: var(--s) !important; border: 2px solid var(--s); 
-    border-radius: 5px; padding: 8px; z-index: 999; cursor: pointer; 
-}
-#btn-config { right: 15px; }
-#btn-home { right: 70px; }
-
+/* --- ANOTADOR / MARCADOR --- */
 #contenido-juego { width: 100%; max-width: 450px; padding: 10px; margin-bottom: 40px; }
+
 .marcador-futbol { 
-    background: var(--p); border: 4px solid var(--s); width: 100%; aspect-ratio: 16 / 9; 
-    margin-bottom: 15px; border-radius: 12px; display: flex; justify-content: center; 
-    align-items: center; gap: 10px; padding: 10px; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); 
+    background: var(--p); 
+    border: 4px solid var(--s); 
+    width: 100%; 
+    aspect-ratio: 16 / 9; 
+    margin-bottom: 15px; 
+    border-radius: 12px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 10px; 
+    padding: 10px; 
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.5); 
 }
+
+.bloque-led { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 
 .etiqueta { 
     color: var(--s) !important; 
-    font-size: 1.1rem; font-weight: 900; letter-spacing: 2px;
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
-    background: rgba(0,0,0,0.3); padding: 2px 10px; border-radius: 5px;
+    font-size: 1.1rem; 
+    font-weight: 900; 
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5); 
+    background: rgba(0,0,0,0.3); 
+    padding: 2px 10px; 
+    border-radius: 5px;
 }
 
-.led-display { background: #000; border: 3px solid var(--s); width: 80px; height: 90px; display: flex; justify-content: center; align-items: center; border-radius: 8px; }
-#num-nos, #num-ellos { font-size: 3.5rem; color: var(--s); font-family: 'Impact', sans-serif; text-shadow: 0 0 15px var(--s); }
+.led-display { 
+    background: #000; 
+    border: 3px solid var(--s); 
+    width: 80px; 
+    height: 90px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    border-radius: 8px; 
+}
 
-#cronometro { background: #111; color: var(--s); padding: 8px 12px; font-size: 1.6rem; border: 2px solid var(--s); border-radius: 6px; text-align: center; }
+#num-nos, #num-ellos { 
+    font-size: 3.5rem; 
+    color: var(--s); 
+    font-family: 'Impact', sans-serif; 
+    text-shadow: 0 0 15px var(--s); 
+}
+
+/* --- CRONOMETRO --- */
+.seccion-cronometro { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+#cronometro { 
+    background: #111; 
+    color: var(--s); 
+    padding: 8px 12px; 
+    font-size: 1.6rem; 
+    border: 2px solid var(--s); 
+    border-radius: 6px; 
+    text-align: center; 
+    font-family: monospace;
+}
 .controles-crono { display: flex !important; flex-direction: row !important; gap: 12px; justify-content: center; }
 .controles-crono button { 
-    background: var(--s); color: var(--p); border: none; width: 38px; height: 38px; 
-    border-radius: 50%; display: flex; justify-content: center; align-items: center; 
-    cursor: pointer; box-shadow: 0 4px 0 #b38f00; 
+    background: var(--s); 
+    color: var(--p); 
+    border: none; 
+    width: 38px; 
+    height: 38px; 
+    border-radius: 50%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    cursor: pointer; 
+    box-shadow: 0 4px 0 #b38f00; 
 }
 
+/* --- ZONA DE JUEGO (FOSFOROS) --- */
 .zona-juego { display: flex; justify-content: space-between; gap: 8px; }
-.columna { flex: 1; background: var(--p); padding: 10px 5px; border-radius: 15px; border: 2px solid var(--s); text-align: center; }
+.columna { 
+    flex: 1; 
+    background: var(--p); 
+    padding: 10px 5px; 
+    border-radius: 15px; 
+    border: 2px solid var(--s); 
+    text-align: center; 
+}
 h2 { color: var(--s); font-size: 0.75rem; margin-bottom: 10px; }
 
+/* VALORES EXACTOS PARA QUE NO SE CRUCEN LOS PALITOS */
 .contenedor-palitos { display: flex; justify-content: center; gap: 2px; min-height: 220px; }
+.grupo-15 { display: flex; flex-direction: column; gap: 10px; }
+.cuadradito { position: relative; width: 50px; height: 50px; }
 .fosforo { position: absolute; width: 100%; height: 100%; object-fit: contain; filter: brightness(1.1) contrast(1.2); }
+
 .p1 { transform: rotate(0deg); left: -23px; top: 0; }
 .p2 { transform: rotate(90deg); top: -23px; left: 0; }
 .p3 { transform: rotate(180deg); right: -23px; top: 0; }
 .p4 { transform: rotate(90deg); bottom: -23px; left: 0; }
 .p5 { transform: rotate(45deg); top: 0; left: 0; }
 
-.btn-sumar { background: var(--s); color: var(--p); padding: 12px; font-size: 1.4rem; border-radius: 8px; border: none; font-weight: bold; width: 100%; cursor: pointer; }
-.btn-restar { background: rgba(0,0,0,0.3); color: white; padding: 8px; border: 1px solid var(--s); border-radius: 8px; width: 100%; margin-top: 5px; cursor: pointer; }
-
-#reset-btn { 
-    width: 100%; margin-top: 20px; padding: 20px; 
-    background: var(--s) !important; color: var(--p) !important; 
-    border-radius: 8px; border: none; font-weight: bold; font-size: 1.2rem;
+/* BOTONES DE PUNTAJE */
+.btn-sumar { 
+    background: var(--s); 
+    color: var(--p); 
+    padding: 12px; 
+    font-size: 1.4rem; 
+    border-radius: 8px; 
+    border: none; 
+    font-weight: bold; 
+    width: 100%; 
+    cursor: pointer; 
+}
+.btn-restar { 
+    background: rgba(0,0,0,0.3); 
+    color: white; 
+    padding: 8px; 
+    border: 1px solid var(--s); 
+    border-radius: 8px; 
+    width: 100%; 
+    margin-top: 5px; 
+    cursor: pointer;
 }
 
+#reset-btn { 
+    width: 100%; 
+    margin-top: 20px; 
+    padding: 20px; 
+    background: var(--s); 
+    color: var(--p); 
+    border-radius: 8px; 
+    border: none; 
+    font-weight: bold; 
+    font-size: 1.2rem; 
+    cursor: pointer;
+}
+
+/* --- BOTONES SUPERIORES --- */
+#btn-config, #btn-home { 
+    position: fixed; 
+    top: 5px; 
+    background: rgba(0,0,0,0.5); 
+    color: var(--s) !important; 
+    border: 2px solid var(--s); 
+    border-radius: 5px; 
+    padding: 8px; 
+    z-index: 999; 
+    cursor: pointer; 
+}
+#btn-config { right: 15px; }
+#btn-home { right: 70px; }
+
 /* --- CONFIGURACIÓN PRO --- */
-#pantalla-config { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; }
-.config-content { background: #001f5c; color: white; border-radius: 20px; width: 90%; max-width: 400px; overflow: hidden; border: 2px solid #fcb000; }
+#pantalla-config { 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.85); 
+    backdrop-filter: blur(10px); 
+    z-index: 10000; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+.config-content { 
+    background: #001f5c; 
+    color: white; 
+    border-radius: 20px; 
+    width: 90%; 
+    max-width: 400px; 
+    overflow: hidden; 
+    border: 2px solid #fcb000; 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
 .config-header { background: #fcb000; color: #001f5c; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
 .btn-cerrar-x { background: none; border: none; color: #001f5c; cursor: pointer; }
+
 .config-scrollable { padding: 20px; max-height: 65vh; overflow-y: auto; text-align: left; }
 .seccion-config { margin-bottom: 25px; }
 .seccion-config h4 { color: #fcb000; font-size: 0.9rem; margin-bottom: 12px; border-bottom: 1px solid rgba(252, 176, 0, 0.3); padding-bottom: 5px; }
+
 .grid-equipos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .btn-equipo { border: none; padding: 12px; border-radius: 8px; font-weight: bold; color: white; cursor: pointer; font-size: 0.75rem; }
 .boca { background: linear-gradient(to bottom, #003399 40%, #fcb000 40% 60%, #003399 60%); }
@@ -154,35 +279,89 @@ input:checked + .slider { background-color: #fcb000; }
 input:checked + .slider:before { transform: translateX(22px); }
 
 .btn-borrar-todo { 
-    width: 100%; background: var(--s) !important; color: var(--p) !important; 
-    border: none; padding: 12px; border-radius: 8px; cursor: pointer; 
-    display: flex; align-items: center; justify-content: center; gap: 5px; 
-    font-size: 0.9rem; font-weight: bold; margin-top: 10px;
+    width: 100%; 
+    background: var(--s) !important; 
+    color: var(--p) !important; 
+    border: none; 
+    padding: 12px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
 }
 
 .config-footer { padding: 15px; background: rgba(0,0,0,0.3); }
-.btn-guardar-pro { width: 100%; padding: 15px; border: none; border-radius: 10px; background: #fcb000; color: #001f5c; font-weight: bold; font-size: 1rem; cursor: pointer; }
+.btn-guardar-pro { 
+    width: 100%; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 10px; 
+    background: #fcb000; 
+    color: #001f5c; 
+    font-weight: bold; 
+    font-size: 1rem; 
+    cursor: pointer; 
+}
 
 /* --- MODAL DE VICTORIA --- */
 .modal-overlay { 
-    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9); 
-    display: flex; justify-content: center; align-items: center; z-index: 20000;
-    backdrop-filter: blur(8px);
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0, 0, 0, 0.9); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 20000; 
+    backdrop-filter: blur(8px); 
 }
 .modal-content { 
     background: linear-gradient(135deg, var(--p), #001a35); 
     border: 4px solid var(--s); 
-    border-radius: 30px; padding: 40px 25px; width: 85%; max-width: 350px; text-align: center;
+    border-radius: 30px; 
+    padding: 40px 25px; 
+    width: 85%; 
+    max-width: 350px; 
+    text-align: center; 
     box-shadow: 0 0 30px rgba(0,0,0,0.8);
     animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 @keyframes zoomIn {
     from { opacity: 0; transform: scale(0.8); }
     to { opacity: 1; transform: scale(1); }
 }
+
 .icono-alerta { font-size: 4rem !important; color: var(--s); margin-bottom: 15px; display: block; }
 .modal-content h3 { color: var(--s); font-size: 2.2rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 .modal-content p { color: white; margin-bottom: 30px; font-size: 1.2rem; font-weight: bold; }
+
 .modal-botones-container { display: flex; gap: 10px; justify-content: center; }
-.btn-modal-confirmar { background: var(--s); color: var(--p); padding: 15px 25px; border-radius: 15px; border: none; font-weight: 900; cursor: pointer; font-size: 1.1rem; box-shadow: 0 5px 0 #b38f00; }
-.btn-modal-cancelar { background: transparent; color: white; padding: 12px 20px; border: 2px solid var(--s); border-radius: 15px; cursor: pointer; font-weight: bold; }
+.btn-modal-confirmar { 
+    background: var(--s); 
+    color: var(--p); 
+    padding: 15px 25px; 
+    border-radius: 15px; 
+    border: none; 
+    font-weight: 900; 
+    cursor: pointer; 
+    font-size: 1.1rem; 
+    box-shadow: 0 5px 0 #b38f00; 
+}
+.btn-modal-cancelar { 
+    background: transparent; 
+    color: white; 
+    padding: 12px 20px; 
+    border: 2px solid var(--s); 
+    border-radius: 15px; 
+    cursor: pointer; 
+    font-weight: bold; 
+}
+
+/* HISTORIAL */
+.partida-historial { margin: 10px 0; border: 1px solid var(--s); padding: 10px; border-radius: 5px; background: rgba(255,255,255,0.1); }
+.partida-historial p { margin: 0; color: white; font-size: 0.8rem; }
+
