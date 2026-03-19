@@ -29,7 +29,7 @@ body {
     background-image: url('inicio.jpg'); /* O .jpeg */
     
     /* AJUSTE MANUAL: Bajamos al 92% para que entren la A y la O */
-    background-size: 92% auto; 
+    background-size: 98% auto; 
     
     background-repeat: no-repeat;
     background-position: center 20px; /* Centrado y un poquito separado del tope */
