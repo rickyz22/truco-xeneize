@@ -22,7 +22,7 @@ body {
     overflow-x: hidden; 
 }
 
-/* --- PANTALLA DE INICIO (AJUSTE DE ANCHO MANUAL) --- */
+/* --- PANTALLA DE INICIO --- */
 #pantalla-inicio { 
     position: fixed; 
     inset: 0; 
@@ -65,25 +65,34 @@ body {
     justify-content: center; 
 }
 
-#btn-empezar { 
-    background: #462a1a; 
-    color: #ffcc00; 
-    padding: 18px 45px; 
-    font-size: 1.4rem; 
-    border-radius: 15px; 
-    border: 2px solid #ffcc00; 
-    font-weight: 900; 
-    cursor: pointer; 
-    display: flex; 
-    align-items: center; 
-    gap: 12px;
-    box-shadow: 0 8px 0 #2a180f, 0 15px 25px rgba(0,0,0,0.5); 
-    transition: all 0.1s;
+/* --- BOTÓN JUGAR AHORA (DISEÑO PROFESIONAL MEJORADO) --- */
+#btn-empezar {
+    background: linear-gradient(180deg, #5d3a24 0%, #3a2214 100%);
+    color: #ffcc00;
+    padding: 18px 50px;
+    font-size: 1.5rem;
+    border-radius: 50px; 
+    border: 3px solid #ffcc00;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6), inset 0 2px 5px rgba(255, 255, 255, 0.2);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-#btn-empezar:active { 
-    transform: translateY(4px); 
-    box-shadow: 0 4px 0 #2a180f;
+#btn-empezar:active {
+    transform: scale(0.95) translateY(5px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+#btn-empezar span {
+    font-size: 2rem;
 }
 
 /* --- ANOTADOR / MARCADOR --- */
