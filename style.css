@@ -28,12 +28,11 @@ body {
     inset: 0; 
     background-image: url('inicio.jpg'); /* O .jpeg */
     
-    /* AJUSTE MANUAL: Bajamos al 92% para que entren la A y la O */
-    background-size: 99% auto; 
+    /* ESTO ESTIRA LA IMAGEN PARA OCUPAR TODA LA PANTALLA SIN BORDES */
+    background-size: 100% 100%; 
     
     background-repeat: no-repeat;
-    background-position: center 20px; /* Centrado y un poquito separado del tope */
-    background-color: #2b1b11; /* Color madera de tu imagen */
+    background-position: center;
     
     display: flex; 
     flex-direction: column; 
