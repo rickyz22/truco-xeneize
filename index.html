@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -14,15 +15,16 @@
 <body>
     <!-- PANTALLA DE INICIO -->
     <div id="pantalla-inicio">
-        <div class="logo-inicio">
-            <div class="botones-stack">
-                <button id="btn-empezar" onclick="comenzarJuego()">
-                    <span class="material-icons">play_arrow</span> JUGAR AHORA
-                </button>
-                <button class="btn-config-inicio" onclick="abrirConfiguracion()">
-                    <span class="material-icons">settings</span> AJUSTES
-                </button>
-            </div>
+        <!-- Ruedita de ajustes arriba a la derecha -->
+        <button class="btn-config-top" onclick="abrirConfiguracion()">
+            <span class="material-icons">settings</span>
+        </button>
+
+        <!-- Botón de jugar centrado abajo -->
+        <div class="inicio-footer-cont">
+            <button id="btn-empezar" onclick="comenzarJuego()">
+                <span class="material-icons">play_arrow</span> JUGAR AHORA
+            </button>
         </div>
     </div>
     
@@ -152,7 +154,7 @@
         <button id="reset-btn" onclick="reiniciar()">NUEVA PARTIDA</button>
     </div>
     
-    <!-- MODAL DE VICTORIA MEJORADO -->
+    <!-- MODAL DE VICTORIA -->
     <div id="modal-custom" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <span class="material-icons icono-alerta">emoji_events</span>
