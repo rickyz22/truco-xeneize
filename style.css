@@ -829,7 +829,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 }
 .modal-content h3 {
     color: var(--s);
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-title);
     font-size: 2.2rem;
     font-weight: 900;
     margin-bottom: 12px;
@@ -856,7 +856,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     padding: 15px 30px;
     border-radius: 16px;
     border: none;
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-title);
     font-weight: 900;
     cursor: pointer;
     font-size: 1.1rem;
@@ -875,7 +875,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     border: var(--border-style);
     border-radius: 16px;
     cursor: pointer;
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-title);
     font-weight: 700;
     font-size: 0.95rem;
     transition: all 0.2s ease;
@@ -899,4 +899,34 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     font-size: 0.85rem;
     font-weight: 500;
     font-family: 'Inter', sans-serif;
+}
+
+/* --- MARCOS DE MADERA RÚSTICA REAL PARA TEMA TRADICIONAL --- */
+.tema-clasico .columna, 
+.tema-clasico .marcador-futbol, 
+.tema-clasico .led-display {
+    position: relative;
+    border: none !important;
+    box-shadow: var(--glow);
+}
+
+.tema-clasico .columna::after, 
+.tema-clasico .marcador-futbol::after {
+    content: "";
+    position: absolute;
+    inset: -12px;
+    border: 24px solid transparent;
+    border-image: url('marco-madera.png') 60 fill stretch;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.tema-clasico .led-display::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 12px solid transparent;
+    border-image: url('marco-madera.png') 60 fill stretch;
+    pointer-events: none;
+    z-index: 10;
 }
