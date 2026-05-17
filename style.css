@@ -139,26 +139,26 @@
 
 .tema-clasico {
     --p: #0b532c;
-    --s: #8b5a2b;
+    --s: #7c4c24;
     --accent: #ffd700;
     --fondo: url('fondo-clasico.png');
-    --glow: 0 10px 30px rgba(0,0,0,0.6);
+    --glow: 0 0 0 2px #4a2d18, 0 12px 30px rgba(0,0,0,0.7);
     --glow-color: rgba(0,0,0,0.4);
-    --glass: rgba(5, 35, 15, 0.45);
+    --glass: rgba(10, 35, 15, 0.45);
     --text-main: #ffffff;
     --text-label: #ffd700;
     --text-accent: #ffd700;
-    --border-style: 3px solid #8b5a2b;
+    --border-style: 4px solid #7c4c24;
     --glass-filter: blur(10px) saturate(140%);
-    --btn-add-bg: linear-gradient(180deg, #8b5a2b 0%, #5c3a21 100%);
+    --btn-add-bg: linear-gradient(180deg, #7c4c24 0%, #4a2d18 100%);
     --btn-add-text: #ffffff;
     --btn-sub-bg: rgba(10, 30, 15, 0.6);
-    --btn-sub-border: 2px solid #8b5a2b;
+    --btn-sub-border: 2px solid #7c4c24;
     --btn-sub-text: #ffffff;
-    --dots-opacity: 0.02;
+    --dots-opacity: 0.01;
     --text-glow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     --title-glow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-    --led-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    --led-shadow: inset 0 0 10px rgba(0, 0, 0, 0.9), 0 0 0 2px #4a2d18;
     --font-display: 'Luckiest Guy', cursive;
     --font-title: 'Luckiest Guy', cursive;
 }
