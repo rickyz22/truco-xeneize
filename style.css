@@ -141,7 +141,7 @@
     --p: #0b532c;
     --s: #8b5a2b;
     --accent: #ffd700;
-    --fondo: radial-gradient(circle at center, #116c3b 0%, #083c1e 100%);
+    --fondo: url('fondo-clasico.png');
     --glow: 0 10px 30px rgba(0,0,0,0.6);
     --glow-color: rgba(0,0,0,0.4);
     --glass: rgba(5, 35, 15, 0.45);
