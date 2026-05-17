@@ -694,11 +694,12 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 }
 .linea-divisoria {
     width: 2px;
-    background: var(--s);
-    opacity: 0.3;
-    margin: 0 4px;
-    height: 70%;
-    align-self: center;
+    background: var(--accent);
+    opacity: 0.8;
+    margin: 0 8px;
+    height: 100%;
+    align-self: stretch;
+    box-shadow: 1px 0 2px rgba(0,0,0,0.4);
 }
 
 /* FÓSFOROS / PALITOS */
