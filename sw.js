@@ -1,4 +1,4 @@
-const CACHE_NAME = 'truco-v5';
+const CACHE_NAME = 'truco-v6';
 const urlsToCache = [
   './',
   'index.html',

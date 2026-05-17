@@ -26,6 +26,9 @@
     --btn-sub-border: 2px solid #ffcc00;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
+    --text-glow: 0 0 12px var(--text-accent);
+    --title-glow: 0 0 8px var(--glow-color);
+    --led-shadow: 0 0 15px var(--glow-color);
 }
 
 .tema-river {
@@ -47,6 +50,9 @@
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
+    --text-glow: 0 0 12px var(--text-accent);
+    --title-glow: 0 0 8px var(--glow-color);
+    --led-shadow: 0 0 15px var(--glow-color);
 }
 
 .tema-racing {
@@ -68,6 +74,9 @@
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
+    --text-glow: 0 0 12px var(--text-accent);
+    --title-glow: 0 0 8px var(--glow-color);
+    --led-shadow: 0 0 15px var(--glow-color);
 }
 
 .tema-independiente {
@@ -89,6 +98,9 @@
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
+    --text-glow: 0 0 12px var(--text-accent);
+    --title-glow: 0 0 8px var(--glow-color);
+    --led-shadow: 0 0 15px var(--glow-color);
 }
 
 .tema-sanlorenzo {
@@ -110,27 +122,33 @@
     --btn-sub-border: 2px solid #c8102e;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
+    --text-glow: 0 0 12px var(--text-accent);
+    --title-glow: 0 0 8px var(--glow-color);
+    --led-shadow: 0 0 15px var(--glow-color);
 }
 
 .tema-clasico {
-    --p: #2d1b0d;
-    --s: #d2b48c;
-    --accent: #d2b48c;
-    --fondo: #2d1b0d;
-    --glow: 0 0 25px rgba(210, 180, 140, 0.8);
-    --glow-color: rgba(210, 180, 140, 0.5);
-    --glass: rgba(255, 255, 255, 0.15);
+    --p: #0b532c;
+    --s: #8b5a2b;
+    --accent: #ffd700;
+    --fondo: radial-gradient(circle at center, #116c3b 0%, #083c1e 100%);
+    --glow: 0 10px 30px rgba(0,0,0,0.6);
+    --glow-color: rgba(0,0,0,0.4);
+    --glass: rgba(5, 35, 15, 0.45);
     --text-main: #ffffff;
-    --text-label: #d2b48c;
-    --text-accent: #d2b48c;
-    --border-style: 2px solid #d2b48c;
-    --glass-filter: blur(12px) saturate(190%);
-    --btn-add-bg: linear-gradient(180deg, #d2b48c 0%, #b8976c 100%);
-    --btn-add-text: #2d1b0d;
-    --btn-sub-bg: rgba(45, 27, 13, 0.4);
-    --btn-sub-border: 2px solid #d2b48c;
+    --text-label: #ffd700;
+    --text-accent: #ffd700;
+    --border-style: 3px solid #8b5a2b;
+    --glass-filter: blur(10px) saturate(140%);
+    --btn-add-bg: linear-gradient(180deg, #8b5a2b 0%, #5c3a21 100%);
+    --btn-add-text: #ffffff;
+    --btn-sub-bg: rgba(10, 30, 15, 0.6);
+    --btn-sub-border: 2px solid #8b5a2b;
     --btn-sub-text: #ffffff;
-    --dots-opacity: 0.04;
+    --dots-opacity: 0.02;
+    --text-glow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    --title-glow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    --led-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* --- RESET GENERAL --- */
@@ -511,7 +529,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     padding: 4px 10px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    text-shadow: 0 0 8px var(--glow-color);
+    text-shadow: var(--title-glow);
 }
 
 .led-display {
@@ -525,7 +543,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     justify-content: center;
     align-items: center;
     border-radius: 16px;
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.9), 0 0 15px var(--glow-color);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.9), var(--led-shadow);
     transition: all 0.3s ease;
 }
 
@@ -534,7 +552,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     color: var(--text-accent);
     font-family: 'Orbitron', sans-serif;
     font-weight: 900;
-    text-shadow: 0 0 12px var(--text-accent);
+    text-shadow: var(--text-glow);
     transition: all 0.3s ease;
 }
 
@@ -551,7 +569,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     color: var(--text-accent);
     font-family: 'Orbitron', sans-serif;
     font-weight: 900;
-    text-shadow: 0 0 8px var(--text-accent);
+    text-shadow: var(--text-glow);
     background: rgba(0,0,0,0.5);
     padding: 4px 12px;
     border-radius: 8px;
@@ -631,7 +649,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     font-family: 'Orbitron', sans-serif;
     font-weight: 900;
     letter-spacing: 1px;
-    text-shadow: 0 0 8px var(--glow-color);
+    text-shadow: var(--title-glow);
     cursor: pointer;
     padding: 4px;
     border-radius: 8px;
