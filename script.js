@@ -451,7 +451,7 @@ window.onload = () => {
     }
 
     // Cargar estilo y tema inicial
-    const equipo = localStorage.getItem('equipo') || 'deportivo';
+    const equipo = localStorage.getItem('equipo') || 'boca';
     cambiarEstilo(equipo);
     actualizarNombresUI();
 

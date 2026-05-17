@@ -7,128 +7,128 @@
 
 /* --- CONFIGURACIÓN DE TEMAS --- */
 :root {
-    /* DEFAULT / DEPORTIVO */
-    --p: #000c24;
-    --s: #ffd700;
-    --accent: #ffd700;
-    --body-bg: radial-gradient(circle at center, #001a3d 0%, #000714 100%);
-    --card-bg: linear-gradient(180deg, #001a40 0%, #000c24 100%);
-    --glow: 0 0 20px rgba(255, 215, 0, 0.6);
-    --glow-color: rgba(255, 215, 0, 0.4);
+    /* DEFAULT / BOCA */
+    --p: #003b70;
+    --s: #ffcc00;
+    --accent: #ffcc00;
+    --fondo: url('fondo-boca.jpg');
+    --glow: 0 0 20px rgba(255, 204, 0, 0.6);
+    --glow-color: rgba(255, 204, 0, 0.4);
+    --glass: rgba(0, 12, 36, 0.85);
     --text-main: #ffffff;
-    --text-label: #ffd700;
-    --text-accent: #ffd700;
-    --border-style: 2px solid #ffd700;
+    --text-label: #ffcc00;
+    --text-accent: #ffcc00;
+    --border-style: 2px solid #ffcc00;
     --glass-blur: blur(12px);
-    --btn-add-bg: linear-gradient(180deg, #ffd700 0%, #ffa500 100%);
+    --btn-add-bg: linear-gradient(180deg, #ffcc00 0%, #ff9900 100%);
     --btn-add-text: #000c24;
     --btn-sub-bg: rgba(0, 12, 36, 0.6);
-    --btn-sub-border: 2px solid #ffd700;
+    --btn-sub-border: 2px solid #ffcc00;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
 }
 
-.tema-claro {
-    --p: #e0f2fe;
-    --s: #0284c7;
-    --accent: #0284c7;
-    --body-bg: linear-gradient(135deg, #a5f3fc 0%, #0284c7 100%);
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --glow: 0 4px 15px rgba(2, 132, 199, 0.25);
-    --glow-color: rgba(2, 132, 199, 0.15);
-    --text-main: #0f172a;
-    --text-label: #0284c7;
-    --text-accent: #0284c7;
-    --border-style: 2px solid #0284c7;
-    --glass-blur: blur(8px);
-    --btn-add-bg: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
-    --btn-add-text: #ffffff;
-    --btn-sub-bg: rgba(255, 255, 255, 0.9);
-    --btn-sub-border: 2px solid #0284c7;
-    --btn-sub-text: #0284c7;
-    --dots-opacity: 0;
-}
-
-.tema-oscuro {
-    --p: #0d1b2a;
-    --s: #ffc107;
-    --accent: #00aeef;
-    --body-bg: linear-gradient(180deg, #0d1b2a 0%, #010203 100%);
-    --card-bg: linear-gradient(180deg, #1b263b 0%, #0d1b2a 100%);
-    --glow: 0 0 20px rgba(0, 174, 239, 0.6);
-    --glow-color: rgba(0, 174, 239, 0.4);
-    --text-main: #ffffff;
-    --text-label: #00aeef;
-    --text-accent: #ffc107;
-    --border-style: 2px solid #00aeef;
-    --glass-blur: blur(12px);
-    --btn-add-bg: linear-gradient(180deg, #ffc107 0%, #e0a800 100%);
-    --btn-add-text: #0d1b2a;
-    --btn-sub-bg: rgba(13, 27, 42, 0.7);
-    --btn-sub-border: 2px solid #ffc107;
-    --btn-sub-text: #ffffff;
-    --dots-opacity: 0.02;
-}
-
-.tema-neon {
-    --p: #110022;
-    --s: #ffff00;
-    --accent: #ffff00;
-    --body-bg: linear-gradient(135deg, #02001c 0%, #1e0036 100%);
-    --card-bg: linear-gradient(135deg, #220044 0%, #001133 100%);
-    --glow: 0 0 25px rgba(255, 255, 0, 0.8);
-    --glow-color: rgba(255, 255, 0, 0.5);
-    --text-main: #ffffff;
-    --text-label: #ffff00;
-    --text-accent: #ffff00;
-    --border-style: 3px solid #ffff00;
-    --glass-blur: blur(15px);
-    --btn-add-bg: linear-gradient(180deg, #ffff00 0%, #ccff00 100%);
-    --btn-add-text: #110022;
-    --btn-sub-bg: rgba(0, 0, 0, 0.5);
-    --btn-sub-border: 2px solid #ffff00;
-    --btn-sub-text: #ffff00;
-    --dots-opacity: 0.05;
-}
-
-.tema-minimalista {
-    --p: #1e1e1e;
+.tema-river {
+    --p: #ff0000;
     --s: #ffffff;
-    --accent: #ffffff;
-    --body-bg: #121212;
-    --card-bg: #1e1e1e;
-    --glow: none;
-    --glow-color: transparent;
+    --accent: #ff0000;
+    --fondo: url('fondo-river.jpg');
+    --glow: 0 0 20px rgba(255, 0, 0, 0.6);
+    --glow-color: rgba(255, 0, 0, 0.4);
+    --glass: rgba(45, 0, 0, 0.85);
     --text-main: #ffffff;
     --text-label: #ffffff;
     --text-accent: #ffffff;
-    --border-style: 2px solid #333333;
-    --glass-blur: none;
-    --btn-add-bg: #ffffff;
-    --btn-add-text: #121212;
-    --btn-sub-bg: transparent;
+    --border-style: 2px solid #ffffff;
+    --glass-blur: blur(12px);
+    --btn-add-bg: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
+    --btn-add-text: #cc0000;
+    --btn-sub-bg: rgba(45, 0, 0, 0.6);
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
-    --dots-opacity: 0;
+    --dots-opacity: 0.04;
 }
 
-.tema-deportivo {
-    --p: #000c24;
-    --s: #ffd700;
-    --accent: #ffd700;
-    --body-bg: radial-gradient(circle at center, #001a3d 0%, #000714 100%);
-    --card-bg: linear-gradient(180deg, #001a40 0%, #000c24 100%);
-    --glow: 0 0 20px rgba(255, 215, 0, 0.6);
-    --glow-color: rgba(255, 215, 0, 0.4);
+.tema-racing {
+    --p: #00acee;
+    --s: #ffffff;
+    --accent: #00acee;
+    --fondo: url('fondo-racing.jpg');
+    --glow: 0 0 20px rgba(0, 172, 238, 0.6);
+    --glow-color: rgba(0, 172, 238, 0.4);
+    --glass: rgba(0, 40, 80, 0.85);
     --text-main: #ffffff;
-    --text-label: #ffd700;
-    --text-accent: #ffd700;
-    --border-style: 2px solid #ffd700;
+    --text-label: #ffffff;
+    --text-accent: #ffffff;
+    --border-style: 2px solid #ffffff;
     --glass-blur: blur(12px);
-    --btn-add-bg: linear-gradient(180deg, #ffd700 0%, #ffa500 100%);
-    --btn-add-text: #000c24;
+    --btn-add-bg: linear-gradient(180deg, #00acee 0%, #0088cc 100%);
+    --btn-add-text: #ffffff;
+    --btn-sub-bg: rgba(0, 40, 80, 0.6);
+    --btn-sub-border: 2px solid #ffffff;
+    --btn-sub-text: #ffffff;
+    --dots-opacity: 0.04;
+}
+
+.tema-independiente {
+    --p: #e30613;
+    --s: #ffffff;
+    --accent: #e30613;
+    --fondo: url('fondo-rojo.jpg');
+    --glow: 0 0 20px rgba(227, 6, 19, 0.6);
+    --glow-color: rgba(227, 6, 19, 0.4);
+    --glass: rgba(45, 0, 0, 0.85);
+    --text-main: #ffffff;
+    --text-label: #ffffff;
+    --text-accent: #ffffff;
+    --border-style: 2px solid #ffffff;
+    --glass-blur: blur(12px);
+    --btn-add-bg: linear-gradient(180deg, #e30613 0%, #b30000 100%);
+    --btn-add-text: #ffffff;
+    --btn-sub-bg: rgba(45, 0, 0, 0.6);
+    --btn-sub-border: 2px solid #ffffff;
+    --btn-sub-text: #ffffff;
+    --dots-opacity: 0.04;
+}
+
+.tema-sanlorenzo {
+    --p: #002d62;
+    --s: #c8102e;
+    --accent: #c8102e;
+    --fondo: url('fondo-sanlorenzo.jpg');
+    --glow: 0 0 20px rgba(200, 16, 46, 0.6);
+    --glow-color: rgba(200, 16, 46, 0.4);
+    --glass: rgba(0, 12, 36, 0.85);
+    --text-main: #ffffff;
+    --text-label: #c8102e;
+    --text-accent: #c8102e;
+    --border-style: 2px solid #c8102e;
+    --glass-blur: blur(12px);
+    --btn-add-bg: linear-gradient(180deg, #c8102e 0%, #99001a 100%);
+    --btn-add-text: #ffffff;
     --btn-sub-bg: rgba(0, 12, 36, 0.6);
-    --btn-sub-border: 2px solid #ffd700;
+    --btn-sub-border: 2px solid #c8102e;
+    --btn-sub-text: #ffffff;
+    --dots-opacity: 0.04;
+}
+
+.tema-clasico {
+    --p: #2d1b0d;
+    --s: #d2b48c;
+    --accent: #d2b48c;
+    --fondo: #2d1b0d;
+    --glow: 0 0 20px rgba(210, 180, 140, 0.6);
+    --glow-color: rgba(210, 180, 140, 0.4);
+    --glass: rgba(45, 27, 13, 0.85);
+    --text-main: #ffffff;
+    --text-label: #d2b48c;
+    --text-accent: #d2b48c;
+    --border-style: 2px solid #d2b48c;
+    --glass-blur: blur(12px);
+    --btn-add-bg: linear-gradient(180deg, #d2b48c 0%, #b8976c 100%);
+    --btn-add-text: #2d1b0d;
+    --btn-sub-bg: rgba(45, 27, 13, 0.6);
+    --btn-sub-border: 2px solid #d2b48c;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
 }
@@ -142,7 +142,11 @@
 }
 
 body {
-    background: var(--body-bg);
+    background-image: var(--fondo);
+    background-color: var(--p);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
@@ -152,7 +156,7 @@ body {
     overflow-x: hidden;
     padding: 10px;
     position: relative;
-    transition: background 0.4s ease;
+    transition: all 0.4s ease;
 }
 
 /* Textura del estadio (puntos) en segundo plano */
@@ -173,12 +177,12 @@ body::before {
     max-width: 450px;
     height: 90vh;
     max-height: 800px;
-    background: var(--card-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: var(--border-style);
+    background-image: url('inicio.jpg');
+    background-size: cover;
+    background-position: center;
+    border: 3px solid #ffcc00;
     border-radius: 30px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5), var(--glow);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px rgba(255, 204, 0, 0.6);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -270,7 +274,7 @@ body::before {
     padding: 10px;
 }
 .config-content {
-    background: linear-gradient(135deg, #000c24 0%, #001f5c 100%);
+    background: var(--glass);
     border: var(--border-style);
     border-radius: 28px;
     width: 100%;
@@ -497,7 +501,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 
 /* --- MARCADOR SUPERIOR LED --- */
 .marcador-futbol {
-    background: rgba(0, 12, 36, 0.8);
+    background: var(--glass);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: var(--border-style);
@@ -611,7 +615,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 
 .columna {
     flex: 1;
-    background: var(--card-bg);
+    background: var(--glass);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     padding: 24px 10px;
@@ -624,6 +628,20 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     flex-direction: column;
     justify-content: space-between;
     min-height: 420px;
+    position: relative;
+    overflow: hidden;
+}
+
+.columna::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+    border-radius: 26px 26px 0 0;
+    pointer-events: none;
 }
 
 .editable-name {
@@ -775,7 +793,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     -webkit-backdrop-filter: blur(12px);
 }
 .modal-content {
-    background: linear-gradient(135deg, #000c24 0%, #001f5c 100%);
+    background: var(--glass);
     border: var(--border-style);
     border-radius: 30px;
     padding: 40px 25px;
