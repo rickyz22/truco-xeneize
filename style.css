@@ -29,6 +29,8 @@
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
     --led-shadow: 0 0 15px var(--glow-color);
+    --font-display: 'Orbitron', sans-serif;
+    --font-title: 'Orbitron', sans-serif;
 }
 
 .tema-river {
@@ -53,6 +55,8 @@
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
     --led-shadow: 0 0 15px var(--glow-color);
+    --font-display: 'Orbitron', sans-serif;
+    --font-title: 'Orbitron', sans-serif;
 }
 
 .tema-racing {
@@ -77,6 +81,8 @@
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
     --led-shadow: 0 0 15px var(--glow-color);
+    --font-display: 'Orbitron', sans-serif;
+    --font-title: 'Orbitron', sans-serif;
 }
 
 .tema-independiente {
@@ -101,6 +107,8 @@
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
     --led-shadow: 0 0 15px var(--glow-color);
+    --font-display: 'Orbitron', sans-serif;
+    --font-title: 'Orbitron', sans-serif;
 }
 
 .tema-sanlorenzo {
@@ -125,6 +133,8 @@
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
     --led-shadow: 0 0 15px var(--glow-color);
+    --font-display: 'Orbitron', sans-serif;
+    --font-title: 'Orbitron', sans-serif;
 }
 
 .tema-clasico {
@@ -149,6 +159,8 @@
     --text-glow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     --title-glow: 1px 1px 3px rgba(0, 0, 0, 0.6);
     --led-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    --font-display: 'Luckiest Guy', cursive;
+    --font-title: 'Luckiest Guy', cursive;
 }
 
 /* --- RESET GENERAL --- */
@@ -426,7 +438,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     padding: 14px;
     border-radius: 12px;
     cursor: pointer;
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-title);
     font-weight: 700;
     display: flex;
     justify-content: center;
@@ -448,7 +460,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     border-radius: 12px;
     background: var(--s);
     color: #000c24;
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-title);
     font-weight: 900;
     font-size: 1.2rem;
     cursor: pointer;
@@ -522,7 +534,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 .etiqueta {
     color: var(--text-label) !important;
     font-size: 0.95rem;
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-title);
     font-weight: 900;
     letter-spacing: 1px;
     background: rgba(0,0,0,0.4);
@@ -550,7 +562,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 #num-nos, #num-ellos {
     font-size: 3rem;
     color: var(--text-accent);
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-display);
     font-weight: 900;
     text-shadow: var(--text-glow);
     transition: all 0.3s ease;
@@ -567,7 +579,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 #cronometro {
     font-size: 1.7rem;
     color: var(--text-accent);
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-display);
     font-weight: 900;
     text-shadow: var(--text-glow);
     background: rgba(0,0,0,0.5);
@@ -646,7 +658,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     color: var(--text-label);
     font-size: 1.1rem;
     margin-bottom: 15px;
-    font-family: 'Orbitron', sans-serif;
+    font-family: var(--font-title);
     font-weight: 900;
     letter-spacing: 1px;
     text-shadow: var(--title-glow);
