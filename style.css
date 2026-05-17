@@ -12,17 +12,17 @@
     --s: #ffcc00;
     --accent: #ffcc00;
     --fondo: url('fondo-boca.jpg');
-    --glow: 0 0 20px rgba(255, 204, 0, 0.6);
-    --glow-color: rgba(255, 204, 0, 0.4);
-    --glass: rgba(0, 12, 36, 0.85);
+    --glow: 0 0 25px rgba(255, 204, 0, 0.8);
+    --glow-color: rgba(255, 204, 0, 0.55);
+    --glass: rgba(0, 20, 60, 0.45);
     --text-main: #ffffff;
     --text-label: #ffcc00;
     --text-accent: #ffcc00;
     --border-style: 2px solid #ffcc00;
-    --glass-blur: blur(12px);
+    --glass-filter: blur(12px) saturate(190%);
     --btn-add-bg: linear-gradient(180deg, #ffcc00 0%, #ff9900 100%);
     --btn-add-text: #000c24;
-    --btn-sub-bg: rgba(0, 12, 36, 0.6);
+    --btn-sub-bg: rgba(0, 12, 36, 0.5);
     --btn-sub-border: 2px solid #ffcc00;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
@@ -33,17 +33,17 @@
     --s: #ffffff;
     --accent: #ff0000;
     --fondo: url('fondo-river.jpg');
-    --glow: 0 0 20px rgba(255, 0, 0, 0.6);
-    --glow-color: rgba(255, 0, 0, 0.4);
-    --glass: rgba(45, 0, 0, 0.85);
+    --glow: 0 0 25px rgba(255, 255, 255, 0.8);
+    --glow-color: rgba(255, 255, 255, 0.45);
+    --glass: rgba(255, 255, 255, 0.22);
     --text-main: #ffffff;
     --text-label: #ffffff;
     --text-accent: #ffffff;
     --border-style: 2px solid #ffffff;
-    --glass-blur: blur(12px);
+    --glass-filter: blur(12px) saturate(190%);
     --btn-add-bg: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
     --btn-add-text: #cc0000;
-    --btn-sub-bg: rgba(45, 0, 0, 0.6);
+    --btn-sub-bg: rgba(45, 0, 0, 0.4);
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
@@ -54,17 +54,17 @@
     --s: #ffffff;
     --accent: #00acee;
     --fondo: url('fondo-racing.jpg');
-    --glow: 0 0 20px rgba(0, 172, 238, 0.6);
-    --glow-color: rgba(0, 172, 238, 0.4);
-    --glass: rgba(0, 40, 80, 0.85);
+    --glow: 0 0 25px rgba(0, 172, 238, 0.8);
+    --glow-color: rgba(0, 172, 238, 0.5);
+    --glass: rgba(255, 255, 255, 0.22);
     --text-main: #ffffff;
     --text-label: #ffffff;
     --text-accent: #ffffff;
     --border-style: 2px solid #ffffff;
-    --glass-blur: blur(12px);
+    --glass-filter: blur(12px) saturate(190%);
     --btn-add-bg: linear-gradient(180deg, #00acee 0%, #0088cc 100%);
     --btn-add-text: #ffffff;
-    --btn-sub-bg: rgba(0, 40, 80, 0.6);
+    --btn-sub-bg: rgba(0, 40, 80, 0.4);
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
@@ -75,17 +75,17 @@
     --s: #ffffff;
     --accent: #e30613;
     --fondo: url('fondo-rojo.jpg');
-    --glow: 0 0 20px rgba(227, 6, 19, 0.6);
-    --glow-color: rgba(227, 6, 19, 0.4);
-    --glass: rgba(45, 0, 0, 0.85);
+    --glow: 0 0 25px rgba(227, 6, 19, 0.8);
+    --glow-color: rgba(227, 6, 19, 0.5);
+    --glass: rgba(255, 255, 255, 0.18);
     --text-main: #ffffff;
     --text-label: #ffffff;
     --text-accent: #ffffff;
     --border-style: 2px solid #ffffff;
-    --glass-blur: blur(12px);
+    --glass-filter: blur(12px) saturate(190%);
     --btn-add-bg: linear-gradient(180deg, #e30613 0%, #b30000 100%);
     --btn-add-text: #ffffff;
-    --btn-sub-bg: rgba(45, 0, 0, 0.6);
+    --btn-sub-bg: rgba(45, 0, 0, 0.4);
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
@@ -96,17 +96,17 @@
     --s: #c8102e;
     --accent: #c8102e;
     --fondo: url('fondo-sanlorenzo.jpg');
-    --glow: 0 0 20px rgba(200, 16, 46, 0.6);
-    --glow-color: rgba(200, 16, 46, 0.4);
-    --glass: rgba(0, 12, 36, 0.85);
+    --glow: 0 0 25px rgba(200, 16, 46, 0.8);
+    --glow-color: rgba(200, 16, 46, 0.5);
+    --glass: rgba(0, 20, 60, 0.45);
     --text-main: #ffffff;
     --text-label: #c8102e;
     --text-accent: #c8102e;
     --border-style: 2px solid #c8102e;
-    --glass-blur: blur(12px);
+    --glass-filter: blur(12px) saturate(190%);
     --btn-add-bg: linear-gradient(180deg, #c8102e 0%, #99001a 100%);
     --btn-add-text: #ffffff;
-    --btn-sub-bg: rgba(0, 12, 36, 0.6);
+    --btn-sub-bg: rgba(0, 12, 36, 0.4);
     --btn-sub-border: 2px solid #c8102e;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
@@ -117,17 +117,17 @@
     --s: #d2b48c;
     --accent: #d2b48c;
     --fondo: #2d1b0d;
-    --glow: 0 0 20px rgba(210, 180, 140, 0.6);
-    --glow-color: rgba(210, 180, 140, 0.4);
-    --glass: rgba(45, 27, 13, 0.85);
+    --glow: 0 0 25px rgba(210, 180, 140, 0.8);
+    --glow-color: rgba(210, 180, 140, 0.5);
+    --glass: rgba(255, 255, 255, 0.15);
     --text-main: #ffffff;
     --text-label: #d2b48c;
     --text-accent: #d2b48c;
     --border-style: 2px solid #d2b48c;
-    --glass-blur: blur(12px);
+    --glass-filter: blur(12px) saturate(190%);
     --btn-add-bg: linear-gradient(180deg, #d2b48c 0%, #b8976c 100%);
     --btn-add-text: #2d1b0d;
-    --btn-sub-bg: rgba(45, 27, 13, 0.6);
+    --btn-sub-bg: rgba(45, 27, 13, 0.4);
     --btn-sub-border: 2px solid #d2b48c;
     --btn-sub-text: #ffffff;
     --dots-opacity: 0.04;
@@ -480,8 +480,8 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 /* --- MARCADOR SUPERIOR LED --- */
 .marcador-futbol {
     background: var(--glass);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-filter);
+    -webkit-backdrop-filter: var(--glass-filter);
     border: var(--border-style);
     width: 100%;
     margin-bottom: 20px;
@@ -515,7 +515,9 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 }
 
 .led-display {
-    background: #000;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: var(--glass-filter);
+    -webkit-backdrop-filter: var(--glass-filter);
     border: 2px solid var(--s);
     width: 80px;
     height: 95px;
@@ -594,8 +596,8 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 .columna {
     flex: 1;
     background: var(--glass);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-filter);
+    -webkit-backdrop-filter: var(--glass-filter);
     padding: 24px 10px;
     border-radius: 28px;
     border: var(--border-style);
@@ -677,7 +679,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: brightness(1.15) contrast(1.25);
+    filter: drop-shadow(0 0 6px var(--glow-color)) brightness(1.25) contrast(1.15);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
