@@ -697,8 +697,8 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     background: var(--accent);
     opacity: 0.8;
     margin: 0 8px;
-    height: 100%;
-    align-self: stretch;
+    height: 75%;
+    align-self: center;
     box-shadow: 1px 0 2px rgba(0,0,0,0.4);
 }
 
