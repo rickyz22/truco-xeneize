@@ -1,21 +1,21 @@
 {
-  "name": "Anotador Truco",
-  "short_name": "Truco",
-  "start_url": "/truco-xeneize/",
-  "scope": "/truco-xeneize/",
+  "name": "Anotador Truco Xeneize",
+  "short_name": "Truco Xeneize",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0a1f44",
-  "theme_color": "#0a1f44",
-  "description": "Contador de puntos para Truco argentino.",
+  "background_color": "#001f5c",
+  "theme_color": "#001f5c",
+  "description": "Contador de puntos para Truco argentino con temas de clubes.",
   "icons": [
     {
-      "src": "/truco-xeneize/icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/truco-xeneize/icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"

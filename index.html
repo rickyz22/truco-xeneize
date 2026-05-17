@@ -10,7 +10,7 @@
 
     <!-- FUENTES E ICONOS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Luckiest+Guy&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -53,6 +53,20 @@
                 </div>
 
                 <div class="seccion-config">
+                    <h4>LÍMITE DE PUNTOS</h4>
+                    <div class="toggle-item">
+                        <div class="toggle-info">
+                            <span class="material-icons">emoji_events</span>
+                            <span>Puntos de juego</span>
+                        </div>
+                        <div class="select-limite-container">
+                            <button id="btn-limite-15" class="btn-limite" onclick="cambiarLimitePuntos(15)">15 pts</button>
+                            <button id="btn-limite-30" class="btn-limite activa" onclick="cambiarLimitePuntos(30)">30 pts</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="seccion-config">
                     <h4>PREFERENCIAS</h4>
                     <div class="lista-toggles">
                         <div class="toggle-item">
@@ -82,6 +96,16 @@
                             </div>
                             <label class="switch">
                                 <input type="checkbox" id="check-sonido" checked onchange="toggleElemento('sonido')">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-item">
+                            <div class="toggle-info">
+                                <span class="material-icons">vibration</span>
+                                <span>Vibración</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="check-vibrar" checked onchange="toggleElemento('vibrar')">
                                 <span class="slider round"></span>
                             </label>
                         </div>

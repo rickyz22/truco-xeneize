@@ -4,15 +4,18 @@ let segundos = 0;
 let cronometroIntervalo = null; 
 let corriendo = false;
 let wakeLock = null; 
-const limitePuntos = 30;
+let limitePuntos = 30;
 
 let audioContext = null;
 
 function vibrar(ms = 30) { 
-    if (navigator.vibrate) navigator.vibrate(ms); 
+    const vibrarHabilitado = localStorage.getItem('show-vibrar') !== 'false';
+    if (vibrarHabilitado && navigator.vibrate) {
+        navigator.vibrate(ms);
+    }
 }
 
-function playBeep() {
+function playBeep(tipo = 'default') {
     const sonidoHabilitado = localStorage.getItem('show-sonido') !== 'false';
     if (!sonidoHabilitado) return;
 
@@ -24,18 +27,56 @@ function playBeep() {
             audioContext.resume();
         }
 
-        const oscillator = audioContext.createOscillator();
+        const osc = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
-
-        oscillator.connect(gainNode);
+        osc.connect(gainNode);
         gainNode.connect(audioContext.destination);
 
-        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 0.1);
-    } catch {}
+        if (tipo === 'sumar') {
+            // Sonido retro estilo moneda (agudo doble)
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, audioContext.currentTime); // D5
+            osc.frequency.exponentialRampToValueAtTime(880, audioContext.currentTime + 0.08); // A5
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.1);
+        } else if (tipo === 'restar') {
+            // Sonido hacia abajo graves
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioContext.currentTime); // A4
+            osc.frequency.exponentialRampToValueAtTime(293.66, audioContext.currentTime + 0.08); // D4
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.1);
+        } else if (tipo === 'victoria') {
+            // Arpegio brillante y alegre
+            const notas = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+            notas.forEach((f, idx) => {
+                const oscNode = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                oscNode.type = 'triangle';
+                oscNode.frequency.setValueAtTime(f, audioContext.currentTime + idx * 0.08);
+                gain.gain.setValueAtTime(0.12, audioContext.currentTime + idx * 0.08);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + idx * 0.08 + 0.25);
+                oscNode.connect(gain);
+                gain.connect(audioContext.destination);
+                oscNode.start(audioContext.currentTime + idx * 0.08);
+                oscNode.stop(audioContext.currentTime + idx * 0.08 + 0.25);
+            });
+        } else {
+            // Sonido por defecto
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08);
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.08);
+        }
+    } catch (e) {
+        console.error('Error al reproducir beep:', e);
+    }
 }
 
 async function activarWakeLock() {
@@ -132,7 +173,7 @@ function sumar(equipo) {
     if (juegoTerminado()) return;
 
     vibrar();
-    playBeep();
+    playBeep('sumar');
 
     if (equipo === 'nos' && puntosNos < limitePuntos) puntosNos++;
     if (equipo === 'ellos' && puntosEllos < limitePuntos) puntosEllos++;
@@ -145,7 +186,7 @@ function restar(equipo) {
     if (juegoTerminado()) return;
 
     vibrar();
-    playBeep();
+    playBeep('restar');
 
     if (equipo === 'nos' && puntosNos > 0) puntosNos--;
     if (equipo === 'ellos' && puntosEllos > 0) puntosEllos--;
@@ -167,6 +208,7 @@ function actualizarInterfaz() {
         let ganador = puntosNos >= limitePuntos ? "NOSOTROS" : "ELLOS";
 
         vibrar(200);
+        playBeep('victoria');
 
         guardarEnHistorial(ganador);
 
@@ -217,7 +259,7 @@ function reiniciarTotalmente() {
     puntosNos = 0; 
     puntosEllos = 0;
 
-    localStorage.removeItem('partidaIniciada');
+    localStorage.setItem('partidaIniciada', 'true');
 
     resetearCronometro();
     actualizarInterfaz();
@@ -310,6 +352,7 @@ function cerrarConfig() {
 
 function volverInicio() {
     vibrar();
+    localStorage.removeItem('partidaIniciada');
 
     document.getElementById('contenido-juego').style.display = 'none';
     document.getElementById('pantalla-inicio').style.display = 'flex';
@@ -318,6 +361,30 @@ function volverInicio() {
 function cambiarEstilo(equipo) {
     document.body.className = equipo === 'boca' ? '' : 'tema-' + equipo;
     localStorage.setItem('equipo', equipo);
+
+    // Resaltar el botón del tema seleccionado en la cuadrícula de configuración
+    const botones = document.querySelectorAll('.btn-equipo');
+    botones.forEach(btn => {
+        btn.classList.toggle('activo-tema', btn.classList.contains(equipo));
+    });
+}
+
+function cambiarLimitePuntos(limite, conEfectos = true) {
+    if (conEfectos) vibrar();
+    limitePuntos = limite;
+    localStorage.setItem('limitePuntos', limite);
+
+    const btn15 = document.getElementById('btn-limite-15');
+    const btn30 = document.getElementById('btn-limite-30');
+    if (btn15 && btn30) {
+        btn15.classList.toggle('activa', limite === 15);
+        btn30.classList.toggle('activa', limite === 30);
+    }
+
+    // Si los puntos actuales superan el nuevo límite, actualizar la interfaz inmediatamente
+    if (puntosNos >= limite || puntosEllos >= limite) {
+        actualizarInterfaz();
+    }
 }
 
 function toggleElemento(tipo) {
@@ -342,10 +409,26 @@ function toggleElemento(tipo) {
 }
 
 window.onload = () => {
+    // Registro de Service Worker para soporte offline PWA (evitar en entorno local de archivo)
+    if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+            .catch(err => console.error('Error al registrar el Service Worker:', err));
+    }
 
-    const equipo = localStorage.getItem('equipo');
-    if (equipo) cambiarEstilo(equipo);
+    // Cargar estilo y tema inicial
+    const equipo = localStorage.getItem('equipo') || 'boca';
+    cambiarEstilo(equipo);
 
+    // Cargar límite de puntos inicial (sin vibración al iniciar)
+    const limiteGuardado = localStorage.getItem('limitePuntos');
+    if (limiteGuardado) {
+        cambiarLimitePuntos(parseInt(limiteGuardado), false);
+    } else {
+        cambiarLimitePuntos(30, false);
+    }
+
+    // Cargar partida iniciada
     if (localStorage.getItem('partidaIniciada')) {
         puntosNos = parseInt(localStorage.getItem('puntosNos') || 0);
         puntosEllos = parseInt(localStorage.getItem('puntosEllos') || 0);
@@ -355,7 +438,8 @@ window.onload = () => {
         mostrarPantallaJuego();
     }
 
-    ['crono','num','sonido'].forEach(tipo => {
+    // Restaurar preferencias
+    ['crono','num','sonido','vibrar'].forEach(tipo => {
         const estado = localStorage.getItem(`show-${tipo}`);
 
         if (estado !== null) {
