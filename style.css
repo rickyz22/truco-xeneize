@@ -901,32 +901,4 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     font-family: 'Inter', sans-serif;
 }
 
-/* --- MARCOS DE MADERA RÚSTICA REAL PARA TEMA TRADICIONAL --- */
-.tema-clasico .columna, 
-.tema-clasico .marcador-futbol, 
-.tema-clasico .led-display {
-    position: relative;
-    border: none !important;
-    box-shadow: var(--glow);
-}
 
-.tema-clasico .columna::after, 
-.tema-clasico .marcador-futbol::after {
-    content: "";
-    position: absolute;
-    inset: -12px;
-    border: 24px solid transparent;
-    border-image: url('marco-madera.png') 60 fill stretch;
-    pointer-events: none;
-    z-index: 10;
-}
-
-.tema-clasico .led-display::after {
-    content: "";
-    position: absolute;
-    inset: -6px;
-    border: 12px solid transparent;
-    border-image: url('marco-madera.png') 60 fill stretch;
-    pointer-events: none;
-    z-index: 10;
-}
