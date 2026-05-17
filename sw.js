@@ -1,4 +1,4 @@
-const CACHE_NAME = 'truco-v16';
+const CACHE_NAME = 'truco-v17';
 const urlsToCache = [
   './',
   'index.html',
@@ -14,7 +14,8 @@ const urlsToCache = [
   'fondo-rojo.jpg',
   'fondo-sanlorenzo.jpg',
   'fondo-clasico.png',
-  'marco-madera.png'
+  'marco-madera.png',
+  'fondo-diego.jpg'
 ];
 
 self.addEventListener('install', (event) => {

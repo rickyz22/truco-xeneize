@@ -132,6 +132,31 @@
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
+    --font-display: 'Orbitron', sans-serif;
+    --font-title: 'Orbitron', sans-serif;
+}
+
+.tema-diego {
+    --p: #74acdf;
+    --s: #ffffff;
+    --accent: #ffd700;
+    --fondo: url('fondo-diego.jpg');
+    --glow: 0 0 25px rgba(116, 172, 223, 0.8);
+    --glow-color: rgba(116, 172, 223, 0.55);
+    --glass: rgba(10, 30, 60, 0.45);
+    --text-main: #ffffff;
+    --text-label: #ffd700;
+    --text-accent: #74acdf;
+    --border-style: 3px solid #74acdf;
+    --glass-filter: blur(10px) saturate(140%);
+    --btn-add-bg: linear-gradient(180deg, #74acdf 0%, #0056b3 100%);
+    --btn-add-text: #ffffff;
+    --btn-sub-bg: rgba(255, 255, 255, 0.1);
+    --btn-sub-border: 2px solid #ffffff;
+    --btn-sub-text: #ffffff;
+    --dots-opacity: 0.05;
+    --text-glow: 0 0 12px var(--text-accent);
+    --title-glow: 0 0 8px var(--glow-color);
     --led-shadow: 0 0 15px var(--glow-color);
     --font-display: 'Orbitron', sans-serif;
     --font-title: 'Orbitron', sans-serif;
@@ -377,6 +402,23 @@ body::before {
     color: #000c24;
     box-shadow: var(--glow);
     transform: scale(1.02);
+}
+
+.btn-equipo.diego {
+    background: linear-gradient(135deg, rgba(116, 172, 223, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-color: rgba(116, 172, 223, 0.3);
+    color: #9cd5ff;
+}
+.btn-equipo.diego:hover {
+    background: linear-gradient(135deg, rgba(116, 172, 223, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border-color: #74acdf;
+    color: #ffffff;
+}
+.btn-equipo.diego.activo-tema {
+    background: #74acdf !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(116, 172, 223, 0.8) !important;
 }
 
 /* Selector de límite de puntos */
