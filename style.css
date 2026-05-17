@@ -140,14 +140,14 @@
 .tema-clasico {
     --p: #0b532c;
     --s: #7c4c24;
-    --accent: #ffd700;
+    --accent: #c9a054;
     --fondo: url('fondo-clasico.png');
     --glow: 0 0 0 2px #4a2d18, 0 12px 30px rgba(0,0,0,0.7);
     --glow-color: rgba(0,0,0,0.4);
     --glass: rgba(10, 35, 15, 0.45);
     --text-main: #ffffff;
-    --text-label: #ffd700;
-    --text-accent: #ffd700;
+    --text-label: #c9a054;
+    --text-accent: #c9a054;
     --border-style: 4px solid #7c4c24;
     --glass-filter: blur(10px) saturate(140%);
     --btn-add-bg: linear-gradient(180deg, #7c4c24 0%, #4a2d18 100%);
