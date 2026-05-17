@@ -5,6 +5,8 @@ let cronometroIntervalo = null;
 let corriendo = false;
 let wakeLock = null; 
 let limitePuntos = 30;
+let nombreNos = localStorage.getItem('nombreNos') || 'NOSOTROS';
+let nombreEllos = localStorage.getItem('nombreEllos') || 'ELLOS';
 
 let audioContext = null;
 
@@ -359,7 +361,7 @@ function volverInicio() {
 }
 
 function cambiarEstilo(equipo) {
-    document.body.className = equipo === 'boca' ? '' : 'tema-' + equipo;
+    document.body.className = 'tema-' + equipo;
     localStorage.setItem('equipo', equipo);
 
     // Resaltar el botón del tema seleccionado en la cuadrícula de configuración
@@ -367,6 +369,38 @@ function cambiarEstilo(equipo) {
     botones.forEach(btn => {
         btn.classList.toggle('activo-tema', btn.classList.contains(equipo));
     });
+}
+
+function editarNombre(equipo) {
+    vibrar();
+    const nombreActual = equipo === 'nos' ? nombreNos : nombreEllos;
+    const nuevoNombre = prompt("Ingresa el nombre del equipo:", nombreActual);
+    if (nuevoNombre && nuevoNombre.trim() !== "") {
+        const nombreLimpio = nuevoNombre.trim().substring(0, 15).toUpperCase();
+        if (equipo === 'nos') {
+            nombreNos = nombreLimpio;
+            localStorage.setItem('nombreNos', nombreNos);
+        } else {
+            nombreEllos = nombreLimpio;
+            localStorage.setItem('nombreEllos', nombreEllos);
+        }
+        actualizarNombresUI();
+        playBeep('sumar');
+    }
+}
+
+function actualizarNombresUI() {
+    const elNos = document.getElementById('name-nos');
+    const elEllos = document.getElementById('name-ellos');
+    const lblNos = document.getElementById('lbl-nos');
+    const lblEllos = document.getElementById('lbl-ellos');
+
+    if (elNos) elNos.innerText = nombreNos;
+    if (elEllos) elEllos.innerText = nombreEllos;
+
+    // Scoreboard labels take first 5 characters
+    if (lblNos) lblNos.innerText = nombreNos.substring(0, 5);
+    if (lblEllos) lblEllos.innerText = nombreEllos.substring(0, 5);
 }
 
 function cambiarLimitePuntos(limite, conEfectos = true) {
@@ -417,8 +451,9 @@ window.onload = () => {
     }
 
     // Cargar estilo y tema inicial
-    const equipo = localStorage.getItem('equipo') || 'boca';
+    const equipo = localStorage.getItem('equipo') || 'deportivo';
     cambiarEstilo(equipo);
+    actualizarNombresUI();
 
     // Cargar límite de puntos inicial (sin vibración al iniciar)
     const limiteGuardado = localStorage.getItem('limitePuntos');

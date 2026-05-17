@@ -10,7 +10,7 @@
 
     <!-- FUENTES E ICONOS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -43,12 +43,11 @@
                 <div class="seccion-config">
                     <h4>ESTILO DE JUEGO</h4>
                     <div class="grid-equipos">
-                        <button class="btn-equipo boca" onclick="cambiarEstilo('boca')">BOCA</button>
-                        <button class="btn-equipo river" onclick="cambiarEstilo('river')">RIVER</button>
-                        <button class="btn-equipo racing" onclick="cambiarEstilo('racing')">RACING</button>
-                        <button class="btn-equipo independiente" onclick="cambiarEstilo('independiente')">ROJO</button>
-                        <button class="btn-equipo sanlorenzo" onclick="cambiarEstilo('sanlorenzo')">CASLA</button>
-                        <button class="btn-equipo clasico" onclick="cambiarEstilo('clasico')">TRADICIONAL</button>
+                        <button class="btn-equipo deportivo" onclick="cambiarEstilo('deportivo')">DEPORTIVO</button>
+                        <button class="btn-equipo claro" onclick="cambiarEstilo('claro')">CLARO</button>
+                        <button class="btn-equipo oscuro" onclick="cambiarEstilo('oscuro')">OSCURO</button>
+                        <button class="btn-equipo neon" onclick="cambiarEstilo('neon')">NEÓN</button>
+                        <button class="btn-equipo minimalista" onclick="cambiarEstilo('minimalista')">MINIMALISTA</button>
                     </div>
                 </div>
 
@@ -134,7 +133,7 @@
 
         <header class="marcador-futbol">
             <div class="bloque-led" id="cont-nos">
-                <span class="etiqueta">NOS</span>
+                <span class="etiqueta" id="lbl-nos">NOS</span>
                 <div class="led-display"><span id="num-nos">0</span></div>
             </div>
 
@@ -151,14 +150,14 @@
             </div>
 
             <div class="bloque-led" id="cont-ellos">
-                <span class="etiqueta">ELLOS</span>
+                <span class="etiqueta" id="lbl-ellos">ELLOS</span>
                 <div class="led-display"><span id="num-ellos">0</span></div>
             </div>
         </header>
 
         <main class="zona-juego">
             <section class="columna">
-                <h2>NOSOTROS</h2>
+                <h2 id="name-nos" class="editable-name" onclick="editarNombre('nos')" title="Click para editar nombre">NOSOTROS</h2>
                 <div id="palitos-nos" class="contenedor-palitos"></div>
                 <div class="controles">
                     <button class="btn-sumar" onclick="sumar('nos')">+</button>
@@ -167,7 +166,7 @@
             </section>
 
             <section class="columna">
-                <h2>ELLOS</h2>
+                <h2 id="name-ellos" class="editable-name" onclick="editarNombre('ellos')" title="Click para editar nombre">ELLOS</h2>
                 <div id="palitos-ellos" class="contenedor-palitos"></div>
                 <div class="controles">
                     <button class="btn-sumar" onclick="sumar('ellos')">+</button>
