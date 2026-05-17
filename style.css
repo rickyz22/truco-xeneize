@@ -679,12 +679,12 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 .contenedor-palitos {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     min-height: 200px;
     align-items: flex-start;
-    margin: 5px 0 15px 0;
+    margin: 5px 0 10px 0;
     padding-top: 0;
-    transform: scale(1.28);
+    transform: scale(1.15);
     transform-origin: top center;
 }
 .grupo-15 {
