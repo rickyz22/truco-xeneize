@@ -639,6 +639,8 @@ function actualizarImagenFlor(tema) {
 
     if (tema === 'river' || tema === 'independiente') {
         el.src = 'flor-blanca.png';
+    } else if (tema === 'boca') {
+        el.src = 'flor-boca.png';
     } else {
         el.src = 'flor.png';
     }
