@@ -27,6 +27,8 @@
     --btn-sub-text: #ffffff;
     --btn-crono-bg: #ffcc00;
     --btn-crono-text: #003b70;
+    --btn-crono-active-bg: #003b70;
+    --btn-crono-active-text: #ffcc00;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -55,6 +57,8 @@
     --btn-sub-text: #ffffff;
     --btn-crono-bg: #ffffff;
     --btn-crono-text: #ff0000;
+    --btn-crono-active-bg: #ff0000;
+    --btn-crono-active-text: #ffffff;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -83,6 +87,8 @@
     --btn-sub-text: #ffffff;
     --btn-crono-bg: #00acee;
     --btn-crono-text: #ffffff;
+    --btn-crono-active-bg: #ffffff;
+    --btn-crono-active-text: #00acee;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -111,6 +117,8 @@
     --btn-sub-text: #ffffff;
     --btn-crono-bg: #e30613;
     --btn-crono-text: #ffffff;
+    --btn-crono-active-bg: #ffffff;
+    --btn-crono-active-text: #e30613;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -139,6 +147,8 @@
     --btn-sub-text: #ffffff;
     --btn-crono-bg: #c8102e;
     --btn-crono-text: #ffffff;
+    --btn-crono-active-bg: #002d62;
+    --btn-crono-active-text: #ffffff;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -166,6 +176,8 @@
     --btn-sub-text: #ffffff;
     --btn-crono-bg: #74acdf;
     --btn-crono-text: #ffffff;
+    --btn-crono-active-bg: #ffd700;
+    --btn-crono-active-text: #0a1e3c;
     --dots-opacity: 0.05;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -194,6 +206,8 @@
     --btn-sub-text: #ffffff;
     --btn-crono-bg: #7c4c24;
     --btn-crono-text: #c9a054;
+    --btn-crono-active-bg: #c9a054;
+    --btn-crono-active-text: #7c4c24;
     --dots-opacity: 0.01;
     --text-glow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     --title-glow: 1px 1px 3px rgba(0, 0, 0, 0.6);
@@ -663,7 +677,17 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     align-items: center;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+}
+.controles-crono button#btn-play-pause.corriendo {
+    background: var(--btn-crono-active-bg);
+    color: var(--btn-crono-active-text);
+    box-shadow: 0 0 12px var(--glow-color);
+    animation: crono-pulse 1.6s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes crono-pulse {
+    0% { transform: scale(1); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+    100% { transform: scale(1.08); box-shadow: 0 0 15px var(--glow-color); }
 }
 .controles-crono button:active {
     transform: scale(0.9);

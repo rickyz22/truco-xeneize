@@ -128,14 +128,16 @@ function toggleCronometro() {
         }, 1000);
 
         icono.innerText = "pause";
-        btn.style.background = "#ff4444"; 
-        btn.style.color = "white";
+        btn.classList.add('corriendo');
+        btn.style.background = ""; 
+        btn.style.color = "";
         corriendo = true;
 
     } else {
         clearInterval(cronometroIntervalo);
 
         icono.innerText = "play_arrow";
+        btn.classList.remove('corriendo');
         btn.style.background = ""; 
         btn.style.color = "";
         corriendo = false;
@@ -163,6 +165,7 @@ function resetearCronometro() {
     document.getElementById('icono-play').innerText = "play_arrow";
 
     const btn = document.getElementById('btn-play-pause');
+    btn.classList.remove('corriendo');
     btn.style.background = ""; 
     btn.style.color = "";
 }
