@@ -12,6 +12,7 @@ let usuarioInteractuo = false;
 let audioContext = null;
 
 function vibrar(ms = 30) { 
+    if (!usuarioInteractuo) return; // Evita warnings al restaurar la configuración guardada en el window.onload
     const vibrarHabilitado = localStorage.getItem('show-vibrar') !== 'false';
     if (vibrarHabilitado && navigator.vibrate) {
         navigator.vibrate(ms);
