@@ -575,10 +575,11 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 
 /* --- CONTENIDO DEL JUEGO --- */
 #contenido-juego {
+    position: relative;
     width: 100%;
     max-width: 450px;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 75px; /* Espacio estático reservado en el fondo para la flor flotante */
     animation: fadeIn 0.4s ease-out;
 }
 
@@ -1050,10 +1051,13 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 
 /* --- FLOR INTERACTIVA ("JUGAR CON FLOR") --- */
 .flor-container {
+    position: absolute;
+    bottom: -62px; /* Flota de forma hermosa en el margen inferior libre */
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px auto 2px auto;
     width: 58px;
     height: 58px;
     pointer-events: none;
@@ -1068,18 +1072,18 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     transition: filter 0.4s ease, transform 0.4s ease;
 }
 
-/* Animación de respiración neón y rotación sutil */
+/* Animación de respiración neón y rotación sutil preservando centrado absoluto */
 @keyframes florPulse {
     0% {
-        transform: scale(1) rotate(0deg);
+        transform: translateX(-50%) scale(1) rotate(0deg);
         filter: drop-shadow(0 0 10px var(--glow-color));
     }
     50% {
-        transform: scale(1.08) rotate(3deg);
+        transform: translateX(-50%) scale(1.08) rotate(3deg);
         filter: drop-shadow(0 0 22px var(--glow-color));
     }
     100% {
-        transform: scale(1) rotate(0deg);
+        transform: translateX(-50%) scale(1) rotate(0deg);
         filter: drop-shadow(0 0 10px var(--glow-color));
     }
 }
