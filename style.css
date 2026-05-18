@@ -588,7 +588,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     margin-bottom: 20px;
     border-radius: 24px;
     display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr;
+    grid-template-columns: 1fr 120px 1fr;
     align-items: center;
     padding: 20px 12px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.7), var(--glow);
@@ -636,6 +636,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     font-family: var(--font-display);
     font-weight: 900;
     text-shadow: var(--text-glow);
+    font-variant-numeric: tabular-nums;
     transition: all 0.3s ease;
 }
 
@@ -657,6 +658,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     padding: 4px 12px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    font-variant-numeric: tabular-nums;
 }
 
 .controles-crono {
