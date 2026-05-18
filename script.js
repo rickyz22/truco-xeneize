@@ -457,7 +457,20 @@ window.onload = () => {
     // Registro de Service Worker para soporte offline PWA (evitar en entorno local de archivo)
     if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
         navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+            .then(reg => {
+                console.log('Service Worker registrado con éxito:', reg.scope);
+                
+                // Si hay un Service Worker nuevo instalándose, escuchar su activación
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('Nueva versión disponible. Recargando automáticamente...');
+                            window.location.reload();
+                        }
+                    });
+                });
+            })
             .catch(err => console.error('Error al registrar el Service Worker:', err));
     }
 

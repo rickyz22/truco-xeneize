@@ -1,4 +1,4 @@
-const CACHE_NAME = 'truco-v32';
+const CACHE_NAME = 'truco-v33';
 const urlsToCache = [
   './',
   'index.html',
@@ -27,6 +27,22 @@ self.addEventListener('install', (event) => {
       .then((cache) => {
         return cache.addAll(urlsToCache);
       })
+      .then(() => self.skipWaiting()) // Forces the waiting Service Worker to become active immediately
+  );
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Borrando caché antiguo:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim()) // Takes control of the page immediately
   );
 });
 
