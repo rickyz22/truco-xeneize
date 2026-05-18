@@ -583,8 +583,8 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 #btn-config, #btn-home {
