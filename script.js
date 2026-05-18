@@ -380,6 +380,8 @@ function cambiarEstilo(equipo) {
     botones.forEach(btn => {
         btn.classList.toggle('activo-tema', btn.classList.contains(equipo));
     });
+
+    actualizarImagenFlor(equipo);
 }
 
 function editarNombre(equipo) {
@@ -630,3 +632,50 @@ function registrarInteraccionUsuario() {
 window.addEventListener('click', registrarInteraccionUsuario);
 window.addEventListener('touchstart', registrarInteraccionUsuario, { passive: true });
 window.addEventListener('mousedown', registrarInteraccionUsuario);
+
+function actualizarImagenFlor(tema) {
+    const el = document.querySelector('.flor-img');
+    if (!el) return;
+
+    if (tema === 'river' || tema === 'independiente') {
+        const img = new Image();
+        img.src = 'flor.png';
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i+1];
+                const b = data[i+2];
+                const a = data[i+3];
+                
+                if (a > 15) {
+                    // 1. Detectar hojas verdes (G alto, R y B bajos)
+                    if (g > 65 && r < 140 && b < 140) {
+                        data[i] = 235;   // Red
+                        data[i+1] = 12;  // Green
+                        data[i+2] = 12;  // Blue
+                    }
+                    // 2. Detectar pétalos y centro (amarillos, dorados, naranjas o blancos)
+                    else if ((r > 100 && g > 100) || (r > 160 && g > 160 && b > 160)) {
+                        data[i] = 255;   // Pure White
+                        data[i+1] = 255;
+                        data[i+2] = 255;
+                    }
+                }
+            }
+            
+            ctx.putImageData(imgData, 0, 0);
+            el.src = canvas.toDataURL('image/png');
+        };
+    } else {
+        el.src = 'flor.png';
+    }
+}

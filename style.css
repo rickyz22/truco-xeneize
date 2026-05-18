@@ -1087,9 +1087,9 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 
 /* --- ADAPTACIÓN DE COLORES DE LA FLOR SEGÚN EL TEMA --- */
 
-/* RIVER: Pétalos rojo pasión intensos de neón con delineado de alta visibilidad */
+/* RIVER: Pétalos blancos de alta nitidez y hojas rojas */
 .tema-river .flor-img {
-    filter: hue-rotate(300deg) saturate(3.5) contrast(1.35) brightness(1.05) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.85));
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.85));
 }
 
 /* RACING: Pétalos celeste/azul brillante de neón */
@@ -1097,9 +1097,9 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     filter: hue-rotate(135deg) saturate(2.2) brightness(1.1) contrast(1.1) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
 }
 
-/* ROJO (INDEPENDIENTE): Pétalos rojo fuego intensos y sólidos */
+/* ROJO (INDEPENDIENTE): Pétalos blancos puros y hojas rojas de neón */
 .tema-independiente .flor-img {
-    filter: hue-rotate(300deg) saturate(3.8) contrast(1.4) brightness(1.05) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.85));
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.85));
 }
 
 /* SAN LORENZO: Pétalos azul/rojo profundo elegante */
