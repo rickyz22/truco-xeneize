@@ -1016,4 +1016,15 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     font-family: 'Inter', sans-serif;
 }
 
+/* PELOTA REBOTADORA EN INICIO */
+.pelota-bouncing {
+    position: absolute;
+    z-index: 9998;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    will-change: transform, left, top;
+    filter: drop-shadow(0 0 12px rgba(255, 204, 0, 0.7));
+}
+
 

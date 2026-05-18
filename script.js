@@ -105,12 +105,14 @@ function comenzarJuego() {
     vibrar();
     activarWakeLock();
     localStorage.setItem('partidaIniciada', 'true');
+    detenerAnimacionPelota();
     mostrarPantallaJuego();
 }
 
 function mostrarPantallaJuego() {
     document.getElementById('pantalla-inicio').style.display = 'none';
     document.getElementById('contenido-juego').style.display = 'block';
+    detenerAnimacionPelota();
     actualizarInterfaz();
 }
 
@@ -340,6 +342,7 @@ function abrirConfiguracion() {
     document.getElementById('pantalla-inicio').style.display = 'none';
     document.getElementById('contenido-juego').style.display = 'none';
     document.getElementById('pantalla-config').style.display = 'flex';
+    detenerAnimacionPelota();
     mostrarHistorial();
 }
 
@@ -350,8 +353,10 @@ function cerrarConfig() {
 
     if (localStorage.getItem('partidaIniciada')) {
         document.getElementById('contenido-juego').style.display = 'block';
+        detenerAnimacionPelota();
     } else {
         document.getElementById('pantalla-inicio').style.display = 'flex';
+        iniciarAnimacionPelota();
     }
 }
 
@@ -361,6 +366,7 @@ function volverInicio() {
 
     document.getElementById('contenido-juego').style.display = 'none';
     document.getElementById('pantalla-inicio').style.display = 'flex';
+    iniciarAnimacionPelota();
 }
 
 function cambiarEstilo(equipo) {
@@ -465,7 +471,6 @@ window.onload = () => {
     } else {
         cambiarLimitePuntos(30, false);
     }
-
     // Cargar partida iniciada
     if (localStorage.getItem('partidaIniciada')) {
         puntosNos = parseInt(localStorage.getItem('puntosNos') || 0);
@@ -474,6 +479,8 @@ window.onload = () => {
 
         mostrarTiempo();
         mostrarPantallaJuego();
+    } else {
+        iniciarAnimacionPelota();
     }
 
     // Restaurar preferencias
@@ -496,3 +503,99 @@ window.onload = () => {
         }
     });
 };
+
+/* --- PELOTA REBOTADORA EN PANTALLA DE INICIO --- */
+let animacionPelotaId = null;
+
+function iniciarAnimacionPelota() {
+    const pelota = document.getElementById('pelota-rebotadora');
+    const container = document.getElementById('pantalla-inicio');
+    if (!pelota || !container) return;
+
+    pelota.style.display = 'block';
+
+    let w = window.innerWidth;
+    let h = window.innerHeight;
+    const size = 65; // perfect visual scale
+    pelota.style.width = size + 'px';
+    pelota.style.height = size + 'px';
+
+    // Start inside screen boundary
+    let x = Math.random() * (w - size - 40) + 20;
+    let y = Math.random() * (h - size - 40) + 20;
+    
+    // Velocities: dynamic 1.5px to 2.7px per frame
+    let dx = (Math.random() > 0.5 ? 1 : -1) * (1.5 + Math.random() * 1.2);
+    let dy = (Math.random() > 0.5 ? 1 : -1) * (1.5 + Math.random() * 1.2);
+    
+    let rotation = 0;
+    const spinSpeed = 1.5;
+
+    function resizeHandler() {
+        w = window.innerWidth;
+        h = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeHandler);
+
+    function update() {
+        if (container.style.display === 'none') {
+            pelota.style.display = 'none';
+            animacionPelotaId = null;
+            window.removeEventListener('resize', resizeHandler);
+            return;
+        }
+
+        x += dx;
+        y += dy;
+        rotation += spinSpeed;
+
+        // Bounce horizontal walls
+        if (x <= 0) {
+            x = 0;
+            dx = -dx;
+            vibrarSutilBounce();
+        } else if (x + size >= w) {
+            x = w - size;
+            dx = -dx;
+            vibrarSutilBounce();
+        }
+
+        // Bounce vertical walls
+        if (y <= 0) {
+            y = 0;
+            dy = -dy;
+            vibrarSutilBounce();
+        } else if (y + size >= h) {
+            y = h - size;
+            dy = -dy;
+            vibrarSutilBounce();
+        }
+
+        pelota.style.left = x + 'px';
+        pelota.style.top = y + 'px';
+        pelota.style.transform = `rotate(${rotation}deg)`;
+
+        animacionPelotaId = requestAnimationFrame(update);
+    }
+
+    if (animacionPelotaId) {
+        cancelAnimationFrame(animacionPelotaId);
+    }
+    animacionPelotaId = requestAnimationFrame(update);
+}
+
+function detenerAnimacionPelota() {
+    if (animacionPelotaId) {
+        cancelAnimationFrame(animacionPelotaId);
+        animacionPelotaId = null;
+    }
+    const pelota = document.getElementById('pelota-rebotadora');
+    if (pelota) pelota.style.display = 'none';
+}
+
+function vibrarSutilBounce() {
+    const vibrarHabilitado = localStorage.getItem('show-vibrar') !== 'false';
+    if (vibrarHabilitado && navigator.vibrate) {
+        navigator.vibrate(8);
+    }
+}
