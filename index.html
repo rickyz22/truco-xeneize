@@ -11,7 +11,7 @@
     <!-- FUENTES E ICONOS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@500;700;900&family=Luckiest+Guy&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=34">
+    <link rel="stylesheet" href="style.css?v=35">
 </head>
 <body>
     <!-- PANTALLA DE INICIO -->
@@ -71,6 +71,16 @@
                             <button id="btn-limite-15" class="btn-limite" onclick="cambiarLimitePuntos(15)">15 pts</button>
                             <button id="btn-limite-30" class="btn-limite activa" onclick="cambiarLimitePuntos(30)">30 pts</button>
                         </div>
+                    </div>
+                    <div class="toggle-item" style="margin-top: 8px;">
+                        <div class="toggle-info">
+                            <span class="material-icons">filter_vintage</span>
+                            <span>Jugar con Flor</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="check-flor" checked onchange="toggleElemento('flor')">
+                            <span class="slider round"></span>
+                        </label>
                     </div>
                 </div>
 
@@ -184,6 +194,11 @@
             </section>
         </main>
 
+        <!-- Flor interactiva -->
+        <div id="cont-flor" class="flor-container" style="display: block;">
+            <img src="flor.png" alt="Flor" class="flor-img">
+        </div>
+
         <button id="reset-btn" onclick="reiniciar()">NUEVA PARTIDA</button>
     </div>
     
@@ -197,6 +212,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=34"></script>
+    <script src="script.js?v=35"></script>
 </body>
 </html>

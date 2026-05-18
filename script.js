@@ -448,6 +448,10 @@ function toggleElemento(tipo) {
     else if (tipo === 'sonido') {
         document.getElementById('icon-sonido').innerText = activo ? 'volume_up' : 'volume_off';
     }
+    else if (tipo === 'flor') {
+        const elFlor = document.getElementById('cont-flor');
+        if (elFlor) elFlor.style.display = activo ? 'flex' : 'none';
+    }
 
     localStorage.setItem(`show-${tipo}`, activo);
     vibrar();
@@ -499,7 +503,7 @@ window.onload = () => {
     }
 
     // Restaurar preferencias
-    ['crono','num','sonido','vibrar'].forEach(tipo => {
+    ['crono','num','sonido','vibrar','flor'].forEach(tipo => {
         const estado = localStorage.getItem(`show-${tipo}`);
 
         if (estado !== null) {

@@ -1048,4 +1048,67 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     display: block;
 }
 
+/* --- FLOR INTERACTIVA ("JUGAR CON FLOR") --- */
+.flor-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px auto 12px auto;
+    width: 75px;
+    height: 75px;
+    pointer-events: none;
+    will-change: transform, filter;
+    animation: florPulse 4s ease-in-out infinite;
+}
+
+.flor-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+/* Animación de respiración neón y rotación sutil */
+@keyframes florPulse {
+    0% {
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 10px var(--glow-color));
+    }
+    50% {
+        transform: scale(1.08) rotate(3deg);
+        filter: drop-shadow(0 0 22px var(--glow-color));
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 10px var(--glow-color));
+    }
+}
+
+/* --- ADAPTACIÓN DE COLORES DE LA FLOR SEGÚN EL TEMA --- */
+
+/* RIVER: Pétalos rojo pasión vibrantes, hojas azuladas de neón */
+.tema-river .flor-img {
+    filter: hue-rotate(295deg) saturate(1.8) contrast(1.05);
+}
+
+/* RACING: Pétalos celeste/azul brillante de neón */
+.tema-racing .flor-img {
+    filter: hue-rotate(135deg) saturate(2) brightness(1.1);
+}
+
+/* ROJO (INDEPENDIENTE): Pétalos rojo fuego intensos */
+.tema-independiente .flor-img {
+    filter: hue-rotate(295deg) saturate(2) contrast(1.1);
+}
+
+/* SAN LORENZO: Pétalos azul/rojo profundo elegante */
+.tema-sanlorenzo .flor-img {
+    filter: hue-rotate(175deg) saturate(1.5) contrast(1.05);
+}
+
+/* DIEGO: Pétalos celeste nacional luminoso */
+.tema-diego .flor-img {
+    filter: hue-rotate(130deg) saturate(1.3) brightness(1.2);
+}
+
 
