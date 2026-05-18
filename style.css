@@ -1155,6 +1155,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 /* 4. FIX PARA BOTONES FLOTANTES Y SAFE AREAS (NOTCH) */
 #btn-config, #btn-home {
     top: max(10px, env(safe-area-inset-top)) !important;
+    transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease, box-shadow 0.2s ease !important;
 }
 #btn-config {
     right: max(10px, env(safe-area-inset-right)) !important;
