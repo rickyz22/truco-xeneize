@@ -1108,8 +1108,66 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 }
 
 /* DIEGO: Pétalos celeste nacional luminoso */
+/* DIEGO: Pétalos celeste nacional luminoso */
 .tema-diego .flor-img {
     filter: hue-rotate(130deg) saturate(1.5) brightness(1.25) contrast(1.1) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
+}
+
+/* ==========================================
+   UI/UX PREMIUM OVERRIDES (QA FIXES)
+   ========================================== */
+
+/* 1. FIJAR LEGIBILIDAD EN PANTALLA DE AJUSTES (CONTRASTE INFALIBLE) */
+.pantalla {
+    background: rgba(10, 10, 12, 0.85) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+.pantalla h2 {
+    color: #ffffff !important;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8) !important;
+    letter-spacing: 2px;
+}
+
+/* 2. LOOK PREMIUM "HUNDIDO" PARA LOS DISPLAYS DE PUNTOS */
+.led-display {
+    background: linear-gradient(145deg, #1a1a1a, #0a0a0a) !important;
+    box-shadow: 
+        inset 0 8px 15px rgba(0, 0, 0, 0.9),
+        inset 0 1px 2px rgba(255, 255, 255, 0.05),
+        0 2px 0 rgba(255,255,255,0.1) !important;
+    border: 1px solid rgba(0, 0, 0, 0.8) !important;
+}
+
+/* 3. SIMETRÍA Y PREVENCIÓN DE TRUNCAMIENTO EN NOMBRES */
+.etiqueta {
+    min-width: 90px;
+    max-width: 110px;
+    font-size: clamp(0.7rem, 2.5vw, 0.95rem);
+    word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 4. FIX PARA BOTONES FLOTANTES Y SAFE AREAS (NOTCH) */
+#btn-config, #btn-home {
+    top: max(10px, env(safe-area-inset-top)) !important;
+}
+#btn-config {
+    right: max(10px, env(safe-area-inset-right)) !important;
+}
+#btn-home {
+    right: max(65px, calc(env(safe-area-inset-right) + 55px)) !important;
+}
+
+/* 5. MICRO-INTERACCIÓN DE BOTONES MECÁNICOS (TACTIL) */
+.btn-crono:active, button[id^="btn-"]:active, .caja-puntos:active {
+    transform: scale(0.96) translateY(2px) !important;
+    box-shadow: inset 0 10px 20px rgba(0,0,0,0.9) !important;
+    transition: transform 0.05s ease, box-shadow 0.05s ease !important;
 }
 
 
