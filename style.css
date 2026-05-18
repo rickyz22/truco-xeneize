@@ -378,8 +378,9 @@ body::before {
 }
 
 .config-header {
-    background: var(--s);
-    color: var(--btn-add-text);
+    background: rgba(0, 0, 0, 0.45); /* Cabecera oscura premium traslúcida */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
     padding: 20px;
     display: flex;
     justify-content: space-between;
@@ -393,14 +394,20 @@ body::before {
     display: flex;
     align-items: center;
     gap: 8px;
+    color: #ffffff;
 }
 .btn-cerrar-x {
     background: none;
     border: none;
-    color: var(--btn-add-text);
+    color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
     display: flex;
     align-items: center;
+    transition: all 0.2s ease;
+}
+.btn-cerrar-x:hover {
+    color: var(--accent); /* Resalta con el color del tema activo */
+    transform: scale(1.1);
 }
 .btn-cerrar-x span { font-size: 2rem; }
 
