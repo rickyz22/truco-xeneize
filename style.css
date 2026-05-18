@@ -575,11 +575,10 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 
 /* --- CONTENIDO DEL JUEGO --- */
 #contenido-juego {
-    position: relative;
     width: 100%;
     max-width: 450px;
     padding: 10px;
-    margin-bottom: 75px; /* Espacio estático reservado en el fondo para la flor flotante */
+    margin-bottom: 20px;
     animation: fadeIn 0.4s ease-out;
 }
 
@@ -1051,15 +1050,12 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 
 /* --- FLOR INTERACTIVA ("JUGAR CON FLOR") --- */
 .flor-container {
-    position: absolute;
-    bottom: -62px; /* Flota de forma hermosa en el margen inferior libre */
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 58px;
-    height: 58px;
+    width: 42px;
+    height: 42px;
+    margin: 0 auto;
     pointer-events: none;
     will-change: transform, filter;
     animation: florPulse 4s ease-in-out infinite;
@@ -1072,19 +1068,19 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     transition: filter 0.4s ease, transform 0.4s ease;
 }
 
-/* Animación de respiración neón y rotación sutil preservando centrado absoluto */
+/* Animación de respiración neón y rotación sutil natural */
 @keyframes florPulse {
     0% {
-        transform: translateX(-50%) scale(1) rotate(0deg);
-        filter: drop-shadow(0 0 10px var(--glow-color));
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 8px var(--glow-color));
     }
     50% {
-        transform: translateX(-50%) scale(1.08) rotate(3deg);
-        filter: drop-shadow(0 0 22px var(--glow-color));
+        transform: scale(1.08) rotate(3deg);
+        filter: drop-shadow(0 0 16px var(--glow-color));
     }
     100% {
-        transform: translateX(-50%) scale(1) rotate(0deg);
-        filter: drop-shadow(0 0 10px var(--glow-color));
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 8px var(--glow-color));
     }
 }
 
