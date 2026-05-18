@@ -1053,9 +1053,9 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 15px auto 12px auto;
-    width: 75px;
-    height: 75px;
+    margin: 10px auto 2px auto;
+    width: 58px;
+    height: 58px;
     pointer-events: none;
     will-change: transform, filter;
     animation: florPulse 4s ease-in-out infinite;
