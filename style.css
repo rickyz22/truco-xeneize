@@ -25,6 +25,8 @@
     --btn-sub-bg: rgba(0, 12, 36, 0.5);
     --btn-sub-border: 2px solid #ffcc00;
     --btn-sub-text: #ffffff;
+    --btn-crono-bg: #ffcc00;
+    --btn-crono-text: #003b70;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -51,6 +53,8 @@
     --btn-sub-bg: rgba(45, 0, 0, 0.4);
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
+    --btn-crono-bg: #ffffff;
+    --btn-crono-text: #ff0000;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -77,6 +81,8 @@
     --btn-sub-bg: rgba(0, 40, 80, 0.4);
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
+    --btn-crono-bg: #00acee;
+    --btn-crono-text: #ffffff;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -103,6 +109,8 @@
     --btn-sub-bg: rgba(45, 0, 0, 0.4);
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
+    --btn-crono-bg: #e30613;
+    --btn-crono-text: #ffffff;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -129,6 +137,8 @@
     --btn-sub-bg: rgba(0, 12, 36, 0.4);
     --btn-sub-border: 2px solid #c8102e;
     --btn-sub-text: #ffffff;
+    --btn-crono-bg: #c8102e;
+    --btn-crono-text: #ffffff;
     --dots-opacity: 0.04;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -154,6 +164,8 @@
     --btn-sub-bg: rgba(255, 255, 255, 0.1);
     --btn-sub-border: 2px solid #ffffff;
     --btn-sub-text: #ffffff;
+    --btn-crono-bg: #74acdf;
+    --btn-crono-text: #ffffff;
     --dots-opacity: 0.05;
     --text-glow: 0 0 12px var(--text-accent);
     --title-glow: 0 0 8px var(--glow-color);
@@ -180,6 +192,8 @@
     --btn-sub-bg: rgba(10, 30, 15, 0.6);
     --btn-sub-border: 2px solid #7c4c24;
     --btn-sub-text: #ffffff;
+    --btn-crono-bg: #7c4c24;
+    --btn-crono-text: #c9a054;
     --dots-opacity: 0.01;
     --text-glow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     --title-glow: 1px 1px 3px rgba(0, 0, 0, 0.6);
@@ -637,8 +651,8 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 }
 
 .controles-crono button {
-    background: var(--s);
-    color: #000c24;
+    background: var(--btn-crono-bg);
+    color: var(--btn-crono-text);
     border: none;
     border-radius: 50%;
     width: 38px;
