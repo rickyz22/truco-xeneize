@@ -7,6 +7,7 @@ let wakeLock = null;
 let limitePuntos = 30;
 let nombreNos = localStorage.getItem('nombreNos') || 'NOSOTROS';
 let nombreEllos = localStorage.getItem('nombreEllos') || 'ELLOS';
+let usuarioInteractuo = false;
 
 let audioContext = null;
 
@@ -594,8 +595,20 @@ function detenerAnimacionPelota() {
 }
 
 function vibrarSutilBounce() {
+    if (!usuarioInteractuo) return; // Evita warnings de intervención del navegador antes del primer tap
     const vibrarHabilitado = localStorage.getItem('show-vibrar') !== 'false';
     if (vibrarHabilitado && navigator.vibrate) {
         navigator.vibrate(8);
     }
 }
+
+// Registrar interacción inicial para habilitar la vibración de rebote
+function registrarInteraccionUsuario() {
+    usuarioInteractuo = true;
+    window.removeEventListener('click', registrarInteraccionUsuario);
+    window.removeEventListener('touchstart', registrarInteraccionUsuario);
+    window.removeEventListener('mousedown', registrarInteraccionUsuario);
+}
+window.addEventListener('click', registrarInteraccionUsuario);
+window.addEventListener('touchstart', registrarInteraccionUsuario, { passive: true });
+window.addEventListener('mousedown', registrarInteraccionUsuario);
