@@ -765,7 +765,13 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     border-radius: 28px;
     border: var(--border-style);
     text-align: center;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5), var(--glow);
+    box-shadow:
+        0 15px 35px rgba(0,0,0,0.5),
+        var(--glow),
+        inset 2px 0 0 rgba(255,255,255,0.07),
+        inset -2px 0 0 rgba(0,0,0,0.4),
+        inset 0 2px 0 rgba(255,255,255,0.12),
+        inset 0 -6px 16px rgba(0,0,0,0.55);
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -785,6 +791,27 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
     border-radius: 26px 26px 0 0;
     pointer-events: none;
+    z-index: 1;
+}
+
+/* Fix 6 — Reflejo de cristal en V (quiebre diagonal) */
+.columna::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48%;
+    background: linear-gradient(
+        158deg,
+        rgba(255, 255, 255, 0.10) 0%,
+        rgba(255, 255, 255, 0.05) 38%,
+        rgba(255, 255, 255, 0.01) 55%,
+        transparent 70%
+    );
+    border-radius: 26px 26px 0 0;
+    pointer-events: none;
+    z-index: 2;
 }
 
 .editable-name {
