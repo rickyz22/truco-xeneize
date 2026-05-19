@@ -224,6 +224,12 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+html {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
 body {
     background-image: var(--fondo);
     background-color: var(--p);
@@ -232,11 +238,15 @@ body {
     background-attachment: fixed;
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
-    min-height: 100vh;
+    height: 100%;
+    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-x: hidden;
+    overflow: hidden;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: auto;
+    touch-action: pan-x;
     padding: 10px;
     position: relative;
     transition: all 0.4s ease;
@@ -1153,15 +1163,21 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 }
 
 /* 4. FIX PARA BOTONES FLOTANTES Y SAFE AREAS (NOTCH) */
+.marcador-futbol {
+    margin-top: max(50px, calc(env(safe-area-inset-top) + 40px)) !important;
+}
 #btn-config, #btn-home {
     top: max(10px, env(safe-area-inset-top)) !important;
     transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease, box-shadow 0.2s ease !important;
-}
-#btn-config {
-    right: max(10px, env(safe-area-inset-right)) !important;
+    border-radius: 50% !important; /* Para que sean bien redondos */
 }
 #btn-home {
-    right: max(65px, calc(env(safe-area-inset-right) + 55px)) !important;
+    right: auto !important;
+    left: calc(50% - 50px) !important;
+}
+#btn-config {
+    right: auto !important;
+    left: calc(50% + 10px) !important;
 }
 
 /* 5. MICRO-INTERACCIÓN DE BOTONES MECÁNICOS (TACTIL) */
