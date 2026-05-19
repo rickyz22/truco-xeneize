@@ -97,20 +97,29 @@ document.addEventListener('visibilitychange', async () => {
     }
 });
 
-const TIMEOUT_SESION_MS = 4 * 60 * 60 * 1000; // 4 horas en milisegundos
-
 function guardarProgreso() {
     localStorage.setItem('puntosNos', puntosNos);
     localStorage.setItem('puntosEllos', puntosEllos);
     localStorage.setItem('segundos', segundos);
-    localStorage.setItem('ultimoUso', Date.now());
 }
 
 function comenzarJuego() {
     vibrar();
     activarWakeLock();
+
+    // Marcar sesion activa (se borra solo si se cierra la app completamente)
+    sessionStorage.setItem('enJuego', 'true');
     localStorage.setItem('partidaIniciada', 'true');
-    localStorage.setItem('ultimoUso', Date.now());
+
+    // Si habia una partida guardada, retomarla
+    const pGuardados = localStorage.getItem('puntosNos');
+    if (pGuardados !== null) {
+        puntosNos = parseInt(localStorage.getItem('puntosNos') || 0);
+        puntosEllos = parseInt(localStorage.getItem('puntosEllos') || 0);
+        segundos = parseInt(localStorage.getItem('segundos') || 0);
+        mostrarTiempo();
+    }
+
     detenerAnimacionPelota();
     mostrarPantallaJuego();
 }
@@ -273,7 +282,9 @@ function reiniciarTotalmente() {
     puntosEllos = 0;
 
     localStorage.setItem('partidaIniciada', 'true');
-    localStorage.setItem('ultimoUso', Date.now());
+    localStorage.setItem('puntosNos', 0);
+    localStorage.setItem('puntosEllos', 0);
+    sessionStorage.setItem('enJuego', 'true');
 
     resetearCronometro();
     actualizarInterfaz();
@@ -370,6 +381,14 @@ function cerrarConfig() {
 function volverInicio() {
     vibrar();
     localStorage.removeItem('partidaIniciada');
+    localStorage.removeItem('puntosNos');
+    localStorage.removeItem('puntosEllos');
+    localStorage.removeItem('segundos');
+    sessionStorage.removeItem('enJuego');
+
+    puntosNos = 0;
+    puntosEllos = 0;
+    segundos = 0;
 
     document.getElementById('contenido-juego').style.display = 'none';
     document.getElementById('pantalla-inicio').style.display = 'flex';
@@ -497,24 +516,21 @@ window.onload = () => {
     } else {
         cambiarLimitePuntos(30, false);
     }
-    // Cargar partida iniciada (solo si no pasaron más de 4 horas desde el último uso)
-    const partidaGuardada = localStorage.getItem('partidaIniciada');
-    const ultimoUso = parseInt(localStorage.getItem('ultimoUso') || '0');
-    const tiempoTranscurrido = Date.now() - ultimoUso;
-    const sesionVigente = tiempoTranscurrido < TIMEOUT_SESION_MS;
+    // Detectar si la app fue cerrada completamente o solo minimizada
+    // sessionStorage se borra al cerrar la app, pero persiste al cambiar de pantalla
+    const enSesionActiva = sessionStorage.getItem('enJuego');
+    const hayPartidaGuardada = localStorage.getItem('partidaIniciada');
 
-    if (partidaGuardada && sesionVigente) {
+    if (enSesionActiva && hayPartidaGuardada) {
+        // Volvio desde otra app (cambio de pantalla), restaurar anotador directamente
         puntosNos = parseInt(localStorage.getItem('puntosNos') || 0);
         puntosEllos = parseInt(localStorage.getItem('puntosEllos') || 0);
         segundos = parseInt(localStorage.getItem('segundos') || 0);
-
         mostrarTiempo();
         mostrarPantallaJuego();
     } else {
-        // Sesión expirada o primera vez: limpiar estado y mostrar menú
-        if (partidaGuardada && !sesionVigente) {
-            localStorage.removeItem('partidaIniciada');
-        }
+        // App cerrada completamente: mostrar menu principal
+        // Si habia partida guardada, el boton "Jugar Ahora" la retomara
         iniciarAnimacionPelota();
     }
 
