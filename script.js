@@ -435,9 +435,9 @@ function actualizarNombresUI() {
     if (elNos) elNos.innerText = nombreNos;
     if (elEllos) elEllos.innerText = nombreEllos;
 
-    // Scoreboard labels take first 5 characters
-    if (lblNos) lblNos.innerText = nombreNos.substring(0, 5);
-    if (lblEllos) lblEllos.innerText = nombreEllos.substring(0, 5);
+    // Scoreboard labels take first 8 characters (evita truncamiento "NOSOT")
+    if (lblNos) lblNos.innerText = nombreNos.substring(0, 8);
+    if (lblEllos) lblEllos.innerText = nombreEllos.substring(0, 8);
 }
 
 function cambiarLimitePuntos(limite, conEfectos = true) {

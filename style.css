@@ -680,7 +680,7 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     font-family: var(--font-display);
     font-weight: 900;
     text-shadow: var(--text-glow);
-    font-variant-numeric: tabular-nums;
+    font-variant-numeric: normal; /* fix: slashed-zero (Ø) → 0 normal */
     transition: all 0.3s ease;
 }
 
@@ -1151,10 +1151,10 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 
 /* 3. SIMETRÍA Y PREVENCIÓN DE TRUNCAMIENTO EN NOMBRES */
 .etiqueta {
-    min-width: 90px;
-    max-width: 110px;
-    font-size: clamp(0.7rem, 2.5vw, 0.95rem);
-    word-break: break-all;
+    min-width: 70px;
+    max-width: 140px;
+    font-size: clamp(0.62rem, 2vw, 0.88rem);
+    letter-spacing: 0.5px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
