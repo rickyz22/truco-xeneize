@@ -901,13 +901,18 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
     font-weight: 900;
     border-radius: 16px;
     border: none;
+    border-bottom: 5px solid rgba(0,0,0,0.35);
+    border-top: 1px solid rgba(255,255,255,0.3);
     width: 100%;
     cursor: pointer;
-    box-shadow: 0 5px 0 rgba(0,0,0,0.3);
+    box-shadow:
+        0 6px 0 rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.4);
     transition: all 0.1s ease;
 }
 .btn-sumar:active {
-    transform: translateY(3px);
+    transform: translateY(4px);
+    border-bottom-width: 1px;
     box-shadow: 0 2px 0 rgba(0,0,0,0.3);
 }
 

@@ -1,9 +1,9 @@
-const CACHE_NAME = 'truco-v53';
+const CACHE_NAME = 'truco-v54';
 const urlsToCache = [
   './',
-  'index.html?v=53',
-  'style.css?v=53',
-  'script.js?v=53',
+  'index.html?v=54',
+  'style.css?v=54',
+  'script.js?v=54',
   'manifest.json',
   'fosforo.png',
   'icono.png',
