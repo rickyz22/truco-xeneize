@@ -884,6 +884,12 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
 .p5 { transform: rotate(45deg); top: 0; left: 0; }
 
 /* Botones de Anotación */
+#contenido-juego {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
 .controles {
     display: flex;
     flex-direction: column;
