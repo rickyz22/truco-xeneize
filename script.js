@@ -97,11 +97,26 @@ document.addEventListener('visibilitychange', async () => {
     }
 });
 
-function guardarProgreso() {
+let timerGuardar = null;
+function guardarProgresoInmediato() {
     localStorage.setItem('puntosNos', puntosNos);
     localStorage.setItem('puntosEllos', puntosEllos);
     localStorage.setItem('segundos', segundos);
 }
+function guardarProgreso() {
+    if (timerGuardar) clearTimeout(timerGuardar);
+    timerGuardar = setTimeout(guardarProgresoInmediato, 150);
+}
+
+// Asegurar que se guarde si el usuario minimiza la app de golpe
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+        if (timerGuardar) {
+            clearTimeout(timerGuardar);
+            guardarProgresoInmediato();
+        }
+    }
+});
 
 function comenzarJuego() {
     vibrar();
