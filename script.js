@@ -9,19 +9,21 @@ let nombreNos = localStorage.getItem('nombreNos') || 'NOSOTROS';
 let nombreEllos = localStorage.getItem('nombreEllos') || 'ELLOS';
 let usuarioInteractuo = false;
 
+// Caché en memoria de preferencias de hardware/sonido para evitar accesos síncronos lentos a localStorage en el hilo principal
+let prefVibrar = localStorage.getItem('show-vibrar') !== 'false';
+let prefSonido = localStorage.getItem('show-sonido') !== 'false';
+
 let audioContext = null;
 
 function vibrar(ms = 30) { 
     if (!usuarioInteractuo) return; // Evita warnings al restaurar la configuración guardada en el window.onload
-    const vibrarHabilitado = localStorage.getItem('show-vibrar') !== 'false';
-    if (vibrarHabilitado && navigator.vibrate) {
+    if (prefVibrar && navigator.vibrate) {
         navigator.vibrate(ms);
     }
 }
 
 function playBeep(tipo = 'default') {
-    const sonidoHabilitado = localStorage.getItem('show-sonido') !== 'false';
-    if (!sonidoHabilitado) return;
+    if (!prefSonido) return;
 
     try {
         if (!audioContext) {
@@ -215,7 +217,7 @@ function sumar(equipo) {
     if (equipo === 'nos' && puntosNos < limitePuntos) puntosNos++;
     if (equipo === 'ellos' && puntosEllos < limitePuntos) puntosEllos++;
 
-    actualizarInterfaz();
+    actualizarInterfaz(equipo);
     guardarProgreso();
 }
 
@@ -228,21 +230,24 @@ function restar(equipo) {
     if (equipo === 'nos' && puntosNos > 0) puntosNos--;
     if (equipo === 'ellos' && puntosEllos > 0) puntosEllos--;
 
-    actualizarInterfaz();
+    actualizarInterfaz(equipo);
     guardarProgreso();
 }
 
-function actualizarInterfaz() {
-    document.getElementById('num-nos').innerText = puntosNos;
-    document.getElementById('num-ellos').innerText = puntosEllos;
-
-    document.getElementById('palitos-nos').innerHTML = dibujarPalitos(puntosNos);
-    document.getElementById('palitos-ellos').innerHTML = dibujarPalitos(puntosEllos);
+function actualizarInterfaz(equipo) {
+    if (!equipo || equipo === 'nos') {
+        document.getElementById('num-nos').innerText = puntosNos;
+        document.getElementById('palitos-nos').innerHTML = dibujarPalitos(puntosNos);
+    }
+    if (!equipo || equipo === 'ellos') {
+        document.getElementById('num-ellos').innerText = puntosEllos;
+        document.getElementById('palitos-ellos').innerHTML = dibujarPalitos(puntosEllos);
+    }
 
     if (juegoTerminado()) {
         clearInterval(cronometroIntervalo);
 
-        let ganador = puntosNos >= limitePuntos ? "NOSOTROS" : "ELLOS";
+        let ganador = puntosNos >= limitePuntos ? nombreNos : nombreEllos;
 
         vibrar(200);
         playBeep('victoria');
