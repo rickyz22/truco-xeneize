@@ -223,10 +223,26 @@ function sumar(equipo) {
     vibrar();
     playBeep('sumar');
 
-    if (equipo === 'nos' && puntosNos < limitePuntos) puntosNos++;
-    if (equipo === 'ellos' && puntosEllos < limitePuntos) puntosEllos++;
+    if (equipo === 'nos' && puntosNos < limitePuntos) {
+        puntosNos++;
+        document.getElementById('num-nos').innerText = puntosNos;
+        agregarPalito('palitos-nos', puntosNos);
+    }
+    if (equipo === 'ellos' && puntosEllos < limitePuntos) {
+        puntosEllos++;
+        document.getElementById('num-ellos').innerText = puntosEllos;
+        agregarPalito('palitos-ellos', puntosEllos);
+    }
 
-    actualizarInterfaz(equipo);
+    if (juegoTerminado()) {
+        clearInterval(cronometroIntervalo);
+        const ganador = puntosNos >= limitePuntos ? nombreNos : nombreEllos;
+        vibrar(200);
+        playBeep('victoria');
+        guardarEnHistorial(ganador);
+        mostrarModal("\u00a1GANARON!", `El equipo de ${ganador} se lleva la gloria.`, false);
+    }
+
     guardarProgreso();
 }
 
@@ -236,10 +252,17 @@ function restar(equipo) {
     vibrar();
     playBeep('restar');
 
-    if (equipo === 'nos' && puntosNos > 0) puntosNos--;
-    if (equipo === 'ellos' && puntosEllos > 0) puntosEllos--;
+    if (equipo === 'nos' && puntosNos > 0) {
+        puntosNos--;
+        document.getElementById('num-nos').innerText = puntosNos;
+        quitarPalito('palitos-nos', puntosNos);
+    }
+    if (equipo === 'ellos' && puntosEllos > 0) {
+        puntosEllos--;
+        document.getElementById('num-ellos').innerText = puntosEllos;
+        quitarPalito('palitos-ellos', puntosEllos);
+    }
 
-    actualizarInterfaz(equipo);
     guardarProgreso();
 }
 
@@ -365,7 +388,7 @@ function reiniciarHistorial() {
     mostrarHistorial();
 }
 
-// 🔥 ACA ESTA LA MEJORA
+// Reconstrucción completa (usada en reset/init)
 function dibujarPalitos(puntos) {
     let html = '<div class="grupo-15">';
 
@@ -383,6 +406,63 @@ function dibujarPalitos(puntos) {
     }
 
     return html + '</div>';
+}
+
+/**
+ * Agrega un palito de forma incremental (O(1) DOM ops, sin reconstruir todo).
+ * @param {string} id - ID del contenedor
+ * @param {number} puntos - Valor NUEVO (ya incrementado)
+ */
+function agregarPalito(id, puntos) {
+    const contenedor = document.getElementById(id);
+    const i = puntos - 1; // índice 0-based del palito nuevo
+    const img = `<img src="fosforo.png" class="fosforo p${(i % 5) + 1}">`;
+
+    if (i === 0) {
+        // Primer palito: inicializar estructura
+        contenedor.innerHTML = `<div class="grupo-15"><div class="cuadradito">${img}</div></div>`;
+        return;
+    }
+    if (i === 15) {
+        // Palito 16: nuevo bloque con separador
+        contenedor.insertAdjacentHTML('beforeend',
+            `<div class="linea-divisoria"></div><div class="grupo-15"><div class="cuadradito">${img}</div></div>`);
+        return;
+    }
+    if (i % 5 === 0) {
+        // Inicio de nuevo cuadradito en el grupo actual
+        contenedor.querySelector('.grupo-15:last-child')
+            .insertAdjacentHTML('beforeend', `<div class="cuadradito">${img}</div>`);
+        return;
+    }
+    // Agregar al último cuadradito
+    contenedor.querySelector('.grupo-15:last-child .cuadradito:last-child')
+        .insertAdjacentHTML('beforeend', img);
+}
+
+/**
+ * Quita el último palito de forma incremental.
+ * @param {string} id - ID del contenedor
+ * @param {number} puntos - Valor NUEVO (ya decrementado)
+ */
+function quitarPalito(id, puntos) {
+    const contenedor = document.getElementById(id);
+    if (puntos === 0) {
+        contenedor.innerHTML = '<div class="grupo-15"></div>';
+        return;
+    }
+    const lastGrupo = contenedor.querySelector('.grupo-15:last-child');
+    const lastCuadradito = lastGrupo.querySelector('.cuadradito:last-child');
+    const lastImg = lastCuadradito && lastCuadradito.querySelector('.fosforo:last-child');
+    if (lastImg) lastImg.remove();
+
+    if (lastCuadradito && lastCuadradito.children.length === 0) lastCuadradito.remove();
+
+    if (lastGrupo.children.length === 0) {
+        lastGrupo.remove();
+        const divisoria = contenedor.querySelector('.linea-divisoria');
+        if (divisoria) divisoria.remove();
+    }
 }
 
 function abrirConfiguracion() {
