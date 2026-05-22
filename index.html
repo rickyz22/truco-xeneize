@@ -11,7 +11,7 @@
     <!-- FUENTES E ICONOS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@500;700;900&family=Luckiest+Guy&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=60">
+    <link rel="stylesheet" href="style.css?v=61">
 </head>
 <body>
     <!-- PANTALLA DE INICIO -->
@@ -149,6 +149,7 @@
     <div id="contenido-juego" style="display: none;">
         <button id="btn-config" onclick="abrirConfiguracion()"><span class="material-icons">settings</span></button>
         <button id="btn-home" onclick="volverInicio()"><span class="material-icons">home</span></button>
+        <button id="btn-arbitro" onclick="abrirArbitro()"><span class="material-icons">sports</span></button>
 
         <header class="marcador-futbol">
             <div class="bloque-led" id="cont-nos">
@@ -213,6 +214,29 @@
         </div>
     </div>
 
-    <script src="script.js?v=60"></script>
+    <!-- MODAL ÁRBITRO IA -->
+    <div id="modal-arbitro" class="modal-overlay" style="display: none;">
+        <div class="bottom-sheet">
+            <div class="arbitro-header">
+                <h3><span class="material-icons">sports</span> ÁRBITRO ASART</h3>
+                <button class="btn-cerrar-x" onclick="cerrarArbitro()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div id="chat-arbitro" class="chat-container">
+                <div class="mensaje-arbitro">
+                    <strong>Árbitro:</strong> ¡Buenas! Soy el juez de mesa. Decime qué quilombo armaron y te canto la posta según el reglamento ASART.
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="input-arbitro" placeholder="Escribí tu consulta..." onkeypress="manejarEnterArbitro(event)">
+                <button id="btn-enviar-arbitro" onclick="enviarConsultaArbitro()">
+                    <span class="material-icons">send</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=61"></script>
 </body>
 </html>

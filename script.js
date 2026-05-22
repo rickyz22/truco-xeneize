@@ -804,3 +804,93 @@ function actualizarImagenFlor(tema) {
         el.src = 'flor.png';
     }
 }
+
+// --- MÓDULO ÁRBITRO IA (ASART) ---
+function abrirArbitro() {
+    vibrar();
+    document.getElementById('modal-arbitro').style.display = 'flex';
+    setTimeout(() => document.getElementById('input-arbitro').focus(), 100);
+}
+
+function cerrarArbitro() {
+    vibrar();
+    document.getElementById('modal-arbitro').style.display = 'none';
+}
+
+function manejarEnterArbitro(event) {
+    if (event.key === 'Enter') {
+        enviarConsultaArbitro();
+    }
+}
+
+function enviarConsultaArbitro() {
+    const input = document.getElementById('input-arbitro');
+    const texto = input.value.trim();
+    if (!texto) return;
+
+    vibrar(20);
+    agregarMensajeChat('usuario', texto);
+    input.value = '';
+
+    // Simular tiempo de pensar del árbitro
+    setTimeout(() => {
+        const respuesta = motorArbitroASART(texto);
+        agregarMensajeChat('arbitro', respuesta);
+        vibrar(40);
+    }, 600 + Math.random() * 800);
+}
+
+function agregarMensajeChat(remitente, texto) {
+    const chat = document.getElementById('chat-arbitro');
+    const div = document.createElement('div');
+    div.className = remitente === 'arbitro' ? 'mensaje-arbitro' : 'mensaje-usuario';
+    
+    if (remitente === 'arbitro') {
+        div.innerHTML = `<strong>Árbitro:</strong> ${texto}`;
+    } else {
+        div.innerText = texto;
+    }
+    
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+// Motor Heurístico Local (Offline)
+function motorArbitroASART(consulta) {
+    const c = consulta.toLowerCase();
+    
+    if (c.includes('envido') && c.includes('tapado')) {
+        return "¡Epa! Si cantó el envido, lo ganó, y tiró las cartas tapadas al mazo, la regla es clara: PIERDE LOS PUNTOS. El que gana el envido tiene que mostrar sus cartas sí o sí, che.";
+    }
+    if (c.includes('pica') || c.includes('pica pica')) {
+        return "El Pica-Pica (Punta y Hacha) es sagrado. Juegan los enfrentados. Los de afuera NO pueden chistar ni cantar los tantos. Si alguno de afuera habla, su equipo pierde los puntos en juego. ¡A callarse!";
+    }
+    if (c.includes('parda') || c.includes('empate')) {
+        return "Si empatan la primera, define la segunda. Si empatan la segunda, define la primera. Si empatan las tres, gana el mano. Es fácil, no me lloren.";
+    }
+    if (c.includes('falta') || c.includes('falta envido')) {
+        return "La Falta Envido se paga con lo que le falta al puntero para ganar el partido si están en malas. Si están en buenas, gana el partido directamente. ¡Sin vueltas!";
+    }
+    if (c.includes('flor')) {
+        const juegaConFlor = document.getElementById('check-flor')?.checked;
+        if (!juegaConFlor) return "Che, fíjate en la configuración: ¡Están jugando SIN flor! Acá el que canta flor se come una penalización.";
+        return "La Flor se canta en el primer turno antes de jugar tu carta. Si te olvidás y jugás, perdiste la chance y marche preso.";
+    }
+    if (c.includes('mentir') || c.includes('falso') || c.includes('boca')) {
+        return "En el truco se miente, maestro. Pero si cantás un envido con puntos que no tenés y te piden mostrar al final... ¡perdés todos los puntos de esa mano!";
+    }
+    if (c.includes('mal cantado') || c.includes('cantó mal') || c.includes('equivocó')) {
+        return "Si canta los tantos y se equivoca o miente, marcha preso. Pierde los puntos de la mano en juego, regla de campeonato.";
+    }
+    if (c.includes('irse') || c.includes('al mazo') || c.includes('mazo')) {
+        return "El que se va al mazo pierde los puntos de la ronda (un punto de truco si no hay nada cantado). Y a no llorar, a barajar de nuevo.";
+    }
+    
+    // Fallback genérico
+    const fallbacks = [
+        "Che, hablá más claro. Según la ASART hay reglas firmes, pero no entiendo bien cuál es el quilombo acá.",
+        "Pará la mano. Si no está en el reglamento oficial, se resuelve con sentido común o barajan y dan de nuevo.",
+        "No me vengas con excusas raras. El reglamento es uno solo. Reformulame la pregunta con las palabras justas (pica pica, parda, envido, falta) que te canto la posta."
+    ];
+    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+}
