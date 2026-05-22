@@ -141,10 +141,19 @@ function comenzarJuego() {
     mostrarPantallaJuego();
 }
 
+function sincronizarGridMarcador() {
+    const cronoVisible = localStorage.getItem('show-crono') !== 'false';
+    const marcador = document.querySelector('.marcador-futbol');
+    if (marcador) {
+        marcador.style.gridTemplateColumns = cronoVisible ? '1fr 120px 1fr' : '1fr 1fr';
+    }
+}
+
 function mostrarPantallaJuego() {
     document.getElementById('pantalla-inicio').style.display = 'none';
     document.getElementById('contenido-juego').style.display = 'block';
     detenerAnimacionPelota();
+    sincronizarGridMarcador();
     actualizarInterfaz();
 }
 
@@ -258,7 +267,7 @@ function actualizarInterfaz(equipo) {
     }
 }
 
-function mostrarModal(titulo, mensaje, esConfirmacion, accion) {
+function mostrarModal(titulo, mensaje, esConfirmacion, accion, labelNo = 'VOLVER', labelSi = 'REINICIAR') {
     const modal = document.getElementById('modal-custom');
 
     document.getElementById('modal-titulo').innerText = titulo;
@@ -269,12 +278,12 @@ function mostrarModal(titulo, mensaje, esConfirmacion, accion) {
 
     if (esConfirmacion) {
         let btnNo = document.createElement('button');
-        btnNo.innerText = 'VOLVER';
+        btnNo.innerText = labelNo;
         btnNo.className = 'btn-modal-cancelar';
         btnNo.onclick = () => modal.style.display = 'none';
 
         let btnSi = document.createElement('button');
-        btnSi.innerText = 'REINICIAR';
+        btnSi.innerText = labelSi;
         btnSi.className = 'btn-modal-confirmar';
         btnSi.onclick = () => { if(accion) accion(); modal.style.display = 'none'; };
 
@@ -400,15 +409,29 @@ function cerrarConfig() {
 
 function volverInicio() {
     vibrar();
-    localStorage.removeItem('partidaIniciada');
-    localStorage.removeItem('puntosNos');
-    localStorage.removeItem('puntosEllos');
-    localStorage.removeItem('segundos');
-    sessionStorage.removeItem('enJuego');
+    // Si hay una partida en curso, pedir confirmación antes de abandonarla
+    const hayPartida = puntosNos > 0 || puntosEllos > 0 || segundos > 0;
+    if (hayPartida) {
+        mostrarModal(
+            "\u00bfIR AL MEN\u00da?",
+            "La partida se va a guardar y pod\u00e9s retomar cuando vuelvas.",
+            true,
+            _irAlMenuSinBorrar,
+            'CANCELAR',
+            'IR AL MEN\u00da'
+        );
+    } else {
+        _irAlMenuSinBorrar();
+    }
+}
 
-    puntosNos = 0;
-    puntosEllos = 0;
-    segundos = 0;
+function _irAlMenuSinBorrar() {
+    // Solo navega al menú; NO borra la partida guardada
+    // El botón "Jugar Ahora" la retomará
+    clearInterval(cronometroIntervalo);
+    cronometroIntervalo = null;
+    corriendo = false;
+    guardarProgresoInmediato();
 
     document.getElementById('contenido-juego').style.display = 'none';
     document.getElementById('pantalla-inicio').style.display = 'flex';
@@ -485,7 +508,13 @@ function toggleElemento(tipo) {
     const activo = el.checked;
 
     if (tipo === 'crono') {
-        document.getElementById('cont-crono').style.display = activo ? 'flex' : 'none';
+        const contCrono = document.getElementById('cont-crono');
+        contCrono.style.display = activo ? 'flex' : 'none';
+        // Colapsar/restaurar la columna central del grid para que NOS y ELLOS queden centrados
+        const marcador = document.querySelector('.marcador-futbol');
+        if (marcador) {
+            marcador.style.gridTemplateColumns = activo ? '1fr 120px 1fr' : '1fr 1fr';
+        }
     } 
     else if (tipo === 'num') {
         document.getElementById('cont-nos').style.display = activo ? 'flex' : 'none';
