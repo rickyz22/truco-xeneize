@@ -597,8 +597,8 @@ function toggleElemento(tipo) {
         }
     } 
     else if (tipo === 'num') {
-        document.getElementById('cont-nos').style.display = activo ? 'flex' : 'none';
-        document.getElementById('cont-ellos').style.display = activo ? 'flex' : 'none';
+        document.getElementById('cont-nos').style.visibility = activo ? 'visible' : 'hidden';
+        document.getElementById('cont-ellos').style.visibility = activo ? 'visible' : 'hidden';
     }
     else if (tipo === 'sonido') {
         document.getElementById('icon-sonido').innerText = activo ? 'volume_up' : 'volume_off';
