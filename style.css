@@ -1308,12 +1308,12 @@ input:checked + .slider:before { transform: translateX(22px); background-color: 
    ========================================== */
 
 /* 1. FIJAR LEGIBILIDAD EN PANTALLA DE AJUSTES (CONTRASTE INFALIBLE) */
-.pantalla {
+#pantalla-config {
     background: rgba(10, 10, 12, 0.85) !important;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
 }
-.pantalla h2 {
+#pantalla-config h3 {
     color: #ffffff !important;
     text-shadow: 0 4px 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8) !important;
     letter-spacing: 2px;

@@ -340,6 +340,7 @@ function reiniciarTotalmente() {
 
     resetearCronometro();
     actualizarInterfaz();
+    reiniciarArbitro();
 }
 
 function guardarEnHistorial(ganador) {
@@ -805,7 +806,7 @@ function actualizarImagenFlor(tema) {
     }
 }
 
-// --- MÓDULO ÁRBITRO IA (ASART) ---
+// --- MÓDULO ÁRBITRO (Compadrito, canchero y reglamento completo) ---
 function abrirArbitro() {
     vibrar();
     document.getElementById('modal-arbitro').style.display = 'flex';
@@ -815,6 +816,21 @@ function abrirArbitro() {
 function cerrarArbitro() {
     vibrar();
     document.getElementById('modal-arbitro').style.display = 'none';
+}
+
+function reiniciarArbitro() {
+    const chat = document.getElementById('chat-arbitro');
+    if (chat) {
+        chat.innerHTML = `
+            <div class="mensaje-arbitro">
+                <strong>🃏 Árbitro:</strong> ¡Buenas, papá! Silbato en mano y reglamento en la cabeza. Decime qué quilombo se armó en la mesa — jerarquía de cartas, pardas, envido, truco — y te doy el fallo <em>indiscutible</em>. ¿De qué va la discusión?
+            </div>
+        `;
+    }
+    const input = document.getElementById('input-arbitro');
+    if (input) {
+        input.value = '';
+    }
 }
 
 function manejarEnterArbitro(event) {
@@ -834,63 +850,339 @@ function enviarConsultaArbitro() {
 
     // Simular tiempo de pensar del árbitro
     setTimeout(() => {
-        const respuesta = motorArbitroASART(texto);
+        const respuesta = motorArbitro(texto);
         agregarMensajeChat('arbitro', respuesta);
         vibrar(40);
-    }, 600 + Math.random() * 800);
+    }, 500 + Math.random() * 700);
 }
 
 function agregarMensajeChat(remitente, texto) {
     const chat = document.getElementById('chat-arbitro');
     const div = document.createElement('div');
     div.className = remitente === 'arbitro' ? 'mensaje-arbitro' : 'mensaje-usuario';
-    
+
     if (remitente === 'arbitro') {
-        div.innerHTML = `<strong>Árbitro:</strong> ${texto}`;
+        div.innerHTML = `<strong>🃏 Árbitro:</strong> ${texto}`;
     } else {
-        div.innerText = texto;
+        div.innerHTML = `<strong>Vos:</strong> ${texto.replace(/</g,'&lt;')}`;
     }
-    
+
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
 }
 
-// Motor Heurístico Local (Offline)
-function motorArbitroASART(consulta) {
-    const c = consulta.toLowerCase();
-    
-    if (c.includes('envido') && c.includes('tapado')) {
-        return "¡Epa! Si cantó el envido, lo ganó, y tiró las cartas tapadas al mazo, la regla es clara: PIERDE LOS PUNTOS. El que gana el envido tiene que mostrar sus cartas sí o sí, che.";
+// ============================================================
+// MOTOR DEL ÁRBITRO — FALLO PRIMERO, siempre
+// ============================================================
+function motorArbitro(consulta) {
+    const c = consulta.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    // ── 1. DICCIONARIO DE SITUACIONES CRÍTICAS ─────────────────
+
+    // SITUACIÓN: "Cantar tantos/Falta envido pero irse al mazo sin mostrar las cartas"
+    if ((c.includes('mazo') && (c.includes('sin mostrar') || c.includes('escondi'))) || 
+        (c.includes('no') && c.includes('mostro') && (c.includes('tanto') || c.includes('carta')) && c.includes('mazo'))) {
+        return "<b>¡Marchó el que se fue al mazo escondiendo las cartas, los puntos van para el rival, papá!</b><br>" +
+               "Escuchame bien, che: es obligatorio mostrar las cartas en la mesa al final de la mano para cobrar el envido. Si te vas al mazo ocultando el juego, le regalás los porotos al rival de prepo, aunque hayas cantado 33 de boca. El que se esconde, pierde.";
     }
-    if (c.includes('pica') || c.includes('pica pica')) {
-        return "El Pica-Pica (Punta y Hacha) es sagrado. Juegan los enfrentados. Los de afuera NO pueden chistar ni cantar los tantos. Si alguno de afuera habla, su equipo pierde los puntos en juego. ¡A callarse!";
+
+    // SITUACIÓN: "Cantar el Envido tarde (Mano en juego)"
+    if (c.includes('envido tarde') || (c.includes('envido') && (c.includes('tarde') || c.includes('ya jugo') || c.includes('ya tiraron')))) {
+        return "<b>¡Marchaste por lento, ya no se puede cantar el envido, papá!</b><br>" +
+               "Mirá, cortita y al pie: el envido solo se puede cantar antes de jugar tu primera carta en la primera mano. Si vos o tu compañero ya tiraron un naipe a la mesa, cagaron, la ventana del envido se cerró.";
     }
-    if (c.includes('parda') || c.includes('empate')) {
-        return "Si empatan la primera, define la segunda. Si empatan la segunda, define la primera. Si empatan las tres, gana el mano. Es fácil, no me lloren.";
+
+    // SITUACIÓN: "Mal cantado (tirar los tantos mal) / Revocado"
+    if (c.includes('mal cantado') || c.includes('canto mal') || c.includes('canto de mas') || c.includes('menti tantos') || (c.includes('canto') && c.includes('tenia') && c.includes('mas'))) {
+        return "<b>¡Perdés todos los puntos por mentiroso si tu rival te dijo quiero, papá!</b><br>" +
+               "Si cantás de más (por ejemplo, tirás 30 y tenías 28 reales) y te dicen 'quiero', marchaste: al final de la mano, al mostrar las cartas, perdés los porotos del envido en el acto y se los lleva tu rival por revocado (mentiroso), aunque él tuviera menos que tus 28 reales. Si te dicen 'no quiero' zafás con el punto del no quiero, pero si te obligan a mostrar y mentiste, penalizás.";
     }
-    if (c.includes('falta') || c.includes('falta envido')) {
-        return "La Falta Envido se paga con lo que le falta al puntero para ganar el partido si están en malas. Si están en buenas, gana el partido directamente. ¡Sin vueltas!";
+
+    // SITUACIÓN: "Cantar Envido cuando ya se cantó o jugó Truco"
+    if (c.includes('envido') && c.includes('truco') && (c.includes('despues') || c.includes('ya se canto') || c.includes('antes del truco'))) {
+        return "<b>¡Tarde para el envido, ya está el truco querido en juego y caducó tu tiempo, papá!</b><br>" +
+               "Mirá, una vez que el Truco fue cantado y se aceptó ('quiero'), ya no hay vuelta atrás para los tantos. El envido se juega antes de meterse con los camiones del truco.";
     }
+
+    // SITUACIÓN: "Se pasó de puntos (Gana el partido en el envido)"
+    if (c.includes('paso de puntos') || c.includes('gana en el envido') || c.includes('envido corta') || c.includes('corta el partido')) {
+        return "<b>¡El envido corta el partido en el acto, papá!</b><br>" +
+               "Prestá atención, che: los puntos del Envido se anotan y se cuentan siempre ANTES que los del Truco. Si alguno tiene 28 puntos, gana el Envido (suma 2 porotos) y llega a 30, el partido se termina ahí mismo. No me importa si tu rival tenía un 'Vale Cuatro' en la manga para ganar la mano de truco; el envido cobra primero y corta el juego.";
+    }
+
+    // SITUACIÓN: "Cantar una cosa por otra (Me equivoqué al cantar)"
+    if (c.includes('cosa por otra') || c.includes('me equivoque al cantar') || c.includes('quise decir') || c.includes('canté una cosa')) {
+        return "<b>¡Palabra cantada, palabra santa, papá! Marchaste con lo que salió de tu boca.</b><br>" +
+               "Che, no hay tutía acá. Si de los nervios quisiste decir 'Envido' pero gritaste 'Truco', te jodiste. En el truco vale lo que cantás al viento, no lo que tenías en la cabecita. A bancarse el grito.";
+    }
+
+    // SITUACIÓN: "Carta tocada o dada vuelta sin querer"
+    if (c.includes('carta tocada') || c.includes('se dio vuelta') || c.includes('se resbalo') || c.includes('sin querer')) {
+        return "<b>¡Carta que tocó la mesa boca arriba, es carta jugada y a llorar a la iglesia, papá!</b><br>" +
+               "Mirá, no me vengas con que 'se me resbaló' o 'fue sin querer'. Si el naipe tocó la mesa boca arriba, ya está quemado y es carta jugada. No la podés levantar más, prestá más atención.";
+    }
+
+    // SITUACIÓN: "Decir Son Buenas"
+    if (c.includes('son buenas') || c.includes('decir son buenas') || c.includes('le dije son buenas')) {
+        return "<b>¡Regalaste los porotos en el acto al decirle son buenas al rival, papá!</b><br>" +
+               "Viste cómo es: si el rival te canta sus tantos y vos le decís 'son buenas' porque no le llegás, él se anota los puntos inmediatamente. No está obligado a mostrar las cartas en la mesa porque vos ya diste el brazo a torcer.";
+    }
+
+    // ── 2. MATRIZ DE PUNTOS DEL ENVIDO Y REVIRADAS ──────────────
+
+    // Envido + Envido querido
+    if (c.includes('envido') && (c.match(/envido/g) || []).length === 2 && 
+        (c.includes('queri') || c.includes('quiero') || c.includes('si') || c.includes('cuanto') || c.includes('vale'))) {
+        return "<b>Son 4 porotos para el que tenga mejor envido, papá.</b><br>" +
+               "Cortita y al pie: metieron un envido (2) y le reviraron otro envido arriba (2 más). Como lo quisieron, hay 4 porotos en juego en la mesa.";
+    }
+    // Envido + Envido no querido
+    if (c.includes('envido') && (c.match(/envido/g) || []).length === 2 && 
+        (c.includes('no quiero') || c.includes('no quier') || c.includes('no queri'))) {
+        return "<b>Son 2 porotos para el que cantó el primer envido, papá.</b><br>" +
+               "El rival se achicó al segundo envido, así que te tiene que pagar el escalón anterior, que son 2 porotos. A anotarlos.";
+    }
+
+    // Envido + Real Envido querido
+    if (c.includes('envido') && c.includes('real') && 
+        (c.includes('queri') || c.includes('quiero') || c.includes('si') || c.includes('cuanto') || c.includes('vale'))) {
+        return "<b>Son 5 porotos para el que tenga más tantos en la mano, papá.</b><br>" +
+               "La matemática no falla: tiraron envido (2) y le reviraron un Real Envido arriba (3). Como se aceptó, se juegan 5 porotos.";
+    }
+    // Envido + Real Envido no querido
+    if (c.includes('envido') && c.includes('real') && 
+        (c.includes('no quiero') || c.includes('no quier') || c.includes('no queri'))) {
+        return "<b>Son 2 porotos para el que cantó primero, papá.</b><br>" +
+               "Arrugaron al Real Envido, así que pagan solo lo querido del primer envido (2 porotos). Te la barata por pecho frío.";
+    }
+
+    // Real Envido + Real Envido querido
+    if ((c.match(/real/g) || []).length >= 2 && 
+        (c.includes('queri') || c.includes('quiero') || c.includes('si') || c.includes('cuanto') || c.includes('vale'))) {
+        return "<b>Son 6 porotos para el que ponga los tantos en la mesa, papá.</b><br>" +
+               "Dos Real Envido seguidos y queridos son 3 + 3 = 6 porotos limpios. El de más tantos festeja y el otro a llorar a la iglesia.";
+    }
+    // Real Envido + Real Envido no querido
+    if ((c.match(/real/g) || []).length >= 2 && 
+        (c.includes('no quiero') || c.includes('no quier') || c.includes('no queri'))) {
+        return "<b>Son 3 porotos para el que cantó primero, papá.</b><br>" +
+               "Se asustó con el segundo Real Envido y no lo quiso, así que paga el escalón anterior de 3 porotos.";
+    }
+
+    // Solo envido querido
+    if (c.includes('envido') && !c.includes('real') && !c.includes('falta') &&
+        (c.includes('queri') || (c.includes('quiero') && !c.includes('no quiero'))) &&
+        (c.match(/envido/g) || []).length === 1) {
+        return "<b>Son 2 porotos para el que gane el envido, papá.</b><br>" +
+               "Se cantó un solo envido y lo quisieron, así que son 2 puntos directos al marcador.";
+    }
+    // Solo envido no querido
+    if (c.includes('envido') && !c.includes('real') && !c.includes('falta') &&
+        (c.includes('no quiero') || c.includes('no quier') || c.includes('no queri')) &&
+        (c.match(/envido/g) || []).length === 1) {
+        return "<b>Es 1 poroto de arriba para el que cantó, papá.</b><br>" +
+               "El otro arrugó al envido de una, así que te regala 1 punto para la libreta. ¡A barajar de nuevo!";
+    }
+
+    // Solo Real Envido querido
+    if (c.includes('real') && !c.includes('envido') &&
+        (c.includes('queri') || (c.includes('quiero') && !c.includes('no quiero')))) {
+        return "<b>Son 3 porotos para el ganador del Real Envido, papá.</b><br>" +
+               "Lo quisieron de una, se juegan 3 puntos secos. Gana el de más tantos en la mesa.";
+    }
+    // Solo Real Envido no querido
+    if (c.includes('real') && !c.includes('envido') &&
+        (c.includes('no quiero') || c.includes('no quier') || c.includes('no queri'))) {
+        return "<b>Son 3 porotos para el que cantó el Real Envido, papá.</b><br>" +
+               "El rival no quiso pagar la apuesta, así que te llevás los 3 porotos de arriba y a barajar.";
+    }
+
+    // ── FALTA ENVIDO (con lógica de marcador real) ───────────
+    if (c.includes('falta')) {
+        const pNos = puntosNos || 0;
+        const pEllos = puntosEllos || 0;
+        const limite = limitePuntos || 30;
+        const mitad = limite / 2;
+        const enMalas = pNos < mitad && pEllos < mitad;
+        const puntero = Math.max(pNos, pEllos);
+        const leFaltan = limite - puntero;
+
+        if (c.includes('no quiero') || c.includes('no quier') || c.includes('no queri')) {
+            return `<b>Te llevás 1 poroto (o los tantos acumulados antes si hubo revirada) y a barajar, papá.</b><br>` +
+                `Si no quieren la Falta Envido, se paga el escalón anterior o 1 punto si fue directa.`;
+        }
+        if (enMalas) {
+            return `<b>¡Ganás el partido entero (${limite} puntos) y a cobrar, papá!</b><br>` +
+                `Como están ambos en las malas (NOS: ${pNos} — ELLOS: ${pEllos}), la Falta Envido querida vale el chico completo: ${limite} porotos. El de más tantos se lleva la victoria.`;
+        } else {
+            return `<b>Son ${leFaltan} poroto${leFaltan !== 1 ? 's' : ''} para el que gane la Falta, papá.</b><br>` +
+                `Como ya están en las buenas, la Falta Envido querida vale los puntos que le faltan para llegar a ${limite} al que va ganando (lidera con ${puntero} porotos, le faltan ${leFaltan}). ¡Se define todo!`;
+        }
+    }
+
+    // ── 3. TRUCO Y RETRUCO ────────────────────────────────────
+
+    // Vale Cuatro querido
+    if ((c.includes('vale cuatro') || c.includes('vale 4')) &&
+        (c.includes('queri') || (c.includes('quiero') && !c.includes('no quiero')))) {
+        return "<b>Son 4 porotos para el que gane las cartas, papá.</b><br>" +
+               "Se pudrió todo en la mesa: cantaron Vale Cuatro y lo aceptaron. El que gane 2 de 3 manos se lleva los 4 porotos.";
+    }
+    // Vale Cuatro no querido
+    if ((c.includes('vale cuatro') || c.includes('vale 4')) &&
+        (c.includes('no quiero') || c.includes('no quier') || c.includes('no queri'))) {
+        return "<b>Son 3 porotos para el que cantó el Vale Cuatro, papá.</b><br>" +
+               "El rival se tiró al mazo en el último piso, así que cobrás el escalón anterior, que son 3 porotos (el Retruco).";
+    }
+
+    // Retruco querido
+    if (c.includes('retruco') &&
+        (c.includes('queri') || (c.includes('quiero') && !c.includes('no quiero')))) {
+        return "<b>Son 3 porotos para el ganador de la mano, papá.</b><br>" +
+               "Se cantó Retruco y lo quisieron, hay 3 porotos en juego. A mostrar quién tiene más naipes de peso.";
+    }
+    // Retruco no querido
+    if (c.includes('retruco') &&
+        (c.includes('no quiero') || c.includes('no quier') || c.includes('no queri'))) {
+        return "<b>Son 2 porotos para el que cantó el Retruco, papá.</b><br>" +
+               "El otro arrugó antes de las papas quemadas, así que te paga los 2 porotos del Truco querido.";
+    }
+
+    // Truco querido
+    if (c.includes('truco') && !c.includes('re') &&
+        (c.includes('queri') || (c.includes('quiero') && !c.includes('no quiero')))) {
+        return "<b>Son 2 porotos para el que gane las manos de cartas, papá.</b><br>" +
+               "Aceptaron el Truco a secas, se juegan 2 puntos. ¡A tirar naipes a la mesa!";
+    }
+    // Truco no querido
+    if (c.includes('truco') && !c.includes('re') &&
+        (c.includes('no quiero') || c.includes('no quier') || c.includes('no queri'))) {
+        return "<b>Es 1 poroto de arriba para el que cantó Truco, papá.</b><br>" +
+               "El rival arrugó al truco inicial y te regala 1 punto. A juntar las cartas y dar de nuevo.";
+    }
+
+    // ── 4. PARDAS / EMPATES ──────────────────────────────────
+    if (c.includes('parda') || c.includes('empat') || c.includes('empatan')) {
+        const esPrimera = c.includes('primer') || c.includes('primera');
+        const esSegunda = c.includes('segund') || c.includes('segunda');
+        const esTercera = c.includes('tercer') || c.includes('tercera');
+        const tresPardas = c.includes('tres') || c.includes('todas') || (esPrimera && esSegunda && esTercera);
+
+        if (tresPardas) {
+            return "<b>¡Gana la mano de truco el jugador que es MANO, papá!</b><br>" +
+                   "Escuchá bien, che: si se empatan las tres manos de corrido, la ronda se la lleva el que salió jugando el chico primero por ser MANO. Anotate los porotos.";
+        }
+        if (esPrimera && esSegunda) {
+            return "<b>¡Define la tercera mano de cartas a cara de perro, papá!</b><br>" +
+                   "Empataron primera y empataron segunda, así que el que gane la tercera mano se lleva los porotos. Si también empatan la tercera, gana el MANO.";
+        }
+        if (esPrimera && !esSegunda) {
+            return "<b>¡Define la segunda mano de cartas, papá!</b><br>" +
+                   "Como la primera mano fue parda, el que gane la segunda mano se queda con el Truco. Cortita y al pie.";
+        }
+        if (esSegunda && !esPrimera) {
+            return "<b>¡Gana el que se llevó la primera mano de cartas, papá!</b><br>" +
+                   "Como ganaste la primera mano y empataron la segunda, ya ganaste la ronda de truco. Un empate después de ganar te mantiene arriba.";
+        }
+        return "<b>Define la regla de la parda, papá.</b><br>" +
+               "Mirá, las cosas son así, viste: primera parda define la segunda. Primera y segunda parda define la tercera. Las tres pardas de corrido se las lleva el MANO.";
+    }
+
+    // ── 5. COMPARACIÓN Y JERARQUÍA DE CARTAS ──────────────────
+    if (c.includes('gana') || c.includes('quien tira') || c.includes('quien pica') || c.includes('cual vale mas') || c.includes('carta mas alta') || c.includes('carta mas fuerte')) {
+        if (c.includes('espada') && (c.includes('1') || c.includes('as') || c.includes('ancho'))) {
+            return "<b>¡Gana el 1 de espadas, papá!</b><br>" +
+                   "El Macho es el rey indiscutible del truco, che. No existe carta en todo el mazo que lo tape, jugalo de cabeza.";
+        }
+        if (c.includes('basto') && (c.includes('1') || c.includes('as') || c.includes('ancho'))) {
+            return "<b>¡Gana el 1 de bastos, papá!</b><br>" +
+                   "La Hembra va segunda en la jerarquía del mazo. Solo la corta el 1 de espadas (El Macho). Con esta carta te comés a casi todos.";
+        }
+        if (c.includes('7') && c.includes('espada') && c.includes('7') && c.includes('oro')) {
+            return "<b>¡Gana el 7 de espadas sobre el 7 de oro, papá!</b><br>" +
+                   "Tercera contra cuarta carta del mazo. El 7 de espadas pica al de oro siempre, no los confundas, viste.";
+        }
+        if (c.includes('3') && (c.includes('2') || c.includes('dos'))) {
+            return "<b>¡El 3 le gana al 2, papá!</b><br>" +
+                   "En las cartas comunes, todos los 3 van quinto en la jerarquía y pican a todos los 2, que van sexto. El palo acá no importa.";
+        }
+    }
+
+    // Jerarquía completa
+    if (c.includes('jerarquia') || c.includes('orden de cartas') || c.includes('lista de cartas') || c.includes('todas las cartas') || (c.includes('explicame') && c.includes('carta'))) {
+        return "<b>El orden de cartas va de mayor a menor, papá.</b><br>" +
+               "Mirá, bajate el reglamento de la cabeza: 1️⃣ 1 de espadas (El Macho) → 2️⃣ 1 de bastos (La Hembra) → 3️⃣ 7 de espadas → 4️⃣ 7 de oro → ⑤ Todos los 3 → ⑥ Todos los 2 → ⑦ 1 de copas y oro (falsos) → ⑧ Todos los 12, 11, 10 → ⑨ 7 de copas y bastos (falsos) → ⑩ 6s, 5s y los 4s (que son lo peor de la mesa). ¿Qué cartas querés comparar, che?";
+    }
+
+    // ── 6. CÁLCULO DE TANTOS ──────────────────────────────────
+    if ((c.includes('explicame') || c.includes('como se calcula') || c.includes('como se cuenta')) && (c.includes('envido') || c.includes('tanto'))) {
+        return "<b>Los tantos se calculan según las cartas del mismo palo, papá.</b><br>" +
+               "Te lo explico cortita y al pie, viste: si tenés dos cartas del mismo palo, sumás 20 + el valor de las cartas (las figuras 10, 11 y 12 valen 0). Si tenés tres del mismo palo, agarrás las dos más altas y sumás. Si son de palos distintos, vale solo el valor de la carta más alta (sin sumar 20).";
+    }
+    if (c.includes('cuanto tengo') || c.includes('cuantos tengo') || c.includes('cuanto me da') || c.includes('mis tantos') || (c.includes('cuanto') && c.includes('tanto'))) {
+        return "<b>Contame las cartas que tenés y te digo los tantos en el acto, papá.</b><br>" +
+               "Decime el valor y el palo de tus naipes y te hago la matemática criolla al toque, che.";
+    }
+    if (c.includes('33') || ((c.includes('maximo') || c.includes('maxima')) && c.includes('envido'))) {
+        return "<b>El máximo posible de envido es 33, papá.</b><br>" +
+               "Necesitás un 7 y un 3 del mismo palo (ejemplo: 7 de espadas y 3 de espadas). Hacés 20 + 7 + 3 = 33. Imbatible, el que lo tiene duerme tranquilo.";
+    }
+
+    // ── 7. FLOR ──────────────────────────────────────────────
     if (c.includes('flor')) {
         const juegaConFlor = document.getElementById('check-flor')?.checked;
-        if (!juegaConFlor) return "Che, fíjate en la configuración: ¡Están jugando SIN flor! Acá el que canta flor se come una penalización.";
-        return "La Flor se canta en el primer turno antes de jugar tu carta. Si te olvidás y jugás, perdiste la chance y marche preso.";
+        if (!juegaConFlor) {
+            return "<b>¡Están jugando SIN flor en esta partida, papá!</b><br>" +
+                   "Ojo con la configuración de la mesa: el que cante flor en esta ronda marcha preso y pierde los puntos de la mano automáticamente por pecho frío. ¡Avisados!";
+        }
+        if (c.includes('contraflor al rest') || c.includes('contra flor al rest')) {
+            return "<b>¡Se juega el partido entero si se quiere la Contraflor al Resto, papá!</b><br>" +
+                   "Es todo o nada: el que gane la contraflor se lleva el chico completo de 30 porotos.";
+        }
+        if (c.includes('contraflor') || c.includes('contra flor')) {
+            return "<b>Gana el que tenga más tantos de flor en la mesa, papá.</b><br>" +
+                   "Contraflor vs Contraflor, se muestran las tres cartas y el que sume más porotos de flor cobra. Contame cuánto tienen y te digo quién pica.";
+        }
+        if (c.includes('se olvido') || c.includes('no canto') || c.includes('no la canto') || c.includes('ya jugo')) {
+            return "<b>Perdió la flor por lento, papá.</b><br>" +
+                   "Si ya jugó una carta sin haber cantado 'Flor', la ventana caducó. La flor se canta obligatoriamente antes de tirar el primer naipe de la primera mano.";
+        }
+        return "<b>La flor son tres cartas del mismo palo y se canta en la primera mano, papá.</b><br>" +
+               "Quien tenga flor está obligado a cantarla antes de tirar su primera carta. Si se te pasa la jugada, la perdiste.";
     }
-    if (c.includes('mentir') || c.includes('falso') || c.includes('boca')) {
-        return "En el truco se miente, maestro. Pero si cantás un envido con puntos que no tenés y te piden mostrar al final... ¡perdés todos los puntos de esa mano!";
+
+    // ── 8. AL MAZO (IRSE) ─────────────────────────────────────
+    if (c.includes('al mazo') || c.includes('se fue al mazo') || c.includes('irse al mazo')) {
+        const teniaAlgo = c.includes('truco') || c.includes('envido') || c.includes('real') || c.includes('retruco') || c.includes('vale cuatro');
+        if (teniaAlgo) {
+            return "<b>El que se va al mazo pierde los puntos que estaban en juego, papá.</b><br>" +
+                   "Si ya había cantos de por medio, el rival cobra el escalón anterior al último grito. Decime qué se había cantado y te saco la cuenta, che.";
+        }
+        return "<b>Es 1 poroto de truco para el rival, papá.</b><br>" +
+               "Se fue al mazo sin que hubiera nada cantado en la mesa, así que cede 1 poroto directo. A barajar y dar de nuevo.";
     }
-    if (c.includes('mal cantado') || c.includes('cantó mal') || c.includes('equivocó')) {
-        return "Si canta los tantos y se equivoca o miente, marcha preso. Pierde los puntos de la mano en juego, regla de campeonato.";
+
+    // ── 9. SALUDOS Y EXPRESIONES ──────────────────────────────
+    if (c.includes('hola') || c.includes('buenas') || c.includes('buen dia') || c.includes('como estas')) {
+        return "<b>¡Buenas, papá! El Árbitro está listo en la mesa con el reglamento oficial.</b><br>" +
+               "Decime qué quilombo se armó en el asado —jerarquía de cartas, envidos, pardas o truco— y te dicto el fallo al toque, che.";
     }
-    if (c.includes('irse') || c.includes('al mazo') || c.includes('mazo')) {
-        return "El que se va al mazo pierde los puntos de la ronda (un punto de truco si no hay nada cantado). Y a no llorar, a barajar de nuevo.";
+    if (c.includes('gracias') || c.includes('ok') || c.includes('listo') || c.includes('entendi')) {
+        return "<b>De nada, maestro. A jugar limpio y no sean pechos fríos. 🃏</b><br>" +
+               "Cualquier otra discusión que se arme me chiflás y la cobramos.";
     }
-    
-    // Fallback genérico
+    if (c.includes('negro') || c.includes('pelotud') || c.includes('cagad') || c.includes('mal arbitro') || c.includes('te equivocas')) {
+        return "<b>¡Che, guardá los modales que acá el silbato lo tengo yo, papá!</b><br>" +
+               "El reglamento de la mesa habla por mí. Si creés que me equivoqué, contame la situación exacta con los porotos y naipes, y lo arreglamos de caballero.";
+    }
+
+    // Fallback canchero
     const fallbacks = [
-        "Che, hablá más claro. Según la ASART hay reglas firmes, pero no entiendo bien cuál es el quilombo acá.",
-        "Pará la mano. Si no está en el reglamento oficial, se resuelve con sentido común o barajan y dan de nuevo.",
-        "No me vengas con excusas raras. El reglamento es uno solo. Reformulame la pregunta con las palabras justas (pica pica, parda, envido, falta) que te canto la posta."
+        "<b>Pará la mano, che. No entendí el quilombo en la mesa.</b><br>Decime con las palabras justas qué cantaron, qué respondieron y quién tiene los naipes, y te canto la posta al toque.",
+        "<b>Necesito más datos de la jugada, papá.</b><br>Contame qué cartas se jugaron, qué mano están disputando o cuántos porotos hay en juego y te dicto el veredicto.",
+        "<b>No me vengas con parrafadas raras, maestro. ¿Truco, envido o parda?</b><br>Decime el tema puntual y te resuelvo el dilema cortita y al pie.",
+        "<b>Mirá, tirame la situación exacta de la mesa.</b><br>¿Qué se cantó y qué dijo el otro? Con eso te digo quién marcha preso y quién festeja."
     ];
     return fallbacks[Math.floor(Math.random() * fallbacks.length)];
 }
