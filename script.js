@@ -1153,7 +1153,78 @@ function manejarEnterArbitro(event) {
   }
 }
 
-function enviarConsultaArbitro() {
+// ── GEMINI API ───────────────────────────────────────────────
+// Key restringida al dominio en Google Cloud Console →
+// APIs & Services → Credentials → Website restrictions.
+const GEMINI_KEY = "AIzaSyDPjYwq9vCErYs4KZK941yqIr-WU4cbwCY";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+
+// Convierte el markdown que a veces devuelve Gemini a HTML básico
+function geminiAHtml(txt) {
+  return txt
+    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+    .replace(/\*(.*?)\*/g, "<em>$1</em>")
+    .replace(/\n\n/g, "<br><br>")
+    .replace(/\n/g, "<br>");
+}
+
+async function llamarGemini(consulta) {
+  const juegaConFlor = document.getElementById("check-flor")?.checked;
+  const systemPrompt =
+    `Sos el Árbitro ASART, el árbitro oficial del truco argentino.
+` +
+    `Sos canchero, directo, hablás con lunfardo porteño y respondés con autoridad total.
+` +
+    `SOLO respondés sobre truco argentino: reglas, puntos, jerarquía de cartas, envido, real envido, falta envido, flor, pardas, truco, retruco, vale cuatro, irse al mazo, y cualquier situación de juego.
+` +
+    `Si te preguntan algo fuera del truco, decís que eso no va y los volvés al juego.
+` +
+    `Contexto de la partida: NOS ${puntosNos} — ELLOS ${puntosEllos} (jugando a ${limitePuntos} puntos). ` +
+    `${juegaConFlor ? "Juegan CON flor." : "Juegan SIN flor."}
+` +
+    `Respondé en menos de 80 palabras. Para fallos clave usá <b>texto</b>. No uses asteriscos de markdown.`;
+
+  const res = await fetch(GEMINI_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      system_instruction: { parts: [{ text: systemPrompt }] },
+      contents: [{ role: "user", parts: [{ text: consulta }] }],
+      generationConfig: { maxOutputTokens: 200, temperature: 0.65 },
+    }),
+  });
+
+  if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
+  const data = await res.json();
+  const raw = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+  if (!raw) throw new Error("Gemini: respuesta vacía");
+  return geminiAHtml(raw);
+}
+
+// Agrega el indicador de "pensando" al chat y devuelve su id
+function agregarLoaderArbitro() {
+  const chat = document.getElementById("chat-arbitro");
+  const id = "loader-" + Date.now();
+  const div = document.createElement("div");
+  div.id = id;
+  div.className = "mensaje-arbitro";
+  div.innerHTML =
+    `<strong>🃏 Árbitro:</strong> ` +
+    `<span class="loader-dots"><span></span><span></span><span></span></span>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  return id;
+}
+
+// Reemplaza el loader con la respuesta final
+function reemplazarLoaderArbitro(id, texto) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = `<strong>🃏 Árbitro:</strong> ${texto}`;
+  document.getElementById("chat-arbitro").scrollTop = 99999;
+}
+
+async function enviarConsultaArbitro() {
   const input = document.getElementById("input-arbitro");
   const texto = input.value.trim();
   if (!texto) return;
@@ -1162,15 +1233,31 @@ function enviarConsultaArbitro() {
   agregarMensajeChat("usuario", texto);
   input.value = "";
 
-  // Simular tiempo de pensar del árbitro
-  setTimeout(
-    () => {
-      const respuesta = motorArbitro(texto);
-      agregarMensajeChat("arbitro", respuesta);
-      vibrar(40);
-    },
-    500 + Math.random() * 700,
-  );
+  // Bloquear input mientras el árbitro piensa
+  input.disabled = true;
+  const btnEnviar = document.getElementById("btn-enviar-arbitro");
+  btnEnviar.disabled = true;
+
+  const idLoader = agregarLoaderArbitro();
+
+  try {
+    let respuesta;
+    if (navigator.onLine) {
+      respuesta = await llamarGemini(texto);
+    } else {
+      // Offline: usar motor local
+      respuesta = motorArbitro(texto);
+    }
+    reemplazarLoaderArbitro(idLoader, respuesta);
+    vibrar(40);
+  } catch (err) {
+    console.warn("Gemini falló, usando motor local:", err.message);
+    reemplazarLoaderArbitro(idLoader, motorArbitro(texto));
+    vibrar(40);
+  } finally {
+    input.disabled = false;
+    btnEnviar.disabled = false;
+  }
 }
 
 function agregarMensajeChat(remitente, texto) {
