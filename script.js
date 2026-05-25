@@ -1193,10 +1193,23 @@ async function llamarGemini(consulta) {
     }),
   });
 
-  if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
   const data = await res.json();
+
+  // Si Gemini devolvio un error (quota, key invalida, safety, etc.)
+  if (!res.ok || data.error) {
+    const msg =
+      data.error?.message || data.error?.status || `HTTP ${res.status}`;
+    throw new Error(`Gemini: ${msg}`);
+  }
+
+  // Respuesta bloqueada por filtros de seguridad
+  const finishReason = data.candidates?.[0]?.finishReason;
+  if (finishReason && finishReason !== "STOP") {
+    throw new Error(`Gemini: bloqueado (${finishReason})`);
+  }
+
   const raw = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-  if (!raw) throw new Error("Gemini: respuesta vacía");
+  if (!raw) throw new Error("Gemini: sin texto en respuesta");
   return geminiAHtml(raw);
 }
 
