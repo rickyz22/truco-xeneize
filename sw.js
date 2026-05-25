@@ -1,78 +1,90 @@
-const CACHE_NAME = 'truco-v72';
-const RUNTIME_CACHE = 'truco-runtime-v71';
+const CACHE_NAME = "truco-v73";
+const RUNTIME_CACHE = "truco-runtime-v73";
 
 const PRECACHE_URLS = [
-  './',
-  './index.html',
-  './style.css',
-  './script.js',
-  './manifest.json',
-  './fosforo.png',
-  './icon-192.png',
-  './icon-512.png',
-  './icono.png',
-  './btn-jugar.png',
-  './btn-config.png',
-  './inicio.jpg',
-  './pelota.jpg',
-  './flor.png',
-  './flor-boca.png',
-  './flor-blanca.png',
-  './fondo-boca.jpg',
-  './fondo-river.jpg',
-  './fondo-racing.jpg',
-  './fondo-rojo.jpg',
-  './fondo-sanlorenzo.jpg',
-  './fondo-diego.jpg',
-  './fondo-clasico.png',
-  './fonts/Rajdhani-Medium.woff2',
-  './fonts/Rajdhani-SemiBold.woff2',
-  './fonts/Rajdhani-Bold.woff2'
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.json",
+  "./fosforo.png",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icono.png",
+  "./btn-jugar.png",
+  "./btn-config.png",
+  "./inicio.jpg",
+  "./pelota.jpg",
+  "./flor.png",
+  "./flor-boca.png",
+  "./flor-blanca.png",
+  "./fondo-boca.jpg",
+  "./fondo-river.jpg",
+  "./fondo-racing.jpg",
+  "./fondo-rojo.jpg",
+  "./fondo-sanlorenzo.jpg",
+  "./fondo-diego.jpg",
+  "./fondo-clasico.png",
+  "./fonts/Rajdhani-Medium.woff2",
+  "./fonts/Rajdhani-SemiBold.woff2",
+  "./fonts/Rajdhani-Bold.woff2",
 ];
 
-const isSameOrigin = (request) => new URL(request.url).origin === self.location.origin;
-const isImageRequest = (request) => request.destination === 'image';
+const isSameOrigin = (request) =>
+  new URL(request.url).origin === self.location.origin;
+const isImageRequest = (request) => request.destination === "image";
 
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => Promise.allSettled(PRECACHE_URLS.map((url) => cache.add(url))))
+    caches
+      .open(CACHE_NAME)
+      .then((cache) =>
+        Promise.allSettled(PRECACHE_URLS.map((url) => cache.add(url))),
+      ),
   );
 });
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys()
-      .then((cacheNames) => Promise.all(
-        cacheNames
-          .filter((cacheName) => cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE)
-          .map((cacheName) => caches.delete(cacheName))
-      ))
-      .then(() => self.clients.claim())
+    caches
+      .keys()
+      .then((cacheNames) =>
+        Promise.all(
+          cacheNames
+            .filter(
+              (cacheName) =>
+                cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE,
+            )
+            .map((cacheName) => caches.delete(cacheName)),
+        ),
+      )
+      .then(() => self.clients.claim()),
   );
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   const { request } = event;
 
-  if (request.method !== 'GET' || !isSameOrigin(request)) return;
+  if (request.method !== "GET" || !isSameOrigin(request)) return;
 
-  if (request.mode === 'navigate') {
+  if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
         .then((response) => {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
+          caches
+            .open(CACHE_NAME)
+            .then((cache) => cache.put("./index.html", copy));
           return response;
         })
-        .catch(() => caches.match('./index.html'))
+        .catch(() => caches.match("./index.html")),
     );
     return;
   }
@@ -85,16 +97,20 @@ self.addEventListener('fetch', (event) => {
         return fetch(request).then((response) => {
           if (response && response.ok) {
             const copy = response.clone();
-            caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy));
+            caches
+              .open(RUNTIME_CACHE)
+              .then((cache) => cache.put(request, copy));
           }
           return response;
         });
-      })
+      }),
     );
     return;
   }
 
   event.respondWith(
-    caches.match(request).then((cached) => cached || fetch(request))
+    caches
+      .match(request, { ignoreSearch: true })
+      .then((cached) => cached || fetch(request)),
   );
 });

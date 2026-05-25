@@ -1,261 +1,476 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head><meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Truco Profesional</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>Truco Profesional</title>
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0a1f44">
+        <!-- PWA Manifest -->
+        <link rel="manifest" href="manifest.json" />
+        <meta name="theme-color" content="#0a1f44" />
 
-    <!-- Assets 100% locales para WebView standalone -->
-    <link rel="stylesheet" href="style.css?v=72">
-</head>
-<body>
-    <!-- PANTALLA DE INICIO -->
-    <div id="pantalla-inicio">
-        <!-- Ruedita de ajustes arriba a la derecha -->
-        <button class="btn-config-top" onclick="abrirConfiguracion()">
-            <img src="btn-config.png" alt="Ajustes" class="img-btn-config">
-        </button>
-
-        <!-- Pelota rebotadora -->
-        <div id="pelota-rebotadora" class="pelota-bouncing-container" style="display: none;">
-            <div class="pelota-bouncing-clipper">
-                <img src="pelota.jpg" alt="Pelota" class="pelota-bouncing-img">
-            </div>
-        </div>
-
-        <!-- Botón de jugar centrado abajo -->
-        <div class="inicio-footer-cont">
-            <button id="btn-empezar" onclick="comenzarJuego()">
-                <img src="btn-jugar.png" alt="JUGAR AHORA" class="img-btn-empezar">
+        <!-- Assets 100% locales para WebView standalone -->
+        <link rel="stylesheet" href="style.css?v=73" />
+    </head>
+    <body>
+        <!-- PANTALLA DE INICIO -->
+        <div id="pantalla-inicio">
+            <!-- Ruedita de ajustes arriba a la derecha -->
+            <button class="btn-config-top" onclick="abrirConfiguracion()">
+                <img
+                    src="btn-config.png"
+                    alt="Ajustes"
+                    class="img-btn-config"
+                />
             </button>
-        </div>
-    </div>
-    
-    <!-- PANTALLA DE CONFIGURACIÓN PRO -->
-    <div id="pantalla-config" style="display: none;">
-        <div class="config-content">
-            <div class="config-header">
-                <h3><span class="material-icons">settings</span> AJUSTES</h3>
-                <button class="btn-cerrar-x" onclick="cerrarConfig()">
-                    <span class="material-icons">close</span>
-                </button>
-            </div>
 
-            <div class="config-scrollable">
-                <div class="seccion-config">
-                    <h4>ESTILO DE JUEGO</h4>
-                    <div class="grid-equipos">
-                        <button class="btn-equipo boca" onclick="cambiarEstilo('boca')">BOCA</button>
-                        <button class="btn-equipo river" onclick="cambiarEstilo('river')">RIVER</button>
-                        <button class="btn-equipo racing" onclick="cambiarEstilo('racing')">RACING</button>
-                        <button class="btn-equipo independiente" onclick="cambiarEstilo('independiente')">ROJO</button>
-                        <button class="btn-equipo sanlorenzo" onclick="cambiarEstilo('sanlorenzo')">CASLA</button>
-                        <button class="btn-equipo clasico" onclick="cambiarEstilo('clasico')">TRADICIONAL</button>
-                        <button class="btn-equipo diego" onclick="cambiarEstilo('diego')">D1EG0</button>
-                    </div>
-                </div>
-
-                <div class="seccion-config">
-                    <h4>LÍMITE DE PUNTOS</h4>
-                    <div class="toggle-item">
-                        <div class="toggle-info">
-                            <span class="material-icons">emoji_events</span>
-                            <span>Puntos de juego</span>
-                        </div>
-                        <div class="select-limite-container">
-                            <button id="btn-limite-15" class="btn-limite" onclick="cambiarLimitePuntos(15)">15 pts</button>
-                            <button id="btn-limite-30" class="btn-limite activa" onclick="cambiarLimitePuntos(30)">30 pts</button>
-                        </div>
-                    </div>
-                    <div class="toggle-item" style="margin-top: 8px;">
-                        <div class="toggle-info">
-                            <span class="material-icons">filter_vintage</span>
-                            <span>Jugar con Flor</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="check-flor" checked onchange="toggleElemento('flor')">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="seccion-config">
-                    <h4>PREFERENCIAS</h4>
-                    <div class="lista-toggles">
-                        <div class="toggle-item">
-                            <div class="toggle-info">
-                                <span class="material-icons">timer</span>
-                                <span>Cronómetro</span>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="check-crono" checked onchange="toggleElemento('crono')">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div class="toggle-item">
-                            <div class="toggle-info">
-                                <span class="material-icons">pin</span>
-                                <span>Marcador Digital</span>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="check-num" checked onchange="toggleElemento('num')">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div class="toggle-item">
-                            <div class="toggle-info">
-                                <span class="material-icons" id="icon-sonido">volume_up</span>
-                                <span>Sonido</span>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="check-sonido" checked onchange="toggleElemento('sonido')">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div class="toggle-item">
-                            <div class="toggle-info">
-                                <span class="material-icons">vibration</span>
-                                <span>Vibración</span>
-                            </div>
-                            <label class="switch">
-                                <input type="checkbox" id="check-vibrar" checked onchange="toggleElemento('vibrar')">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="seccion-config">
-                    <h4>HISTORIAL</h4>
-                    <div id="lista-historial"></div>
-                    <button class="btn-borrar-todo" onclick="reiniciarHistorial()">
-                        <span class="material-icons">delete_sweep</span> BORRAR TODO
-                    </button>
+            <!-- Pelota rebotadora -->
+            <div
+                id="pelota-rebotadora"
+                class="pelota-bouncing-container"
+                style="display: none"
+            >
+                <div class="pelota-bouncing-clipper">
+                    <img
+                        src="pelota.jpg"
+                        alt="Pelota"
+                        class="pelota-bouncing-img"
+                    />
                 </div>
             </div>
 
-            <div class="config-footer">
-                <button class="btn-guardar-pro" onclick="cerrarConfig()">GUARDAR CAMBIOS</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- CONTENIDO DEL JUEGO -->
-    <div id="contenido-juego" style="display: none;">
-        <button id="btn-config" class="btn-top-action" onclick="abrirConfiguracion()" aria-label="Abrir ajustes" title="Ajustes">
-            <svg class="top-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"></path>
-                <path d="M19.2 13.1c.05-.36.08-.72.08-1.1s-.03-.74-.08-1.1l2.05-1.58-2-3.46-2.45.98a8.2 8.2 0 0 0-1.9-1.1L14.55 3h-5.1L9.1 5.74c-.68.27-1.32.64-1.9 1.1l-2.45-.98-2 3.46 2.05 1.58c-.05.36-.08.72-.08 1.1s.03.74.08 1.1l-2.05 1.58 2 3.46 2.45-.98c.58.46 1.22.83 1.9 1.1L9.45 21h5.1l.35-2.74c.68-.27 1.32-.64 1.9-1.1l2.45.98 2-3.46-2.05-1.58Z"></path>
-            </svg>
-        </button>
-        <button id="btn-home" class="btn-top-action" onclick="volverInicio()" aria-label="Volver al menú" title="Menú">
-            <svg class="top-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M3.5 11.2 12 4l8.5 7.2"></path>
-                <path d="M5.8 10.2V20h4.4v-5.4h3.6V20h4.4v-9.8"></path>
-            </svg>
-        </button>
-        <button id="btn-arbitro" class="btn-top-action" onclick="abrirArbitro()" aria-label="Abrir árbitro" title="Árbitro">
-            <svg class="top-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M8.2 18.3c1.2.8 2.5 1.2 3.8 1.2 3.6 0 6.5-2.9 6.5-6.5S15.6 6.5 12 6.5 5.5 9.4 5.5 13c0 1.3.4 2.6 1.1 3.6"></path>
-                <path d="M6.6 16.6 3.8 21l4.4-2.8"></path>
-                <path d="M12 3v3.5"></path>
-                <path d="M18.4 5.6 16 8"></path>
-                <path d="M5.6 5.6 8 8"></path>
-                <path d="M9.5 12.3h5"></path>
-                <path d="M10.8 15h2.4"></path>
-            </svg>
-        </button>
-
-        <header class="marcador-futbol">
-            <div class="bloque-led" id="cont-nos">
-                <span class="etiqueta" id="lbl-nos">NOS</span>
-                <div class="led-display"><span id="num-nos">0</span></div>
-            </div>
-
-            <div class="seccion-cronometro" id="cont-crono">
-                <!-- Flor interactiva -->
-                <div id="cont-flor" class="flor-container" style="display: block;">
-                    <img src="flor.png" alt="Flor" class="flor-img">
-                </div>
-                <div id="cronometro">00:00</div>
-                <div class="controles-crono">
-                    <button id="btn-play-pause" onclick="toggleCronometro()">
-                        <span class="material-icons" id="icono-play">play_arrow</span>
-                    </button>
-                    <button onclick="resetearCronometro()">
-                        <span class="material-icons">replay</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="bloque-led" id="cont-ellos">
-                <span class="etiqueta" id="lbl-ellos">ELLOS</span>
-                <div class="led-display"><span id="num-ellos">0</span></div>
-            </div>
-        </header>
-
-        <main class="zona-juego">
-            <section class="columna">
-                <h2 id="name-nos" class="editable-name" onclick="editarNombre('nos')" title="Click para editar nombre">NOSOTROS</h2>
-                <div id="palitos-nos" class="contenedor-palitos"></div>
-                <div class="controles">
-                    <button class="btn-sumar" onclick="sumar('nos')" aria-label="Sumar punto a NOSOTROS">+</button>
-                    <button class="btn-restar" onclick="restar('nos')" aria-label="Restar punto a NOSOTROS">-</button>
-                </div>
-            </section>
-
-            <section class="columna">
-                <h2 id="name-ellos" class="editable-name" onclick="editarNombre('ellos')" title="Click para editar nombre">ELLOS</h2>
-                <div id="palitos-ellos" class="contenedor-palitos"></div>
-                <div class="controles">
-                    <button class="btn-sumar" onclick="sumar('ellos')" aria-label="Sumar punto a ELLOS">+</button>
-                    <button class="btn-restar" onclick="restar('ellos')" aria-label="Restar punto a ELLOS">-</button>
-                </div>
-            </section>
-        </main>
-
-        <button id="reset-btn" onclick="reiniciar()">NUEVA PARTIDA</button>
-
-
-    </div>
-    
-    <!-- MODAL DE VICTORIA -->
-    <div id="modal-custom" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
-        <div class="modal-content">
-            <span class="material-icons icono-alerta">emoji_events</span>
-            <h3 id="modal-titulo"></h3>
-            <p id="modal-mensaje"></p>
-            <div id="modal-botones" class="modal-botones-container"></div>
-        </div>
-    </div>
-
-    <!-- MODAL ÁRBITRO IA -->
-    <div id="modal-arbitro" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true">
-        <div class="bottom-sheet">
-            <div class="arbitro-header">
-                <h3><span class="material-icons">sports</span> ÁRBITRO ASART</h3>
-                <button class="btn-cerrar-x" onclick="cerrarArbitro()">
-                    <span class="material-icons">close</span>
-                </button>
-            </div>
-            <div id="chat-arbitro" class="chat-container">
-                <div class="mensaje-arbitro">
-                    <strong>🃏 Árbitro:</strong> ¡Buenas, papá! Silbato en mano y reglamento en la cabeza. Decime qué quilombo se armó en la mesa — jerarquía de cartas, pardas, envido, truco — y te doy el fallo <em>indiscutible</em>. ¿De qué va la discusión?
-                </div>
-            </div>
-            <div class="chat-input-container">
-                <input type="text" id="input-arbitro" placeholder="Escribí tu consulta..." onkeypress="manejarEnterArbitro(event)">
-                <button id="btn-enviar-arbitro" onclick="enviarConsultaArbitro()">
-                    <span class="material-icons">send</span>
+            <!-- Botón de jugar centrado abajo -->
+            <div class="inicio-footer-cont">
+                <button id="btn-empezar" onclick="comenzarJuego()">
+                    <img
+                        src="btn-jugar.png"
+                        alt="JUGAR AHORA"
+                        class="img-btn-empezar"
+                    />
                 </button>
             </div>
         </div>
-    </div>
 
-    <script src="script.js?v=72"></script>
-</body>
+        <!-- PANTALLA DE CONFIGURACIÓN PRO -->
+        <div id="pantalla-config" style="display: none">
+            <div class="config-content">
+                <div class="config-header">
+                    <h3>
+                        <span class="material-icons">settings</span> AJUSTES
+                    </h3>
+                    <button class="btn-cerrar-x" onclick="cerrarConfig()">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+
+                <div class="config-scrollable">
+                    <div class="seccion-config">
+                        <h4>ESTILO DE JUEGO</h4>
+                        <div class="grid-equipos">
+                            <button
+                                class="btn-equipo boca"
+                                onclick="cambiarEstilo('boca')"
+                            >
+                                BOCA
+                            </button>
+                            <button
+                                class="btn-equipo river"
+                                onclick="cambiarEstilo('river')"
+                            >
+                                RIVER
+                            </button>
+                            <button
+                                class="btn-equipo racing"
+                                onclick="cambiarEstilo('racing')"
+                            >
+                                RACING
+                            </button>
+                            <button
+                                class="btn-equipo independiente"
+                                onclick="cambiarEstilo('independiente')"
+                            >
+                                ROJO
+                            </button>
+                            <button
+                                class="btn-equipo sanlorenzo"
+                                onclick="cambiarEstilo('sanlorenzo')"
+                            >
+                                CASLA
+                            </button>
+                            <button
+                                class="btn-equipo clasico"
+                                onclick="cambiarEstilo('clasico')"
+                            >
+                                TRADICIONAL
+                            </button>
+                            <button
+                                class="btn-equipo diego"
+                                onclick="cambiarEstilo('diego')"
+                            >
+                                D1EG0
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="seccion-config">
+                        <h4>LÍMITE DE PUNTOS</h4>
+                        <div class="toggle-item">
+                            <div class="toggle-info">
+                                <span class="material-icons">emoji_events</span>
+                                <span>Puntos de juego</span>
+                            </div>
+                            <div class="select-limite-container">
+                                <button
+                                    id="btn-limite-15"
+                                    class="btn-limite"
+                                    onclick="cambiarLimitePuntos(15)"
+                                >
+                                    15 pts
+                                </button>
+                                <button
+                                    id="btn-limite-30"
+                                    class="btn-limite activa"
+                                    onclick="cambiarLimitePuntos(30)"
+                                >
+                                    30 pts
+                                </button>
+                            </div>
+                        </div>
+                        <div class="toggle-item" style="margin-top: 8px">
+                            <div class="toggle-info">
+                                <span class="material-icons"
+                                    >filter_vintage</span
+                                >
+                                <span>Jugar con Flor</span>
+                            </div>
+                            <label class="switch">
+                                <input
+                                    type="checkbox"
+                                    id="check-flor"
+                                    checked
+                                    onchange="toggleElemento('flor')"
+                                />
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="seccion-config">
+                        <h4>PREFERENCIAS</h4>
+                        <div class="lista-toggles">
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <span class="material-icons">timer</span>
+                                    <span>Cronómetro</span>
+                                </div>
+                                <label class="switch">
+                                    <input
+                                        type="checkbox"
+                                        id="check-crono"
+                                        checked
+                                        onchange="toggleElemento('crono')"
+                                    />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <span class="material-icons">pin</span>
+                                    <span>Marcador Digital</span>
+                                </div>
+                                <label class="switch">
+                                    <input
+                                        type="checkbox"
+                                        id="check-num"
+                                        checked
+                                        onchange="toggleElemento('num')"
+                                    />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <span
+                                        class="material-icons"
+                                        id="icon-sonido"
+                                        >volume_up</span
+                                    >
+                                    <span>Sonido</span>
+                                </div>
+                                <label class="switch">
+                                    <input
+                                        type="checkbox"
+                                        id="check-sonido"
+                                        checked
+                                        onchange="toggleElemento('sonido')"
+                                    />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <span class="material-icons"
+                                        >vibration</span
+                                    >
+                                    <span>Vibración</span>
+                                </div>
+                                <label class="switch">
+                                    <input
+                                        type="checkbox"
+                                        id="check-vibrar"
+                                        checked
+                                        onchange="toggleElemento('vibrar')"
+                                    />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="seccion-config">
+                        <h4>HISTORIAL</h4>
+                        <div id="lista-historial"></div>
+                        <button
+                            class="btn-borrar-todo"
+                            onclick="reiniciarHistorial()"
+                        >
+                            <span class="material-icons">delete_sweep</span>
+                            BORRAR TODO
+                        </button>
+                    </div>
+                </div>
+
+                <div class="config-footer">
+                    <button class="btn-guardar-pro" onclick="cerrarConfig()">
+                        GUARDAR CAMBIOS
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENIDO DEL JUEGO -->
+        <div id="contenido-juego" style="display: none">
+            <button
+                id="btn-config"
+                class="btn-top-action"
+                onclick="abrirConfiguracion()"
+                aria-label="Abrir ajustes"
+                title="Ajustes"
+            >
+                <svg
+                    class="top-action-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"
+                    ></path>
+                    <path
+                        d="M19.2 13.1c.05-.36.08-.72.08-1.1s-.03-.74-.08-1.1l2.05-1.58-2-3.46-2.45.98a8.2 8.2 0 0 0-1.9-1.1L14.55 3h-5.1L9.1 5.74c-.68.27-1.32.64-1.9 1.1l-2.45-.98-2 3.46 2.05 1.58c-.05.36-.08.72-.08 1.1s.03.74.08 1.1l-2.05 1.58 2 3.46 2.45-.98c.58.46 1.22.83 1.9 1.1L9.45 21h5.1l.35-2.74c.68-.27 1.32-.64 1.9-1.1l2.45.98 2-3.46-2.05-1.58Z"
+                    ></path>
+                </svg>
+            </button>
+            <button
+                id="btn-home"
+                class="btn-top-action"
+                onclick="volverInicio()"
+                aria-label="Volver al menú"
+                title="Menú"
+            >
+                <svg
+                    class="top-action-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path d="M3.5 11.2 12 4l8.5 7.2"></path>
+                    <path d="M5.8 10.2V20h4.4v-5.4h3.6V20h4.4v-9.8"></path>
+                </svg>
+            </button>
+            <button
+                id="btn-arbitro"
+                class="btn-top-action"
+                onclick="abrirArbitro()"
+                aria-label="Abrir árbitro"
+                title="Árbitro"
+            >
+                <svg
+                    class="top-action-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M8.2 18.3c1.2.8 2.5 1.2 3.8 1.2 3.6 0 6.5-2.9 6.5-6.5S15.6 6.5 12 6.5 5.5 9.4 5.5 13c0 1.3.4 2.6 1.1 3.6"
+                    ></path>
+                    <path d="M6.6 16.6 3.8 21l4.4-2.8"></path>
+                    <path d="M12 3v3.5"></path>
+                    <path d="M18.4 5.6 16 8"></path>
+                    <path d="M5.6 5.6 8 8"></path>
+                    <path d="M9.5 12.3h5"></path>
+                    <path d="M10.8 15h2.4"></path>
+                </svg>
+            </button>
+
+            <header class="marcador-futbol">
+                <div class="bloque-led" id="cont-nos">
+                    <span class="etiqueta" id="lbl-nos">NOS</span>
+                    <div class="led-display"><span id="num-nos">0</span></div>
+                </div>
+
+                <div class="seccion-cronometro" id="cont-crono">
+                    <!-- Flor interactiva -->
+                    <div
+                        id="cont-flor"
+                        class="flor-container"
+                        style="display: block"
+                    >
+                        <img src="flor.png" alt="Flor" class="flor-img" />
+                    </div>
+                    <div id="cronometro">00:00</div>
+                    <div class="controles-crono">
+                        <button
+                            id="btn-play-pause"
+                            onclick="toggleCronometro()"
+                        >
+                            <span class="material-icons" id="icono-play"
+                                >play_arrow</span
+                            >
+                        </button>
+                        <button onclick="resetearCronometro()">
+                            <span class="material-icons">replay</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bloque-led" id="cont-ellos">
+                    <span class="etiqueta" id="lbl-ellos">ELLOS</span>
+                    <div class="led-display"><span id="num-ellos">0</span></div>
+                </div>
+            </header>
+
+            <main class="zona-juego">
+                <section class="columna">
+                    <h2
+                        id="name-nos"
+                        class="editable-name"
+                        onclick="editarNombre('nos')"
+                        title="Click para editar nombre"
+                    >
+                        NOSOTROS
+                    </h2>
+                    <div id="palitos-nos" class="contenedor-palitos"></div>
+                    <div class="controles">
+                        <button
+                            class="btn-sumar"
+                            onclick="sumar('nos')"
+                            aria-label="Sumar punto a NOSOTROS"
+                        >
+                            +
+                        </button>
+                        <button
+                            class="btn-restar"
+                            onclick="restar('nos')"
+                            aria-label="Restar punto a NOSOTROS"
+                        >
+                            -
+                        </button>
+                    </div>
+                </section>
+
+                <section class="columna">
+                    <h2
+                        id="name-ellos"
+                        class="editable-name"
+                        onclick="editarNombre('ellos')"
+                        title="Click para editar nombre"
+                    >
+                        ELLOS
+                    </h2>
+                    <div id="palitos-ellos" class="contenedor-palitos"></div>
+                    <div class="controles">
+                        <button
+                            class="btn-sumar"
+                            onclick="sumar('ellos')"
+                            aria-label="Sumar punto a ELLOS"
+                        >
+                            +
+                        </button>
+                        <button
+                            class="btn-restar"
+                            onclick="restar('ellos')"
+                            aria-label="Restar punto a ELLOS"
+                        >
+                            -
+                        </button>
+                    </div>
+                </section>
+            </main>
+
+            <button id="reset-btn" onclick="reiniciar()">NUEVA PARTIDA</button>
+        </div>
+
+        <!-- MODAL DE VICTORIA -->
+        <div
+            id="modal-custom"
+            class="modal-overlay"
+            style="display: none"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-titulo"
+        >
+            <div class="modal-content">
+                <span class="material-icons icono-alerta">emoji_events</span>
+                <h3 id="modal-titulo"></h3>
+                <p id="modal-mensaje"></p>
+                <div id="modal-botones" class="modal-botones-container"></div>
+            </div>
+        </div>
+
+        <!-- MODAL ÁRBITRO IA -->
+        <div
+            id="modal-arbitro"
+            class="modal-overlay"
+            style="display: none"
+            role="dialog"
+            aria-modal="true"
+        >
+            <div class="bottom-sheet">
+                <div class="arbitro-header">
+                    <h3>
+                        <span class="material-icons">sports</span> ÁRBITRO ASART
+                    </h3>
+                    <button class="btn-cerrar-x" onclick="cerrarArbitro()">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                <div id="chat-arbitro" class="chat-container">
+                    <div class="mensaje-arbitro">
+                        <strong>🃏 Árbitro:</strong> ¡Buenas, papá! Silbato en
+                        mano y reglamento en la cabeza. Decime qué quilombo se
+                        armó en la mesa — jerarquía de cartas, pardas, envido,
+                        truco — y te doy el fallo <em>indiscutible</em>. ¿De qué
+                        va la discusión?
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input
+                        type="text"
+                        id="input-arbitro"
+                        placeholder="Escribí tu consulta..."
+                        onkeypress="manejarEnterArbitro(event)"
+                    />
+                    <button
+                        id="btn-enviar-arbitro"
+                        onclick="enviarConsultaArbitro()"
+                    >
+                        <span class="material-icons">send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js?v=73"></script>
+    </body>
 </html>
-
