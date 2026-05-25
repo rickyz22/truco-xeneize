@@ -1153,11 +1153,10 @@ function manejarEnterArbitro(event) {
   }
 }
 
-// ── GEMINI API ───────────────────────────────────────────────
-// Key restringida al dominio en Google Cloud Console →
-// APIs & Services → Credentials → Website restrictions.
-const GEMINI_KEY = "AIzaSyDPjYwq9vCErYs4KZK941yqIr-WU4cbwCY";
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+// ── GEMINI vía CLOUDFLARE WORKER PROXY ───────────────────────
+// La key vive en el Worker de Cloudflare como secreto.
+// Aquí solo va la URL pública del proxy.
+const WORKER_URL = "https://truco-ricky.rickyz1749.workers.dev/";
 
 // Convierte el markdown que a veces devuelve Gemini a HTML básico
 function geminiAHtml(txt) {
@@ -1184,7 +1183,7 @@ async function llamarGemini(consulta) {
 ` +
     `Respondé en menos de 80 palabras. Para fallos clave usá <b>texto</b>. No uses asteriscos de markdown.`;
 
-  const res = await fetch(GEMINI_URL, {
+  const res = await fetch(WORKER_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -1256,9 +1255,8 @@ async function enviarConsultaArbitro() {
     reemplazarLoaderArbitro(idLoader, respuesta, "gemini");
     vibrar(40);
   } catch (err) {
-    // TypeError 'Failed to fetch' = sin red; resto = error de API
-    const esOffline = err instanceof TypeError || err.message.includes("fetch");
     console.warn("Arbitro fallback:", err.message);
+    const esOffline = err instanceof TypeError || err.message.includes("fetch");
     reemplazarLoaderArbitro(
       idLoader,
       motorArbitro(texto),
