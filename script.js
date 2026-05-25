@@ -1157,7 +1157,7 @@ function manejarEnterArbitro(event) {
 // Key restringida al dominio en Google Cloud Console →
 // APIs & Services → Credentials → Website restrictions.
 const GEMINI_KEY = "AIzaSyDPjYwq9vCErYs4KZK941yqIr-WU4cbwCY";
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
 
 // Convierte el markdown que a veces devuelve Gemini a HTML básico
 function geminiAHtml(txt) {

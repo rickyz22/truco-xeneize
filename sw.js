@@ -1,5 +1,5 @@
-const CACHE_NAME = "truco-v79";
-const RUNTIME_CACHE = "truco-runtime-v79";
+const CACHE_NAME = "truco-v80";
+const RUNTIME_CACHE = "truco-runtime-v80";
 
 const PRECACHE_URLS = [
   "./",
