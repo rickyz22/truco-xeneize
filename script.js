@@ -1216,11 +1216,18 @@ function agregarLoaderArbitro() {
   return id;
 }
 
-// Reemplaza el loader con la respuesta final
-function reemplazarLoaderArbitro(id, texto) {
+// Reemplaza el loader con la respuesta y muestra el origen
+function reemplazarLoaderArbitro(id, texto, origen) {
   const el = document.getElementById(id);
   if (!el) return;
-  el.innerHTML = `<strong>🃏 Árbitro:</strong> ${texto}`;
+  // origen: 'gemini' | 'local' | 'error'
+  const badge =
+    origen === "gemini"
+      ? `<span class="badge-origen gemini">⚡ Gemini</span>`
+      : origen === "error"
+        ? `<span class="badge-origen error">⚠️ local</span>`
+        : `<span class="badge-origen local">📵 offline</span>`;
+  el.innerHTML = `<strong>🃏 Árbitro:</strong> ${badge} ${texto}`;
   document.getElementById("chat-arbitro").scrollTop = 99999;
 }
 
@@ -1241,18 +1248,18 @@ async function enviarConsultaArbitro() {
   const idLoader = agregarLoaderArbitro();
 
   try {
-    let respuesta;
-    if (navigator.onLine) {
-      respuesta = await llamarGemini(texto);
-    } else {
-      // Offline: usar motor local
-      respuesta = motorArbitro(texto);
-    }
-    reemplazarLoaderArbitro(idLoader, respuesta);
+    if (!navigator.onLine) throw new Error("sin internet");
+    const respuesta = await llamarGemini(texto);
+    reemplazarLoaderArbitro(idLoader, respuesta, "gemini");
     vibrar(40);
   } catch (err) {
-    console.warn("Gemini falló, usando motor local:", err.message);
-    reemplazarLoaderArbitro(idLoader, motorArbitro(texto));
+    const esOffline = !navigator.onLine || err.message === "sin internet";
+    console.warn("Arbitro fallback:", err.message);
+    reemplazarLoaderArbitro(
+      idLoader,
+      motorArbitro(texto),
+      esOffline ? "local" : "error",
+    );
     vibrar(40);
   } finally {
     input.disabled = false;
