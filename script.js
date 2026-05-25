@@ -1210,6 +1210,7 @@ function agregarLoaderArbitro() {
   div.className = "mensaje-arbitro";
   div.innerHTML =
     `<strong>🃏 Árbitro:</strong> ` +
+    `<span style="opacity:0.6;font-size:0.85em">Consultando Gemini…</span> ` +
     `<span class="loader-dots"><span></span><span></span><span></span></span>`;
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
@@ -1248,12 +1249,15 @@ async function enviarConsultaArbitro() {
   const idLoader = agregarLoaderArbitro();
 
   try {
-    if (!navigator.onLine) throw new Error("sin internet");
+    // No usamos navigator.onLine: en PWAs de Android puede devolver
+    // false aunque haya internet. Intentamos la llamada directamente
+    // y dejamos que el fetch falle si no hay red.
     const respuesta = await llamarGemini(texto);
     reemplazarLoaderArbitro(idLoader, respuesta, "gemini");
     vibrar(40);
   } catch (err) {
-    const esOffline = !navigator.onLine || err.message === "sin internet";
+    // TypeError 'Failed to fetch' = sin red; resto = error de API
+    const esOffline = err instanceof TypeError || err.message.includes("fetch");
     console.warn("Arbitro fallback:", err.message);
     reemplazarLoaderArbitro(
       idLoader,
