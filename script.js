@@ -8,12 +8,202 @@ let limitePuntos = 30;
 let nombreNos = localStorage.getItem('nombreNos') || 'NOSOTROS';
 let nombreEllos = localStorage.getItem('nombreEllos') || 'ELLOS';
 let usuarioInteractuo = false;
+let pantallaAntesConfig = 'inicio';
 
 // Caché en memoria de preferencias de hardware/sonido para evitar accesos síncronos lentos a localStorage en el hilo principal
 let prefVibrar = localStorage.getItem('show-vibrar') !== 'false';
 let prefSonido = localStorage.getItem('show-sonido') !== 'false';
 
 let audioContext = null;
+
+const ICONOS_LOCALES = {
+    settings: '\u2699',
+    close: '\u00d7',
+    emoji_events: '\ud83c\udfc6',
+    filter_vintage: '\u273f',
+    timer: '\u23f1',
+    pin: '#',
+    volume_up: '\ud83d\udd0a',
+    volume_off: '\ud83d\udd07',
+    vibration: '\u224b',
+    delete_sweep: '\u232b',
+    home: '\u2302',
+    sports: '\u2691',
+    play_arrow: '\u25b6',
+    pause: '\u2161',
+    replay: '\u21ba',
+    send: '\u27a4'
+};
+
+function setIcon(el, nombre) {
+    if (!el) return;
+    el.dataset.icon = nombre;
+    el.textContent = ICONOS_LOCALES[nombre] || nombre;
+}
+
+function aplicarIconosLocales() {
+    document.querySelectorAll('.material-icons').forEach(el => {
+        setIcon(el, el.dataset.icon || el.textContent.trim());
+    });
+}
+
+let refrescandoPorUpdate = false;
+
+function mostrarAvisoActualizacion(worker) {
+    if (!worker || document.getElementById('update-banner')) return;
+
+    const banner = document.createElement('div');
+    banner.id = 'update-banner';
+    banner.innerHTML = `
+        <div class="update-banner-text">
+            <strong>Actualizacion disponible</strong>
+            <span>Toca para cargar la ultima version.</span>
+        </div>
+        <button type="button" id="btn-update-app">Actualizar</button>
+    `;
+
+    document.body.appendChild(banner);
+
+    document.getElementById('btn-update-app').addEventListener('click', () => {
+        worker.postMessage({ type: 'SKIP_WAITING' });
+    });
+}
+
+function registrarServiceWorker() {
+    if (!('serviceWorker' in navigator) || window.location.protocol === 'file:') return;
+
+    navigator.serviceWorker.register('sw.js')
+        .then(reg => {
+            console.log('Service Worker registrado con exito:', reg.scope);
+
+            if (reg.waiting && navigator.serviceWorker.controller) {
+                mostrarAvisoActualizacion(reg.waiting);
+            }
+
+            reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                if (!newWorker) return;
+
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        mostrarAvisoActualizacion(newWorker);
+                    }
+                });
+            });
+        })
+        .catch(err => console.error('Error al registrar el Service Worker:', err));
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refrescandoPorUpdate) return;
+        refrescandoPorUpdate = true;
+        window.location.reload();
+    });
+}
+
+const DB_NAME = 'truco-xeneize-db';
+const DB_VERSION = 1;
+const STORE_APP = 'app';
+let dbPromise = null;
+
+function abrirDB() {
+    if (!('indexedDB' in window)) {
+        return Promise.reject(new Error('IndexedDB no disponible'));
+    }
+
+    if (dbPromise) return dbPromise;
+
+    dbPromise = new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = () => {
+            const db = request.result;
+            if (!db.objectStoreNames.contains(STORE_APP)) {
+                db.createObjectStore(STORE_APP);
+            }
+        };
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+
+    return dbPromise;
+}
+
+async function leerDB(clave) {
+    const db = await abrirDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_APP, 'readonly');
+        const request = tx.objectStore(STORE_APP).get(clave);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+async function guardarDB(clave, valor) {
+    const db = await abrirDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_APP, 'readwrite');
+        tx.objectStore(STORE_APP).put(valor, clave);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+async function borrarDB(clave) {
+    const db = await abrirDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_APP, 'readwrite');
+        tx.objectStore(STORE_APP).delete(clave);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+function leerPartidaLegacy() {
+    const pGuardados = localStorage.getItem('puntosNos');
+    if (pGuardados === null && !localStorage.getItem('partidaIniciada')) return null;
+
+    return {
+        puntosNos: parseInt(localStorage.getItem('puntosNos') || 0),
+        puntosEllos: parseInt(localStorage.getItem('puntosEllos') || 0),
+        segundos: parseInt(localStorage.getItem('segundos') || 0),
+        actualizadaEn: new Date().toISOString()
+    };
+}
+
+async function cargarPartidaPersistida() {
+    try {
+        const partida = await leerDB('partida');
+        if (partida) return partida;
+
+        const legacy = leerPartidaLegacy();
+        if (legacy) {
+            await guardarDB('partida', legacy);
+            return legacy;
+        }
+    } catch (error) {
+        console.warn('IndexedDB no disponible, usando localStorage para partida:', error);
+        return leerPartidaLegacy();
+    }
+
+    return null;
+}
+
+async function leerHistorialPersistido() {
+    try {
+        const historial = await leerDB('historial');
+        if (Array.isArray(historial)) return historial;
+
+        const legacy = JSON.parse(localStorage.getItem('historial') || '[]');
+        if (legacy.length) {
+            await guardarDB('historial', legacy);
+        }
+        return legacy;
+    } catch (error) {
+        console.warn('IndexedDB no disponible, usando localStorage para historial:', error);
+        return JSON.parse(localStorage.getItem('historial') || '[]');
+    }
+}
 
 function vibrar(ms = 30) { 
     if (!usuarioInteractuo) return; // Evita warnings al restaurar la configuración guardada en el window.onload
@@ -100,14 +290,30 @@ document.addEventListener('visibilitychange', async () => {
 });
 
 let timerGuardar = null;
-function guardarProgresoInmediato() {
-    localStorage.setItem('puntosNos', puntosNos);
-    localStorage.setItem('puntosEllos', puntosEllos);
-    localStorage.setItem('segundos', segundos);
+async function guardarProgresoInmediato() {
+    const partida = {
+        puntosNos,
+        puntosEllos,
+        segundos,
+        actualizadaEn: new Date().toISOString()
+    };
+
+    try {
+        await guardarDB('partida', partida);
+        localStorage.setItem('partidaIniciada', 'true');
+    } catch (error) {
+        console.warn('IndexedDB no disponible, guardando partida en localStorage:', error);
+        localStorage.setItem('partidaIniciada', 'true');
+        localStorage.setItem('puntosNos', puntosNos);
+        localStorage.setItem('puntosEllos', puntosEllos);
+        localStorage.setItem('segundos', segundos);
+    }
 }
 function guardarProgreso() {
     if (timerGuardar) clearTimeout(timerGuardar);
-    timerGuardar = setTimeout(guardarProgresoInmediato, 150);
+    timerGuardar = setTimeout(() => {
+        void guardarProgresoInmediato();
+    }, 150);
 }
 
 // Asegurar que se guarde si el usuario minimiza la app de golpe
@@ -115,12 +321,12 @@ document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
         if (timerGuardar) {
             clearTimeout(timerGuardar);
-            guardarProgresoInmediato();
+            void guardarProgresoInmediato();
         }
     }
 });
 
-function comenzarJuego() {
+async function comenzarJuego() {
     vibrar();
     activarWakeLock();
 
@@ -129,11 +335,11 @@ function comenzarJuego() {
     localStorage.setItem('partidaIniciada', 'true');
 
     // Si habia una partida guardada, retomarla
-    const pGuardados = localStorage.getItem('puntosNos');
-    if (pGuardados !== null) {
-        puntosNos = parseInt(localStorage.getItem('puntosNos') || 0);
-        puntosEllos = parseInt(localStorage.getItem('puntosEllos') || 0);
-        segundos = parseInt(localStorage.getItem('segundos') || 0);
+    const partidaGuardada = await cargarPartidaPersistida();
+    if (partidaGuardada) {
+        puntosNos = parseInt(partidaGuardada.puntosNos || 0);
+        puntosEllos = parseInt(partidaGuardada.puntosEllos || 0);
+        segundos = parseInt(partidaGuardada.segundos || 0);
         mostrarTiempo();
     }
 
@@ -151,7 +357,7 @@ function sincronizarGridMarcador() {
 
 function mostrarPantallaJuego() {
     document.getElementById('pantalla-inicio').style.display = 'none';
-    document.getElementById('contenido-juego').style.display = 'block';
+    document.getElementById('contenido-juego').style.display = 'flex';
     detenerAnimacionPelota();
     sincronizarGridMarcador();
     actualizarInterfaz();
@@ -170,7 +376,7 @@ function toggleCronometro() {
             guardarProgreso();
         }, 1000);
 
-        icono.innerText = "pause";
+        setIcon(icono, 'pause');
         btn.classList.add('corriendo');
         btn.style.background = ""; 
         btn.style.color = "";
@@ -179,7 +385,7 @@ function toggleCronometro() {
     } else {
         clearInterval(cronometroIntervalo);
 
-        icono.innerText = "play_arrow";
+        setIcon(icono, 'play_arrow');
         btn.classList.remove('corriendo');
         btn.style.background = ""; 
         btn.style.color = "";
@@ -205,7 +411,7 @@ function resetearCronometro() {
     mostrarTiempo();
     guardarProgreso();
 
-    document.getElementById('icono-play').innerText = "play_arrow";
+    setIcon(document.getElementById('icono-play'), 'play_arrow');
 
     const btn = document.getElementById('btn-play-pause');
     btn.classList.remove('corriendo');
@@ -239,7 +445,7 @@ function sumar(equipo) {
         const ganador = puntosNos >= limitePuntos ? nombreNos : nombreEllos;
         vibrar(200);
         playBeep('victoria');
-        guardarEnHistorial(ganador);
+        void guardarEnHistorial(ganador);
         mostrarModal("\u00a1GANARON!", `El equipo de ${ganador} se lleva la gloria.`, false);
     }
 
@@ -284,7 +490,7 @@ function actualizarInterfaz(equipo) {
         vibrar(200);
         playBeep('victoria');
 
-        guardarEnHistorial(ganador);
+        void guardarEnHistorial(ganador);
 
         mostrarModal("¡GANARON!", `El equipo de ${ganador} se lleva la gloria.`, false);
     }
@@ -334,8 +540,6 @@ function reiniciarTotalmente() {
     puntosEllos = 0;
 
     localStorage.setItem('partidaIniciada', 'true');
-    localStorage.setItem('puntosNos', 0);
-    localStorage.setItem('puntosEllos', 0);
     sessionStorage.setItem('enJuego', 'true');
 
     resetearCronometro();
@@ -343,8 +547,8 @@ function reiniciarTotalmente() {
     reiniciarArbitro();
 }
 
-function guardarEnHistorial(ganador) {
-    let historial = JSON.parse(localStorage.getItem('historial') || '[]');
+async function guardarEnHistorial(ganador) {
+    let historial = await leerHistorialPersistido();
 
     historial.push({
         fecha: new Date().toISOString(),
@@ -356,14 +560,20 @@ function guardarEnHistorial(ganador) {
 
     if (historial.length > 10) historial.shift();
 
-    localStorage.setItem('historial', JSON.stringify(historial));
+    try {
+        await guardarDB('historial', historial);
+        localStorage.removeItem('historial');
+    } catch (error) {
+        console.warn('IndexedDB no disponible, guardando historial en localStorage:', error);
+        localStorage.setItem('historial', JSON.stringify(historial));
+    }
 }
 
-function mostrarHistorial() {
+async function mostrarHistorial() {
     const lista = document.getElementById('lista-historial');
     lista.innerHTML = '';
 
-    const historial = JSON.parse(localStorage.getItem('historial') || '[]');
+    const historial = await leerHistorialPersistido();
 
     if (historial.length === 0) {
         lista.innerHTML = '<p>No hay partidas guardadas.</p>';
@@ -383,10 +593,15 @@ function mostrarHistorial() {
     });
 }
 
-function reiniciarHistorial() {
+async function reiniciarHistorial() {
     vibrar();
     localStorage.removeItem('historial');
-    mostrarHistorial();
+    try {
+        await borrarDB('historial');
+    } catch (error) {
+        console.warn('No se pudo borrar historial en IndexedDB:', error);
+    }
+    await mostrarHistorial();
 }
 
 // Reconstrucción completa (usada en reset/init)
@@ -467,11 +682,14 @@ function quitarPalito(id, puntos) {
 }
 
 function abrirConfiguracion() {
+    const contenidoJuego = document.getElementById('contenido-juego');
+    pantallaAntesConfig = contenidoJuego && contenidoJuego.style.display !== 'none' ? 'juego' : 'inicio';
+
     document.getElementById('pantalla-inicio').style.display = 'none';
-    document.getElementById('contenido-juego').style.display = 'none';
+    contenidoJuego.style.display = 'none';
     document.getElementById('pantalla-config').style.display = 'flex';
     detenerAnimacionPelota();
-    mostrarHistorial();
+    void mostrarHistorial();
 }
 
 function cerrarConfig() {
@@ -479,8 +697,8 @@ function cerrarConfig() {
 
     document.getElementById('pantalla-config').style.display = 'none';
 
-    if (localStorage.getItem('partidaIniciada')) {
-        document.getElementById('contenido-juego').style.display = 'block';
+    if (pantallaAntesConfig === 'juego') {
+        document.getElementById('contenido-juego').style.display = 'flex';
         detenerAnimacionPelota();
     } else {
         document.getElementById('pantalla-inicio').style.display = 'flex';
@@ -512,7 +730,7 @@ function _irAlMenuSinBorrar() {
     clearInterval(cronometroIntervalo);
     cronometroIntervalo = null;
     corriendo = false;
-    guardarProgresoInmediato();
+    void guardarProgresoInmediato();
 
     document.getElementById('contenido-juego').style.display = 'none';
     document.getElementById('pantalla-inicio').style.display = 'flex';
@@ -602,7 +820,7 @@ function toggleElemento(tipo) {
         document.getElementById('cont-ellos').style.visibility = activo ? 'visible' : 'hidden';
     }
     else if (tipo === 'sonido') {
-        document.getElementById('icon-sonido').innerText = activo ? 'volume_up' : 'volume_off';
+        setIcon(document.getElementById('icon-sonido'), activo ? 'volume_up' : 'volume_off');
     }
     else if (tipo === 'flor') {
         const elFlor = document.getElementById('cont-flor');
@@ -613,26 +831,9 @@ function toggleElemento(tipo) {
     vibrar();
 }
 
-window.onload = () => {
-    // Registro de Service Worker para soporte offline PWA (evitar en entorno local de archivo)
-    if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
-        navigator.serviceWorker.register('sw.js')
-            .then(reg => {
-                console.log('Service Worker registrado con éxito:', reg.scope);
-                
-                // Si hay un Service Worker nuevo instalándose, escuchar su activación
-                reg.addEventListener('updatefound', () => {
-                    const newWorker = reg.installing;
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('Nueva versión disponible. Recargando automáticamente...');
-                            window.location.reload();
-                        }
-                    });
-                });
-            })
-            .catch(err => console.error('Error al registrar el Service Worker:', err));
-    }
+window.onload = async () => {
+    aplicarIconosLocales();
+    registrarServiceWorker();
 
     // Cargar estilo y tema inicial
     const equipo = localStorage.getItem('equipo') || 'boca';
@@ -649,13 +850,13 @@ window.onload = () => {
     // Detectar si la app fue cerrada completamente o solo minimizada
     // sessionStorage se borra al cerrar la app, pero persiste al cambiar de pantalla
     const enSesionActiva = sessionStorage.getItem('enJuego');
-    const hayPartidaGuardada = localStorage.getItem('partidaIniciada');
+    const partidaGuardada = await cargarPartidaPersistida();
 
-    if (enSesionActiva && hayPartidaGuardada) {
+    if (enSesionActiva && partidaGuardada) {
         // Volvio desde otra app (cambio de pantalla), restaurar anotador directamente
-        puntosNos = parseInt(localStorage.getItem('puntosNos') || 0);
-        puntosEllos = parseInt(localStorage.getItem('puntosEllos') || 0);
-        segundos = parseInt(localStorage.getItem('segundos') || 0);
+        puntosNos = parseInt(partidaGuardada.puntosNos || 0);
+        puntosEllos = parseInt(partidaGuardada.puntosEllos || 0);
+        segundos = parseInt(partidaGuardada.segundos || 0);
         mostrarTiempo();
         mostrarPantallaJuego();
     } else {
@@ -675,8 +876,7 @@ window.onload = () => {
                 el.checked = JSON.parse(estado);
 
                 if (tipo === 'sonido') {
-                    document.getElementById('icon-sonido').innerText =
-                        el.checked ? 'volume_up' : 'volume_off';
+                    setIcon(document.getElementById('icon-sonido'), el.checked ? 'volume_up' : 'volume_off');
                 } else {
                     toggleElemento(tipo);
                 }
@@ -1186,3 +1386,4 @@ function motorArbitro(consulta) {
     ];
     return fallbacks[Math.floor(Math.random() * fallbacks.length)];
 }
+
