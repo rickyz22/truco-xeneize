@@ -1225,7 +1225,7 @@ function reemplazarLoaderArbitro(id, texto, origen) {
   // origen: 'gemini' | 'local' | 'error'
   const badge =
     origen === "gemini"
-      ? `<span class="badge-origen gemini">⚡ Gemini</span>`
+      ? `<span class="badge-origen gemini">⚡ IA</span>`
       : origen === "error"
         ? `<span class="badge-origen error">⚠️ local</span>`
         : `<span class="badge-origen local">📵 offline</span>`;
