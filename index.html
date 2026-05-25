@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#0a1f44">
 
     <!-- Assets 100% locales para WebView standalone -->
-    <link rel="stylesheet" href="style.css?v=71">
+    <link rel="stylesheet" href="style.css?v=72">
 </head>
 <body>
     <!-- PANTALLA DE INICIO -->
@@ -202,8 +202,8 @@
                 <h2 id="name-nos" class="editable-name" onclick="editarNombre('nos')" title="Click para editar nombre">NOSOTROS</h2>
                 <div id="palitos-nos" class="contenedor-palitos"></div>
                 <div class="controles">
-                    <button class="btn-sumar" onclick="sumar('nos')">+</button>
-                    <button class="btn-restar" onclick="restar('nos')">-</button>
+                    <button class="btn-sumar" onclick="sumar('nos')" aria-label="Sumar punto a NOSOTROS">+</button>
+                    <button class="btn-restar" onclick="restar('nos')" aria-label="Restar punto a NOSOTROS">-</button>
                 </div>
             </section>
 
@@ -211,8 +211,8 @@
                 <h2 id="name-ellos" class="editable-name" onclick="editarNombre('ellos')" title="Click para editar nombre">ELLOS</h2>
                 <div id="palitos-ellos" class="contenedor-palitos"></div>
                 <div class="controles">
-                    <button class="btn-sumar" onclick="sumar('ellos')">+</button>
-                    <button class="btn-restar" onclick="restar('ellos')">-</button>
+                    <button class="btn-sumar" onclick="sumar('ellos')" aria-label="Sumar punto a ELLOS">+</button>
+                    <button class="btn-restar" onclick="restar('ellos')" aria-label="Restar punto a ELLOS">-</button>
                 </div>
             </section>
         </main>
@@ -223,7 +223,7 @@
     </div>
     
     <!-- MODAL DE VICTORIA -->
-    <div id="modal-custom" class="modal-overlay" style="display: none;">
+    <div id="modal-custom" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
         <div class="modal-content">
             <span class="material-icons icono-alerta">emoji_events</span>
             <h3 id="modal-titulo"></h3>
@@ -233,7 +233,7 @@
     </div>
 
     <!-- MODAL ÁRBITRO IA -->
-    <div id="modal-arbitro" class="modal-overlay" style="display: none;">
+    <div id="modal-arbitro" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true">
         <div class="bottom-sheet">
             <div class="arbitro-header">
                 <h3><span class="material-icons">sports</span> ÁRBITRO ASART</h3>
@@ -255,7 +255,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=71"></script>
+    <script src="script.js?v=72"></script>
 </body>
 </html>
 

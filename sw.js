@@ -1,4 +1,4 @@
-const CACHE_NAME = 'truco-v71';
+const CACHE_NAME = 'truco-v72';
 const RUNTIME_CACHE = 'truco-runtime-v71';
 
 const PRECACHE_URLS = [
@@ -10,9 +10,24 @@ const PRECACHE_URLS = [
   './fosforo.png',
   './icon-192.png',
   './icon-512.png',
+  './icono.png',
   './btn-jugar.png',
   './btn-config.png',
-  './inicio.jpg'
+  './inicio.jpg',
+  './pelota.jpg',
+  './flor.png',
+  './flor-boca.png',
+  './flor-blanca.png',
+  './fondo-boca.jpg',
+  './fondo-river.jpg',
+  './fondo-racing.jpg',
+  './fondo-rojo.jpg',
+  './fondo-sanlorenzo.jpg',
+  './fondo-diego.jpg',
+  './fondo-clasico.png',
+  './fonts/Rajdhani-Medium.woff2',
+  './fonts/Rajdhani-SemiBold.woff2',
+  './fonts/Rajdhani-Bold.woff2'
 ];
 
 const isSameOrigin = (request) => new URL(request.url).origin === self.location.origin;
@@ -79,6 +94,6 @@ self.addEventListener('fetch', (event) => {
   }
 
   event.respondWith(
-    caches.match(request, { ignoreSearch: true }).then((cached) => cached || fetch(request))
+    caches.match(request).then((cached) => cached || fetch(request))
   );
 });

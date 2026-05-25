@@ -212,13 +212,19 @@ function vibrar(ms = 30) {
     }
 }
 
+function initAudio() {
+    if (audioContext) return;
+    try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) {
+        console.warn('No se pudo crear AudioContext:', e);
+    }
+}
+
 function playBeep(tipo = 'default') {
-    if (!prefSonido) return;
+    if (!prefSonido || !audioContext) return;
 
     try {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
         if (audioContext.state === 'suspended') {
             audioContext.resume();
         }
@@ -616,7 +622,7 @@ function dibujarPalitos(puntos) {
 
         if (i % 5 === 0) html += '<div class="cuadradito">';
 
-        html += `<img src="fosforo.png" class="fosforo p${(i % 5) + 1}">`;
+        html += `<img src="fosforo.png" alt="" class="fosforo p${(i % 5) + 1}">`;
 
         if (i % 5 === 4 || i === puntos - 1) html += '</div>';
     }
@@ -632,7 +638,7 @@ function dibujarPalitos(puntos) {
 function agregarPalito(id, puntos) {
     const contenedor = document.getElementById(id);
     const i = puntos - 1; // índice 0-based del palito nuevo
-    const img = `<img src="fosforo.png" class="fosforo p${(i % 5) + 1}">`;
+    const img = `<img src="fosforo.png" alt="" class="fosforo p${(i % 5) + 1}">`;
 
     if (i === 0) {
         // Primer palito: inicializar estructura
@@ -794,9 +800,12 @@ function cambiarLimitePuntos(limite, conEfectos = true) {
         btn30.classList.toggle('activa', limite === 30);
     }
 
-    // Si los puntos actuales superan el nuevo límite, actualizar la interfaz inmediatamente
+    // Reflejar visualmente sin disparar modal de victoria ni guardar en historial
     if (puntosNos >= limite || puntosEllos >= limite) {
-        actualizarInterfaz();
+        document.getElementById('num-nos').innerText = puntosNos;
+        document.getElementById('num-ellos').innerText = puntosEllos;
+        document.getElementById('palitos-nos').innerHTML = dibujarPalitos(puntosNos);
+        document.getElementById('palitos-ellos').innerHTML = dibujarPalitos(puntosEllos);
     }
 }
 
@@ -821,6 +830,10 @@ function toggleElemento(tipo) {
     }
     else if (tipo === 'sonido') {
         setIcon(document.getElementById('icon-sonido'), activo ? 'volume_up' : 'volume_off');
+        prefSonido = activo;
+    }
+    else if (tipo === 'vibrar') {
+        prefVibrar = activo;
     }
     else if (tipo === 'flor') {
         const elFlor = document.getElementById('cont-flor');
@@ -982,9 +995,10 @@ function vibrarSutilBounce() {
     }
 }
 
-// Registrar interacción inicial para habilitar la vibración de rebote
+// Registrar interacción inicial para habilitar audio y vibración
 function registrarInteraccionUsuario() {
     usuarioInteractuo = true;
+    initAudio();
     window.removeEventListener('click', registrarInteraccionUsuario);
     window.removeEventListener('touchstart', registrarInteraccionUsuario);
     window.removeEventListener('mousedown', registrarInteraccionUsuario);
@@ -1146,7 +1160,7 @@ function motorArbitro(consulta) {
 
     // Envido + Real Envido querido
     if (c.includes('envido') && c.includes('real') && 
-        (c.includes('queri') || c.includes('quiero') || c.includes('si') || c.includes('cuanto') || c.includes('vale'))) {
+        (c.includes('queri') || (c.includes('quiero') && !c.includes('no quiero')) || c.includes('si') || c.includes('cuanto') || c.includes('vale'))) {
         return "<b>Son 5 porotos para el que tenga más tantos en la mano, papá.</b><br>" +
                "La matemática no falla: tiraron envido (2) y le reviraron un Real Envido arriba (3). Como se aceptó, se juegan 5 porotos.";
     }
@@ -1159,7 +1173,7 @@ function motorArbitro(consulta) {
 
     // Real Envido + Real Envido querido
     if ((c.match(/real/g) || []).length >= 2 && 
-        (c.includes('queri') || c.includes('quiero') || c.includes('si') || c.includes('cuanto') || c.includes('vale'))) {
+        (c.includes('queri') || (c.includes('quiero') && !c.includes('no quiero')) || c.includes('si') || c.includes('cuanto') || c.includes('vale'))) {
         return "<b>Son 6 porotos para el que ponga los tantos en la mesa, papá.</b><br>" +
                "Dos Real Envido seguidos y queridos son 3 + 3 = 6 porotos limpios. El de más tantos festeja y el otro a llorar a la iglesia.";
     }
