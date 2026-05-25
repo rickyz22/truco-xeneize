@@ -34,6 +34,7 @@ const isSameOrigin = (request) => new URL(request.url).origin === self.location.
 const isImageRequest = (request) => request.destination === 'image';
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => Promise.allSettled(PRECACHE_URLS.map((url) => cache.add(url))))
