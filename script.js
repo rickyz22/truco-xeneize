@@ -1153,13 +1153,13 @@ function manejarEnterArbitro(event) {
   }
 }
 
-// ── GEMINI vía CLOUDFLARE WORKER PROXY ───────────────────────
-// La key vive en el Worker de Cloudflare como secreto.
+// ── ÁRBITRO IA vía CLOUDFLARE WORKER PROXY (Groq / Llama) ───────
+// La key de Groq vive en el Worker como secreto (GROQ_KEY).
 // Aquí solo va la URL pública del proxy.
 const WORKER_URL = "https://truco-ricky.rickyz1749.workers.dev/";
 
-// Convierte el markdown que a veces devuelve Gemini a HTML básico
-function geminiAHtml(txt) {
+// Convierte markdown a HTML básico por si el modelo lo usa
+function iaAHtml(txt) {
   return txt
     .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
     .replace(/\*(.*?)\*/g, "<em>$1</em>")
@@ -1170,47 +1170,36 @@ function geminiAHtml(txt) {
 async function llamarGemini(consulta) {
   const juegaConFlor = document.getElementById("check-flor")?.checked;
   const systemPrompt =
-    `Sos el Árbitro ASART, el árbitro oficial del truco argentino.
-` +
-    `Sos canchero, directo, hablás con lunfardo porteño y respondés con autoridad total.
-` +
-    `SOLO respondés sobre truco argentino: reglas, puntos, jerarquía de cartas, envido, real envido, falta envido, flor, pardas, truco, retruco, vale cuatro, irse al mazo, y cualquier situación de juego.
-` +
-    `Si te preguntan algo fuera del truco, decís que eso no va y los volvés al juego.
-` +
+    `Sos el Árbitro ASART, el árbitro oficial del truco argentino. ` +
+    `Sos canchero, directo, hablás con lunfardo porteño y respondés con autoridad total. ` +
+    `SOLO respondés sobre truco argentino: reglas, puntos, jerarquía de cartas, envido, real envido, falta envido, flor, pardas, truco, retruco, vale cuatro, irse al mazo. ` +
+    `Si te preguntan algo fuera del truco, decís que eso no va y los volvés al juego. ` +
     `Contexto de la partida: NOS ${puntosNos} — ELLOS ${puntosEllos} (jugando a ${limitePuntos} puntos). ` +
-    `${juegaConFlor ? "Juegan CON flor." : "Juegan SIN flor."}
-` +
-    `Respondé en menos de 80 palabras. Para fallos clave usá <b>texto</b>. No uses asteriscos de markdown.`;
+    `${juegaConFlor ? "Juegan CON flor." : "Juegan SIN flor."} ` +
+    `Respondé en menos de 80 palabras. Usá <b>texto</b> para fallos importantes. No uses asteriscos de markdown.`;
 
   const res = await fetch(WORKER_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    // El Worker espera { systemPrompt, userMessage } y llama a Groq
     body: JSON.stringify({
-      system_instruction: { parts: [{ text: systemPrompt }] },
-      contents: [{ role: "user", parts: [{ text: consulta }] }],
-      generationConfig: { maxOutputTokens: 200, temperature: 0.65 },
+      systemPrompt,
+      userMessage: consulta,
     }),
   });
 
   const data = await res.json();
 
-  // Si Gemini devolvio un error (quota, key invalida, safety, etc.)
+  // Error del Worker o de la API
   if (!res.ok || data.error) {
-    const msg =
-      data.error?.message || data.error?.status || `HTTP ${res.status}`;
-    throw new Error(`Gemini: ${msg}`);
+    const msg = data.error?.message || data.error?.type || `HTTP ${res.status}`;
+    throw new Error(`IA: ${msg}`);
   }
 
-  // Respuesta bloqueada por filtros de seguridad
-  const finishReason = data.candidates?.[0]?.finishReason;
-  if (finishReason && finishReason !== "STOP") {
-    throw new Error(`Gemini: bloqueado (${finishReason})`);
-  }
-
-  const raw = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-  if (!raw) throw new Error("Gemini: sin texto en respuesta");
-  return geminiAHtml(raw);
+  // Formato OpenAI / Groq: choices[0].message.content
+  const raw = data.choices?.[0]?.message?.content ?? "";
+  if (!raw) throw new Error("IA: respuesta vacía");
+  return iaAHtml(raw);
 }
 
 // Agrega el indicador de "pensando" al chat y devuelve su id
