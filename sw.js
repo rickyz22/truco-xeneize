@@ -1,5 +1,5 @@
-const CACHE_NAME = "truco-v74";
-const RUNTIME_CACHE = "truco-runtime-v74";
+const CACHE_NAME = "truco-v75";
+const RUNTIME_CACHE = "truco-runtime-v75";
 
 const PRECACHE_URLS = [
   "./",
@@ -35,7 +35,10 @@ const isSameOrigin = (request) =>
 const isImageRequest = (request) => request.destination === "image";
 
 self.addEventListener("install", (event) => {
-  self.skipWaiting();
+  // No llamamos self.skipWaiting() aqui: el nuevo SW debe esperar
+  // en estado 'waiting' hasta que el usuario toque el banner de actualizacion.
+  // El skipWaiting() se dispara solo desde el handler de 'message'
+  // cuando el usuario presiona el boton 'Actualizar'.
   event.waitUntil(
     caches
       .open(CACHE_NAME)
