@@ -1224,7 +1224,7 @@ function agregarLoaderArbitro() {
   div.className = "mensaje-arbitro";
   div.innerHTML =
     `<strong>🃏 Árbitro:</strong> ` +
-    `<span style="opacity:0.6;font-size:0.85em">Consultando Gemini…</span> ` +
+    `<span style="opacity:0.6;font-size:0.85em">Consultando IA…</span> ` +
     `<span class="loader-dots"><span></span><span></span><span></span></span>`;
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
@@ -1235,10 +1235,10 @@ function agregarLoaderArbitro() {
 function reemplazarLoaderArbitro(id, texto, origen) {
   const el = document.getElementById(id);
   if (!el) return;
-  // origen: 'gemini' | 'local' | 'error'
+  // origen: 'ia' | 'local' | 'error'
   const badge =
-    origen === "gemini"
-      ? `<span class="badge-origen gemini">⚡ IA</span>`
+    origen === "ia"
+      ? `<span class="badge-origen ia">⚡ IA</span>`
       : origen === "error"
         ? `<span class="badge-origen error">⚠️ local</span>`
         : `<span class="badge-origen local">📵 offline</span>`;
@@ -1267,7 +1267,7 @@ async function enviarConsultaArbitro() {
     // false aunque haya internet. Intentamos la llamada directamente
     // y dejamos que el fetch falle si no hay red.
     const respuesta = await llamarGemini(texto);
-    reemplazarLoaderArbitro(idLoader, respuesta, "gemini");
+    reemplazarLoaderArbitro(idLoader, respuesta, "ia");
     vibrar(40);
   } catch (err) {
     console.warn("Arbitro fallback:", err.message);
